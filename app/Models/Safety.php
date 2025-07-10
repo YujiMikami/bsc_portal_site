@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request; // Requestクラスをインポート
 use Illuminate\Database\Eloquent\SoftDeletes; // SoftDeletesトレイトをインポート
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
 class Safety extends Model
 {
@@ -13,8 +14,8 @@ class Safety extends Model
     public function saveSafety(Request $request)
     {
         // $request オブジェクトから直接データを取得し、モデルのプロパティに割り当てる
-        $this->post_user_id = $request->input('post_user_id');
-        $this->post_user_name = $request->input('safety_post_user');
+        $this->safety_user_id = Auth::user()->user_id;
+        $this->safety_user_name = Auth::user()->user_name;
         $this->safety_status = $request->input('safety_status');
         $this->injury_status = $request->input('injury_status');
         $this->can_work = $request->input('can_work');
