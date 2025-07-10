@@ -23,9 +23,8 @@
                     <table class="table-auto w-full border">
                         <thead>
                             <tr>
+                                <th class="border px-4 py-2">社員番号</th>
                                 <th class="border px-4 py-2">投稿者名</th>
-                                <th class="border px-4 py-2">所属部署</th>
-                                <th class="border px-4 py-2">現場名</th>
                                 <th class="border px-4 py-2">安否状況</th>
                                 <th class="border px-4 py-2">傷害度合</th>
                                 <th class="border px-4 py-2">出社可否</th>
@@ -35,12 +34,12 @@
                         <tbody>
                         @foreach ($safety as $val)
                             <tr>
-                                <td class="border px-4 py-2">{{ $val->post_user_name }}</td>
-                                <td class="border px-4 py-2">{{ $val->safety_status }}</td>
-                                <td class="border px-4 py-2">{{ $val->safety_status }}</td>
+                                <td class="border px-4 py-2">{{ $val->safety_user_id }}</td>
+                                <td class="border px-4 py-2">{{ $val->safety_user_name }}</td>
                                 <td class="border px-4 py-2">{{ $val->safety_status }}</td>
                                 <td class="border px-4 py-2">{{ $val->injury_status }}</td>
                                 <td class="border px-4 py-2">{{ $val->can_work }}</td>
+                                <td class="border px-4 py-2">{{ $val->created_at }}</td>
                             </tr>
                         </tbody>
                         @endforeach

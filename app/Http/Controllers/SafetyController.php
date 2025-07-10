@@ -7,7 +7,7 @@ use App\Models\Safety;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Auth;
 class SafetyController extends Controller
 {
         /**
@@ -15,7 +15,11 @@ class SafetyController extends Controller
      */
     public function index()
     {
-        $safety = Safety::all();
+        if (auth::user()->role == 1) {
+            $safety = Safety::all();
+        } else {
+            $safety = Safety::where('safety_user_id', auth::user()->user_id)->get();
+        }
         
         return view('admin.safety.index', compact('safety'));
         
@@ -37,21 +41,22 @@ class SafetyController extends Controller
     public function store(Request $request)
     {
         // バリデーション
-        //$validator = $this->validateSafety($request);
+        $validator = $this->validateSafety($request);
 
         // バリデーションに失敗した場合
-        // if ($validator->fails()) {
-        //     // リダイレクト先を admin.tasks.create ルートに変更
-        //     return redirect(route('admin.safety.index')) 
-        //         ->withErrors($validator) // エラーメッセージをセッションに保存
-        //         ->withInput(); // 直前に入力されたデータをセッションに保存
-        // }
+        if ($validator->fails()) {
+            // リダイレクト先を admin.tasks.create ルートに変更
+            return redirect(route('admin.safety.create')) 
+                ->withErrors($validator) // エラーメッセージをセッションに保存
+                ->withInput(); // 直前に入力されたデータをセッションに保存
+        }
 
         // Taskモデルのカスタムメソッドを使ってデータを保存
         $safety = new Safety();
         // $request オブジェクトを直接 saveTask メソッドに渡す
         try {
             $safety->saveSafety($request); 
+
         } catch (Exception $e) {
             Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
         }
@@ -64,23 +69,24 @@ class SafetyController extends Controller
     private function validateSafety(Request $request)
     {
         $rules = [
-            'title' => 'required|max:100',
-            'content' => 'required|max:1000',
-            'deadline_at' => 'required',
+            'department' => 'required',
+            'on_site_name' => 'required',
+            'safety_status' => 'required',
+            'can_work' => 'required',
         ];
 
         $messages = [
-            'title.required' => ':attributeは必須項目です。',
-            'title.max' => ':attributeは:max文字以内で入力してください。',
-            'content.required' => ':attributeは必須項目です。',
-            'content.max' => ':attributeは:max文字以内で入力してください。',
-            'deadline_at.required' => ':attributeは必須項目です。',
+            'department.required' => ':attributeは必須項目です。',
+            'on_site_name.required' => ':attributeは必須項目です。',
+            'safety_status.required' => ':attributeは必須項目です。',
+            'can_work.required' => ':attributeは必須項目です。',
         ];
         
         $attributes = [
-            'title' => 'タイトル',
-            'content' => '内容',
-            'deadline_at' => '対応期限',
+            'department' => '部署',
+            'on_site_name' => '現場名',
+            'safety_status' => 'ケガの有無',
+            'can_work' => '出社可否',
         ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);

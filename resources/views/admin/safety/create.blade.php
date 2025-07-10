@@ -32,47 +32,46 @@ use function Psy\debug;
                     <form action="{{ route('admin.safety.store') }}" method="POST">
                         @csrf
    
-                        <div class="mb-4">
-                            <label for="safety_post_user" class="block text-gray-700 text-sm font-bold mb-2">投稿者：</label>
-                            <input type="text" name="safety_post_user" id="safety_post_user" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div>
-
                         <div class="mb-6">
                             <label for="department" class="block text-gray-700 text-sm font-bold mb-2">部署：</label>
                             <select name="department" id="department">
-                                <option value="ITビジネス事業部">ITビジネス事業部</option>
-                            </select>   
+                                <option value="{{ old('department', '') }}"></option>
+                                <option value="ITビジネス事業部"{{ old('department', '') }}>ITビジネス事業部</option>
+                            </select>
                         </div>
 
                         <div class="mb-6">
                             <label for="on_site_name" class="block text-gray-700 text-sm font-bold mb-2">現場名：</label>
                             <select name="on_site_name" id="on_site_name">
+                                <option value=></option>
                                 <option value="本社">本社</option>
                             </select>   
                         </div>
 
                         <legend>ケガの有無</legend>
                         <div class="mb-6">
-                            <label for="safety_status" class="block text-gray-700 text-sm font-bold mb-2">ケガ無し：</label>
-                            <input type="radio" name="safety_status" id="safety_status1" value="non_injury">
-                            <label for="safety_status" class="block text-gray-700 text-sm font-bold mb-2">ケガ有り：</label>
-                            <input type="radio" name="safety_status" id="safety_status2" value="injury">
+                            <label for="safety_status" class="block text-gray-700 text-sm font-bold mb-2">ケガ無し：
+                                <input type="radio" name="safety_status" id="safety_status1" value="ケガ無し">
+                            </label>
+                            <label for="safety_status" class="block text-gray-700 text-sm font-bold mb-2">ケガ有り：
+                                <input type="radio" name="safety_status" id="safety_status2" value="ケガ有り">
+                            </label>
                         </div>
 
                         <div class="mb-4">
-                            <label for="injury_status" class="block text-gray-700 text-sm font-bold mb-2">傷害度合：</label>
+                            <label for="injury_status" class="block text-gray-700 text-sm font-bold mb-2">傷害度合：(擦り傷あり・切り傷有り・骨折箇所等)</label>
                             <input type="text" name="injury_status" id="injury_status" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
                         </div>
 
                         <legend>出社可否</legend>
                         <div class="mb-6">
-                            <label for="can_work" class="block text-gray-700 text-sm font-bold mb-2">出社可：</label>
-                            <input type="radio" name="can_work" id="can_work1" value="can">
-                            <label for="can_work" class="block text-gray-700 text-sm font-bold mb-2">出社不可：</label>
-                            <input type="radio" name="can_work" id="can_work2" value="cant">
+                            <label for="can_work" class="block text-gray-700 text-sm font-bold mb-2">出社可　：
+                                <input type="radio" name="can_work" id="can_work1" value="出社可">
+                            </label>
+                            <label for="can_work" class="block text-gray-700 text-sm font-bold mb-2">出社不可：
+                                <input type="radio" name="can_work" id="can_work2" value="出社不可">
+                            </label>
                         </div>
-
-
                         
                         <div class="flex items-center justify-end">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

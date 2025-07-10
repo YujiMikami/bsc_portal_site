@@ -7,4 +7,5 @@ return [
     'failed' => 'メールアドレスまたはパスワードが正しくありません。',
     'forget_password' => 'パスワードを忘れた',
     'login' => 'ログイン',
+    'Dashboard' => 'ダッシュボード',
 ];
