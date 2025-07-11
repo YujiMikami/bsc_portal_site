@@ -32,5 +32,17 @@
                 {{ $slot }}
             </main>
         </div>
+            {{--JQuery用ファイルの読み込み--}}
+        <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="{{ asset('datatables/datatables.min.js') }}"></script>
+        {{--selectに検索機能を追加--}}
+        <script>
+            $(document).ready(function() {
+                $('.p-selectbox2').select2();
+            });
+        </script>
+        @stack('script')
     </body>
 </html>

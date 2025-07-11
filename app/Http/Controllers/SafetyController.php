@@ -18,7 +18,7 @@ class SafetyController extends Controller
         if (auth::user()->role == 1) {
             $safety = Safety::all();
         } else {
-            $safety = Safety::where('safety_user_id', auth::user()->user_id)->get();
+            $safety = Safety::where('safety_employee_id', auth::user()->employee_id)->get();
         }
         
         return view('admin.safety.index', compact('safety'));
