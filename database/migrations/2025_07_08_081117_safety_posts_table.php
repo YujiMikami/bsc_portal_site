@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('safeties', function (Blueprint $table) {
         $table->id();
-        $table->integer('safety_user_id');
-        $table->string('safety_user_name');
+        $table->integer('safety_employee_id');
+        $table->string('safety_employee_name');
         //$table->string('department');
         //$table->string('on_site_name');
         $table->string('safety_status');

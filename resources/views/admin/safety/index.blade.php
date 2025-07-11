@@ -34,8 +34,8 @@
                         <tbody>
                         @foreach ($safety as $val)
                             <tr>
-                                <td class="border px-4 py-2">{{ $val->safety_user_id }}</td>
-                                <td class="border px-4 py-2">{{ $val->safety_user_name }}</td>
+                                <td class="border px-4 py-2">{{ $val->safety_employee_id }}</td>
+                                <td class="border px-4 py-2">{{ $val->safety_employee_name }}</td>
                                 <td class="border px-4 py-2">{{ $val->safety_status }}</td>
                                 <td class="border px-4 py-2">{{ $val->injury_status }}</td>
                                 <td class="border px-4 py-2">{{ $val->can_work }}</td>
