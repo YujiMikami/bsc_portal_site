@@ -66,7 +66,7 @@
                     "paging": true,
                     //日本語化する
                     "language": {
-                        "url": '../public/js/datatables/ja.json'
+                        "url": "{{ asset('js/datatables/ja.json') }}"
                     }
                 }
                 $('.jQ-table').DataTable(tableOptions);
