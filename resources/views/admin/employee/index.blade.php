@@ -16,12 +16,21 @@
                         </div>
                     @endif
                     <div class="flex justify-start mb-4">
+                        <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            社員登録
+                        </a>
+                        <a href="" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            CSV出力
+                        </a>
+                    </div>                    
+                    <div class="flex justify-start mb-4">
                     </div>
                     <table class="table-auto w-full border jQ-table">
                         <thead>
                             <tr>
                                 <th class="border px-4 py-2">社員番号</th>
                                 <th class="border px-4 py-2">社員名</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,6 +38,11 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $val->employee_id  }}</td>
                                 <td class="border px-4 py-2">{{ $val->employee_name }}</td>
+                                <td>
+                                    <a href="" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        詳細
+                                    </a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -52,8 +66,7 @@
                     "paging": true,
                     //日本語化する
                     "language": {
-                        "url": "https:cdn.datatables.net/plug-ins/1.10.16/i18n/Japanese.json"
-                    
+                        "url": '../public/js/datatables/ja.json'
                     }
                 }
                 $('.jQ-table').DataTable(tableOptions);
