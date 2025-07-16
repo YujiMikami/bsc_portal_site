@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('auth.Dashboard') }}
+                        {{ __('ダッシュボード') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.safety.index')" :active="request()->routeIs('admin.safety.*')">
                         {{ __('安否確認') }}
