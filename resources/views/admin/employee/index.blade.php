@@ -15,10 +15,38 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    <a href="{{ route('admin.employee.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        社員登録
+                    </a>
+                    <div class="p-6 text-gray-900">
+                    <form method="GET" action="{{ route('admin.employee.index') }}">
+                        <table>
+                            <thead>
+                                <th colspan="2">出力対象</th>
+                                <th>検索値</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><label for="search_id">社員番号:</label></td>
+                                    <td><label><input type="checkbox" name="search_id_check" value=true></label></td>
+                                    <td><input type="text" id="search_id" name="search_id" value="{{ !empty(request('search_id')) ? request('search_id') : '' }}"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="search_name">社員名:</label></td>
+                                    <td><label><input type="checkbox" name="search_name_check" value=true></label></td>
+                                    <td><input type="text" id="search_name" name="search_name" value="{{ !empty(request('search_name')) ? request('search_name') : '' }}"></td>
+                                </tr>
+                            </tbody>    
+                        </table>    
+                        <div>
+                            <button type="submit" style="padding: 8px 15px;">検索</button>
+                            <a href="{{ route('admin.employee.index') }}" role="button" style="padding: 8px 15px; text-decoration: none; border: 1px solid #ccc; color: #333;">リセット</a>
+                        </div>
+                    </form>
+                </div>
+                    
                     <div class="flex justify-start mb-4">
-                        <a href="" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            社員登録
-                        </a>
+     
                         <a href="" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             CSV出力
                         </a>
@@ -28,20 +56,33 @@
                     <table class="table-auto w-full border jQ-table">
                         <thead>
                             <tr>
-                                <th class="border px-4 py-2">社員番号</th>
-                                <th class="border px-4 py-2">社員名</th>
-                                <th></th>
+                                @foreach ($employee->first()->getAttributes() as $column => $value)
+                                    <th class="border px-4 py-2">{{ $column }}</th>
+                                @endforeach
+                                <th class="border px-4 py-2">操作</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach ($employee as $val)
                             <tr>
-                                <td class="border px-4 py-2">{{ $val->employee_id  }}</td>
-                                <td class="border px-4 py-2">{{ $val->employee_name }}</td>
-                                <td>
-                                    <a href="" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                        詳細
-                                    </a>
+                                <td class="border px-4 py-2">{{ $val->id  }}</td>
+                                @if (isset($val->employee_id))
+                                    <td class="border px-4 py-2">{{ $val->employee_id  }}</td>
+                                @endif
+                                @if (isset($val->employee_name))
+                                    <td class="border px-4 py-2">{{ $val->employee_name }}</td>
+                                @endif
+                                <td class="border px-4 py-2">
+                                    {{-- 詳細ボタンを追加 --}}
+                                    <a href="{{ route('admin.employee.show', $val->id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                    {{-- 編集ボタンを追加 --}}
+                                    <a href="{{ route('admin.employee.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                    {{-- 削除ボタンの追加 --}}
+                                    <form action="{{ route('admin.employee.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -59,7 +100,9 @@
                     //テーブル情報の表示
                     "info": true,
                     //インデックスを指定して設定する
-                    "columnDefs": [],
+                    "columnDefs": [
+                        { targets: [2], sortable: false },
+                    ],
                     //検索機能を追加する
                     "searching": true,
                     //ページ機能を追加する

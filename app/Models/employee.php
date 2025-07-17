@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class employee extends Authenticatable
 {
@@ -47,4 +49,17 @@ class employee extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function saveEmployee(Request $request)
+    {
+        // $request オブジェクトから直接データを取得し、モデルのプロパティに割り当てる
+        $this->employee_id = $request->input('employee_id');
+        $this->employee_name = $request->input('employee_name');
+        $this->role = $request->input('portal_role');
+        $this->password = 'bsc' . $request->input('employee_id');
+        // 登録処理
+        $this->save();
+    }
+
+
 }
