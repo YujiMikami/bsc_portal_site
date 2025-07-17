@@ -9,7 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    ここに各通知やお知らせを載せます。
+                    ここに各通知やお知らせを載せます。<br><br>
+                
+                    更新内容：<br>
+                    社員名簿<br>
+                    登録・更新・詳細・削除機能を追加<br>
+                    カラムの指定<br>
+                    CSV出力は未実装
                 </div>
             </div>
         </div>
