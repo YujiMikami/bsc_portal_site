@@ -8,6 +8,8 @@ use App\Models\employee;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
+use DateTime;
+use Illuminate\Support\Facades\Response;
 
 class EmployeeController extends Controller
 {
@@ -164,4 +166,59 @@ class EmployeeController extends Controller
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
         return redirect(route('admin.employee.index'))->with('success', '社員情報が正常に更新されました。');
     }
+
+    public function downloadcsv(Request $request)
+    {
+        try {
+            $employee = $this->getEmployeeQuery($request)->get();
+        } catch (Exception $e) {
+            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+        }
+
+        // CSVにするデータ配列
+        $bufHead = [];
+        $buf = [];
+        isset($request->search_id_check) ? $bufHead[]='社員番号' : '';
+        isset($request->search_name_check) ? $bufHead[]='社員名' : '';
+
+        $data[] = $bufHead;
+
+        foreach ($employee as $val) {
+            isset($request->search_id_check) ? $buf[]=$val->employee_id: '';
+            isset($request->search_name_check) ? $buf[]=$val->employee_name: '';
+            $data[] = $buf;
+            unset($buf);
+        }
+
+        // 保存するファイル名
+        $date = new DateTime();
+        $filename = 'employees_export_' . $date->format('YmdHis') . '.csv';
+
+        // CSVのテキストを作成する変数
+        $csv = '';
+
+        // 配列の各行を処理
+        foreach ($data as $row) {
+            $escaped = [];
+            foreach ($row as $value) {
+            // 値をシングルクオートで囲み、内部のシングルクオートは2つに置換
+                $escaped[] = '\'' . str_replace('\'', '\'\'', $value) . '\'';
+            }
+            // 行をカンマ区切りで連結し、改行コードを付加
+            $csv .= implode(',', $escaped) . "\r\n";
+        }
+        // 文字コードをWindows向けのSJIS-winに変換
+        $encodedCsv = mb_convert_encoding($csv, 'SJIS-win', 'UTF-8');
+        // レスポンスを作成しCSVとしてブラウザに出力
+        return Response::make($encodedCsv, 200, [
+        'Content-Type' => 'text/csv; charset=SJIS',
+        'Content-Disposition' => 'attachment; filename=' . $filename,
+    ]);
+    }
+    
+    public function configcsv()
+    {
+        return view('admin.employee.configcsv');
+    }
+
 }

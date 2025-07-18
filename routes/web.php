@@ -29,7 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/employee/{id}/update', [EmployeeController::class, 'update'])->name('admin.employee.update');
     Route::post('/admin/employee/store', [EmployeeController::class, 'store'])->name('admin.employee.store');
     Route::delete('/admin/employee/{id}/delete', [EmployeeController::class, 'destroy'])->name('admin.employee.delete');
-
+    Route::post('/admin/employee/configcsv', [EmployeeController::class, 'configcsv'])->name('admin.employee.configcsv');
+    Route::get('/admin/employee/downloadcsv', [EmployeeController::class, 'downloadcsv'])->name('admin.employee.downloadcsv');
 });
 
 require __DIR__.'/auth.php';
