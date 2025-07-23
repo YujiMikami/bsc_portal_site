@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800">
-            社員名簿
+            社員テーブル
         </h2>
     
     </x-slot>
@@ -16,16 +16,16 @@
                         </div>
                     @endif
                     <div class="flex justify-start mb-4">
-                        <a href="{{ route('admin.employees.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('admin.table.employees.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             社員登録
                         </a>
-                        <form action="{{ route('admin.employees.configcsv') }}" method="POST">
+                        <form action="{{ route('admin.table.employees.configcsv') }}" method="POST">
                             @csrf
                             <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style="padding: 8px 15px;">CSVダウンロード</button>
                         </form>
                     </div>
                     <div class="p-6 text-gray-900">
-                    <form method="GET" action="{{ route('admin.employees.index') }}">
+                    <form method="GET" action="{{ route('admin.table.employees.index') }}">
                         <table>
                             <thead>
                                 <th colspan="2">表示項目</th>
@@ -46,7 +46,7 @@
                         </table>    
                         <div>
                             <button type="submit" style="padding: 8px 15px;">検索</button>
-                            <a href="{{ route('admin.employees.index') }}" role="button" style="padding: 8px 15px; text-decoration: none; border: 1px solid #ccc; color: #333;">リセット</a>
+                            <a href="{{ route('admin.table.employees.index') }}" role="button" style="padding: 8px 15px; text-decoration: none; border: 1px solid #ccc; color: #333;">リセット</a>
                         </div>
                     </form>
 
@@ -76,11 +76,11 @@
                                 @endif
                                 <td class="border px-4 py-2">
                                     {{-- 詳細ボタンを追加 --}}
-                                    <a href="{{ route('admin.employees.show', $val->id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                    <a href="{{ route('admin.table.employees.show', $val->id) }}" class="text-blue-600 hover:underline">詳細</a>
                                     {{-- 編集ボタンを追加 --}}
-                                    <a href="{{ route('admin.employees.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                    <a href="{{ route('admin.table.employees.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
                                     {{-- 削除ボタンの追加 --}}
-                                    <form action="{{ route('admin.employees.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                    <form action="{{ route('admin.table.employees.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>

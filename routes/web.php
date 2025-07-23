@@ -4,8 +4,13 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SafetyController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\AffiliationController;
+use App\Http\Controllers\EmployeePostController;
+use App\Http\Controllers\EmployeeClassController;
 use Illuminate\Support\Facades\Route;
-use app\Http\Middleware\RoleCheck;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,15 +31,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/public/reports/safety/{id}/delete', [SafetyController::class, 'destroy'])->name('public.reports.safety.delete');
 
         Route::middleware('admin')->group(function () {
-            Route::get('/admin/employees', [EmployeeController::class, 'index'])->name('admin.employees.index');
-            Route::get('/admin/employees/create', [EmployeeController::class, 'create'])->name('admin.employees.create');
-            Route::get('/admin/employees/{id}/show', [EmployeeController::class, 'show'])->name('admin.employees.show');
-            Route::get('/admin/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('admin.employees.edit');
-            Route::put('/admin/employees/{id}/update', [EmployeeController::class, 'update'])->name('admin.employees.update');
-            Route::post('/admin/employees/store', [EmployeeController::class, 'store'])->name('admin.employees.store');
-            Route::delete('/admin/employees/{id}/delete', [EmployeeController::class, 'destroy'])->name('admin.employees.delete');
-            Route::post('/admin/employees/configcsv', [EmployeeController::class, 'configcsv'])->name('admin.employees.configcsv');
-            Route::get('/admin/employees/downloadcsv', [EmployeeController::class, 'downloadcsv'])->name('admin.employees.downloadcsv');
+            Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table.index');
+            
+            Route::get('/admin/table/employees', [EmployeeController::class, 'index'])->name('admin.table.employees.index');
+            Route::get('/admin/table/departments', [DepartmentController::class, 'index'])->name('admin.table.departments.index');
+            Route::get('/admin/table/affiliations', [AffiliationController::class, 'index'])->name('admin.table.affiliations.index');
+            Route::get('/admin/table/employee_posts', [EmployeePostController::class, 'index'])->name('admin.table.employee_posts.index');
+            Route::get('/admin/table/employee_classes', [EmployeeClassController::class, 'index'])->name('admin.table.employee_classes.index');
+            
+            
+            
+            
+            
+            Route::get('/admin/employees/create', [EmployeeController::class, 'create'])->name('admin.table.employees.create');
+            Route::get('/admin/employees/{id}/show', [EmployeeController::class, 'show'])->name('admin.table.employees.show');
+            Route::get('/admin/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('admin.table.employees.edit');
+            Route::put('/admin/employees/{id}/update', [EmployeeController::class, 'update'])->name('admin.table.employees.update');
+            Route::post('/admin/employees/store', [EmployeeController::class, 'store'])->name('admin.table.employees.store');
+            Route::delete('/admin/employees/{id}/delete', [EmployeeController::class, 'destroy'])->name('admin.table.employees.delete');
+            Route::post('/admin/employees/configcsv', [EmployeeController::class, 'configcsv'])->name('admin.table.employees.configcsv');
+            Route::get('/admin/employees/downloadcsv', [EmployeeController::class, 'downloadcsv'])->name('admin.table.employees.downloadcsv');
         });
     });
 require __DIR__.'/auth.php';
