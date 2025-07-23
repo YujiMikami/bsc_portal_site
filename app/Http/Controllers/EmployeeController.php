@@ -8,6 +8,8 @@ use App\Models\employee;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
+use DateTime;
+use Illuminate\Support\Facades\Response;
 
 class EmployeeController extends Controller
 {
@@ -38,7 +40,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         $employee = $this->getEmployeeQuery($request)->get();
-        return view('admin.employee.index', compact('employee'));
+        return view('admin.employees.index', compact('employee'));
         
         // データをViewに渡す場合は
         // return view('my-page', ['data' => $data, 'id' => $id]);や
@@ -52,7 +54,7 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        return view('admin.employee.create');
+        return view('admin.employees.create');
     }
 
     public function show($id)
@@ -65,7 +67,7 @@ class EmployeeController extends Controller
 
 
         // ビューにタスクデータを渡して表示
-        return view('admin.employee.show', compact('employee'));
+        return view('admin.employees.show', compact('employee'));
     }
     public function destroy($id)
     {
@@ -80,7 +82,7 @@ class EmployeeController extends Controller
         }
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.employee.index'))->with('success', 'タスクが正常に削除されました。');
+        return redirect(route('admin.employees.index'))->with('success', 'タスクが正常に削除されました。');
     }
 
     public function store(Request $request)
@@ -91,7 +93,7 @@ class EmployeeController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.tasks.create ルートに変更
-            return redirect(route('admin.employee.create')) 
+            return redirect(route('admin.employees.create')) 
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -105,7 +107,7 @@ class EmployeeController extends Controller
             Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
         }
 
-        return redirect(route('admin.employee.index'))->with('success', '社員登録が正常に処理されました。');
+        return redirect(route('admin.employees.index'))->with('success', '社員登録が正常に処理されました。');
     }
 
     private function validateEmployee(Request $request)
@@ -138,7 +140,7 @@ class EmployeeController extends Controller
         // これを避けるには、例えば全件なら $postList、1件なら $postData のように、より具体的な変数名を使用すると良いでしょう。
 
         // 新規作成時と同じビュー ('posts.create') を再利用し、記事データを渡す
-        return view('admin.employee.create', compact('employee'));
+        return view('admin.employees.create', compact('employee'));
     }
         public function update(Request $request, $id)
     {
@@ -148,7 +150,7 @@ class EmployeeController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // 編集フォームのルートにリダイレクト
-            return redirect(route('admin.employee.edit', $id))
+            return redirect(route('admin.employees.edit', $id))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -162,6 +164,61 @@ class EmployeeController extends Controller
         }
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.employee.index'))->with('success', '社員情報が正常に更新されました。');
+        return redirect(route('admin.employees.index'))->with('success', '社員情報が正常に更新されました。');
     }
+
+    public function downloadcsv(Request $request)
+    {
+        try {
+            $employee = $this->getEmployeeQuery($request)->get();
+        } catch (Exception $e) {
+            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+        }
+
+        // CSVにするデータ配列
+        $bufHead = [];
+        $buf = [];
+        isset($request->search_id_check) ? $bufHead[]='社員番号' : '';
+        isset($request->search_name_check) ? $bufHead[]='社員名' : '';
+
+        $data[] = $bufHead;
+
+        foreach ($employee as $val) {
+            isset($request->search_id_check) ? $buf[]=$val->employee_id: '';
+            isset($request->search_name_check) ? $buf[]=$val->employee_name: '';
+            $data[] = $buf;
+            unset($buf);
+        }
+
+        // 保存するファイル名
+        $date = new DateTime();
+        $filename = 'employees_export_' . $date->format('YmdHis') . '.csv';
+
+        // CSVのテキストを作成する変数
+        $csv = '';
+
+        // 配列の各行を処理
+        foreach ($data as $row) {
+            $escaped = [];
+            foreach ($row as $value) {
+            // 値をシングルクオートで囲み、内部のシングルクオートは2つに置換
+                $escaped[] = '\'' . str_replace('\'', '\'\'', $value) . '\'';
+            }
+            // 行をカンマ区切りで連結し、改行コードを付加
+            $csv .= implode(',', $escaped) . "\r\n";
+        }
+        // 文字コードをWindows向けのSJIS-winに変換
+        $encodedCsv = mb_convert_encoding($csv, 'SJIS-win', 'UTF-8');
+        // レスポンスを作成しCSVとしてブラウザに出力
+        return Response::make($encodedCsv, 200, [
+        'Content-Type' => 'text/csv; charset=SJIS',
+        'Content-Disposition' => 'attachment; filename=' . $filename,
+    ]);
+    }
+    
+    public function configcsv()
+    {
+        return view('admin.employees.configcsv');
+    }
+
 }
