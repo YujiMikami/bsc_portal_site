@@ -29,7 +29,7 @@ use function Psy\debug;
                         </div>
                     @endif
 
-                    <form action="{{ route('user.reports.safety.store') }}" method="POST">
+                    <form action="{{ route('public.reports.safety.store') }}" method="POST">
                         @csrf
    
                         <div class="mb-6">
@@ -74,7 +74,7 @@ use function Psy\debug;
                         </div>
                         
                         <div class="flex items-center justify-end">
-                            <a href="{{ route('user.reports.safety.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ route('public.reports.safety.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 戻る
                             </a>
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

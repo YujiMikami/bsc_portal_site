@@ -29,7 +29,7 @@ use function Psy\debug;
                         </div>
                     @endif
 
-                    <form action="{{ isset($employee) ? route('admin.employees.update', $employee->employee_id) : route('admin.employee.store') }}"  method="POST">
+                    <form action="{{ isset($employee) ? route('admin.employees.update', $employee->employee_id) : route('admin.employees.store') }}"  method="POST">
                         @csrf
                             @if (isset($employee))
                                 @method('PUT')

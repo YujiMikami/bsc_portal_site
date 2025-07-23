@@ -15,17 +15,18 @@ class SafetyController extends Controller
      */
     public function index()
     {
-        if (auth::user()->role=1) {
+        if (auth::user()->role == 1) {
             $safety = Safety::all();
         } else {
             $safety = Safety::where('safety_employee_id', auth::user()->employee_id)->get();
         }
-        return view('user.reports.safety.index', compact('safety'));
+          
+        return view('public.reports.safety.index', compact('safety'));
     }
 
     public function create()
     {
-        return view('user.reports.safety.create');
+        return view('public.reports.safety.create');
     }
     
     public function store(Request $request)
@@ -36,7 +37,7 @@ class SafetyController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.tasks.create ルートに変更
-            return redirect(route('user.reports.safety.create')) 
+            return redirect(route('public.reports.safety.create')) 
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -53,7 +54,7 @@ class SafetyController extends Controller
 
         // /admin/tasks にリダイレクトする（既に定義済みのタスク一覧ページなどへ）
         // 成功メッセージをセッションにフラッシュデータとして保存
-        return redirect(route('user.reports.safety.index'))->with('success', '安否報告が正常に登録されました。');
+        return redirect(route('public.reports.safety.index'))->with('success', '安否報告が正常に登録されました。');
     }
 
     private function validateSafety(Request $request)
@@ -94,6 +95,6 @@ class SafetyController extends Controller
         }
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('user.reports.safety.index'))->with('success', 'タスクが正常に削除されました。');
+        return redirect(route('public.reports.safety.index'))->with('success', 'タスクが正常に削除されました。');
     }
 }
