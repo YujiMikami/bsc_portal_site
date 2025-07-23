@@ -25,7 +25,7 @@ class Safety extends Model
         // 登録処理
         $this->save();
     }
-    public function user(): BelongsTo
+    public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }

@@ -19,8 +19,8 @@
                         申請・報告
                     </x-nav-link>
                     @can('access-admin-panel')
-                        <x-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.*')" style="color: red;">
-                            社員名簿
+                        <x-nav-link :href="route('admin.table.index')" :active="request()->routeIs('admin.teble.*')" style="color: red;">
+                            各テーブル
                         </x-nav-link>
                     @endcan
                 </div>
@@ -80,7 +80,7 @@
              <x-responsive-nav-link :href="route('public.reports.index')" :active="request()->routeIs('user.reports.*')">
                 {{ __('申請・報告') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.*')">
+            <x-responsive-nav-link :href="route('admin.table.employees.index')" :active="request()->routeIs('admin.employees.*')">
                 {{ __('社員名簿') }}
             </x-responsive-nav-link>
         </div>
