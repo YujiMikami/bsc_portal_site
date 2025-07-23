@@ -10,7 +10,7 @@
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1>出力したい項目を選択してください。</h1>
-                    <form method="GET" action="{{ route('admin.employee.downloadcsv') }}">
+                    <form method="GET" action="{{ route('admin.employees.downloadcsv') }}">
                         <div style="margin:10px;">
                             <label for="search_id">社員番号:</label>
                             <input type="checkbox" name="search_id_check" value=true{{ !empty(request('search_id_check')) ? ' checked' : '' }}>

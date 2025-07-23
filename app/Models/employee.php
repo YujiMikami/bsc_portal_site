@@ -61,5 +61,13 @@ class employee extends Authenticatable
         $this->save();
     }
 
+    public function isAdmin(): bool
+    {
+        // ここでは、ユーザーテーブルに 'role' カラムがあり、
+        // その値が 'admin' の場合に管理者を意味すると仮定しています。
+        return $this->role === 1;
 
+        // もしユーザーIDが1のユーザーを管理者とする場合は、以下のように記述できます。
+        // return $this->id === 1;
+    }
 }
