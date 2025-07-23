@@ -16,16 +16,16 @@
                         </div>
                     @endif
                     <div class="flex justify-start mb-4">
-                        <a href="{{ route('admin.employee.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('admin.employees.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             社員登録
                         </a>
-                        <form action="{{ route('admin.employee.configcsv') }}" method="POST">
+                        <form action="{{ route('admin.employees.configcsv') }}" method="POST">
                             @csrf
                             <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" style="padding: 8px 15px;">CSVダウンロード</button>
                         </form>
                     </div>
                     <div class="p-6 text-gray-900">
-                    <form method="GET" action="{{ route('admin.employee.index') }}">
+                    <form method="GET" action="{{ route('admin.employees.index') }}">
                         <table>
                             <thead>
                                 <th colspan="2">表示項目</th>
@@ -46,7 +46,7 @@
                         </table>    
                         <div>
                             <button type="submit" style="padding: 8px 15px;">検索</button>
-                            <a href="{{ route('admin.employee.index') }}" role="button" style="padding: 8px 15px; text-decoration: none; border: 1px solid #ccc; color: #333;">リセット</a>
+                            <a href="{{ route('admin.employees.index') }}" role="button" style="padding: 8px 15px; text-decoration: none; border: 1px solid #ccc; color: #333;">リセット</a>
                         </div>
                     </form>
 
@@ -59,7 +59,7 @@
                         <thead>
                             <tr>
                                 @foreach ($employee->first()->getAttributes() as $column => $value)
-                                    <th class="border px-4 py-2">{{ $column }}</th>
+                                    <th class="border px-4 py-2">{{ __('auth.' . $column) }}</th>
                                 @endforeach
                                 <th class="border px-4 py-2">操作</th>
                             </tr>
@@ -76,11 +76,11 @@
                                 @endif
                                 <td class="border px-4 py-2">
                                     {{-- 詳細ボタンを追加 --}}
-                                    <a href="{{ route('admin.employee.show', $val->id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                    <a href="{{ route('admin.employees.show', $val->id) }}" class="text-blue-600 hover:underline">詳細</a>
                                     {{-- 編集ボタンを追加 --}}
-                                    <a href="{{ route('admin.employee.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                    <a href="{{ route('admin.employees.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
                                     {{-- 削除ボタンの追加 --}}
-                                    <form action="{{ route('admin.employee.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                    <form action="{{ route('admin.employees.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
@@ -97,16 +97,19 @@
     @push('script')
         {{--tableにソート機能等を追加--}}
         <script>
+            //テーブルのカラム数を取得
+            var columnCount = $('.jQ-table thead tr th').length;
+            console.log('カラム数:', columnCount);
             $(document).ready(function() {
                 var tableOptions = {
                     //テーブル情報の表示
                     "info": true,
                     //インデックスを指定して設定する
                     "columnDefs": [
-                        { targets: [], sortable: false },
+                        { targets:columnCount - 1, sortable: false },
                     ],
                     //検索機能を追加する
-                    "searching": true,
+                    "searching": false,
                     //ページ機能を追加する
                     "paging": true,
                     //日本語化する
