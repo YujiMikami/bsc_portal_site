@@ -15,17 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         ダッシュボード
                     </x-nav-link>
-                    <x-nav-link :href="route('user.reports.index')" :active="request()->routeIs('user.reports.*')">
+                    <x-nav-link :href="route('public.reports.index')" :active="request()->routeIs('public.reports.*')">
                         申請・報告
                     </x-nav-link>
                     @can('access-admin-panel')
-                        <x-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.*')" style="color:red">
+                        <x-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.*')" style="color: red;">
                             社員名簿
                         </x-nav-link>
                     @endcan
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -78,11 +77,8 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('ダッシュボード') }}
             </x-responsive-nav-link>
-             <x-responsive-nav-link :href="route('user.reports.index')" :active="request()->routeIs('user.reports.*')">
+             <x-responsive-nav-link :href="route('public.reports.index')" :active="request()->routeIs('user.reports.*')">
                 {{ __('申請・報告') }}
-            </x-responsive-nav-link>
-             <x-responsive-nav-link :href="route('admin.safeties.index')" :active="request()->routeIs('admin.safeties.*')">
-                {{ __('安否一覧') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.*')">
                 {{ __('社員名簿') }}

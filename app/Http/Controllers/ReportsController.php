@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\log;
 
 class ReportsController extends Controller
 {
@@ -11,7 +12,7 @@ class ReportsController extends Controller
     {
 
         
-        return view('user.reports.index');
+        return view('public.reports.index');
         
         // データをViewに渡す場合は
         // return view('my-page', ['data' => $data, 'id' => $id]);や

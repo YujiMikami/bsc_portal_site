@@ -4,6 +4,7 @@
             安否報告
         </h2>
     </x-slot>
+    
     <!DOCTYPE html>
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -15,7 +16,7 @@
                         </div>
                     @endif
                     <div class="flex justify-start mb-4">
-                        <a href="{{ route('user.reports.safety.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('public.reports.safety.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             安否報告
                         </a>
                     </div>
@@ -32,7 +33,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @if (empty($safety))
+                        @if ($safety->isEmpty())
                             <td colspan="6">安否報告はありません。</td>
                         @else
                             @foreach ($safety as $val)
@@ -44,7 +45,7 @@
                                     <td class="border px-4 py-2">{{ $val->can_work }}</td>
                                     <td class="border px-4 py-2">{{ $val->created_at }}</td>
                                     <td>
-                                        <form action="{{ route('user.reports.safety.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                        <form action="{{ route('public.reports.safety.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>

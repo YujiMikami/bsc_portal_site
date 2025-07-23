@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\log;
 
 class LoginRequest extends FormRequest
 {
@@ -40,6 +41,11 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
+        Log::info('ログイン試行', [
+    'employee_id' => $this->input('employee_id'),
+    'remember' => $this->boolean('remember'),
+]);
+        
         $this->ensureIsNotRateLimited();
 
         //if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
