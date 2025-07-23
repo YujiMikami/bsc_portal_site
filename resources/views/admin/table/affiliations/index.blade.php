@@ -1,19 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800">
-            申請・報告
+            所属テーブル
         </h2>
-        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-            <x-nav-link>
-                {{ __('有給申請') }}
-            </x-nav-link>
-            <x-nav-link>
-                {{ __('交通費申請') }}
-            </x-nav-link>
-            <x-nav-link href="{{ route('public.reports.safety.index') }}">
-                安否報告
-            </x-nav-link>
-        </div>
+    
     </x-slot>
     <!DOCTYPE html>
         <div class="py-6">
@@ -25,8 +15,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                   ここに申請内容や報告内容が表示されます。<br>
-                   承認や許可を上司がすると、表示されなくなります<br> 
+                    <div class="p-6 text-gray-900">
                 </div>
             </div>
         </div>
