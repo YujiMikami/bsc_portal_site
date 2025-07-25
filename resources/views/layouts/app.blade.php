@@ -16,7 +16,18 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
+            <!-- 全リートで表示 -->
             @include('layouts.navigation')
+            
+            <!-- tableルート時に表示 -->
+            @if (request()->routeIs('admin.table.*'))
+                @include('layouts.table')
+            @endif
+
+            <!-- reportルート時に表示 -->
+            @if (request()->routeIs('public.reports.*'))
+                @include('layouts.report')
+            @endif
 
             <!-- Page Heading -->
             @isset($header)

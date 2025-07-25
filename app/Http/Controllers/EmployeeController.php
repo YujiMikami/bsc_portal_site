@@ -15,9 +15,9 @@ class EmployeeController extends Controller
 {
     private function getEmployeeQuery(Request $request)
     {
-        $column_array[] = 'id';
+        $query = Employee::query();
+        $column_array =[];
 
-        $query = employee::query();
         if (isset($request->search_id_check)) {
             $column_array[] = 'employee_id';
         }
@@ -29,10 +29,9 @@ class EmployeeController extends Controller
         if (isset($column_array[1])) {
             $query->select($column_array);
         } else {
-            array_push($column_array, 'employee_id', 'employee_name');
+            array_push($column_array, 'employee_id', 'employee_name', 'department_id', 'affiliation_id');
             $query->select($column_array);
         }
-
 
         return $query;
     }
@@ -57,10 +56,10 @@ class EmployeeController extends Controller
         return view('admin.table.employees.create');
     }
 
-    public function show($id)
+    public function show($employee_id)
     {
         try {
-            $employee = Employee::findOrFail($id);
+            $employee = Employee::findOrFail($employee_id);
         } catch (Exception $e) {
             Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
         }
@@ -69,11 +68,11 @@ class EmployeeController extends Controller
         // ビューにタスクデータを渡して表示
         return view('admin.table.employees.show', compact('employee'));
     }
-    public function destroy($id)
+    public function destroy($employee_id)
     {
         try {
             // 削除対象のタスクを取得。見つからなければ404エラー
-            $employee = Employee::findOrFail($id);
+            $employee = Employee::findOrFail($employee_id);
 
             // 論理削除を実行
             $employee->delete(); // SoftDeletesトレイトを使用していれば、deleted_atカラムが更新される
@@ -88,7 +87,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         // バリデーション
-        $validator = $this->validateemployee($request);
+        $validator = $this->validateEmployee($request);
 
         // バリデーションに失敗した場合
         if ($validator->fails()) {
@@ -133,16 +132,18 @@ class EmployeeController extends Controller
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }
-        public function edit($id)
+
+    public function edit($employee_id)
     {
-        $employee = Employee::findOrFail($id);
+        $employee = Employee::findOrFail($employee_id);
         // 補足: $post という変数名は $_POST と似ているため混同する可能性があります。
         // これを避けるには、例えば全件なら $postList、1件なら $postData のように、より具体的な変数名を使用すると良いでしょう。
 
         // 新規作成時と同じビュー ('posts.create') を再利用し、記事データを渡す
         return view('admin.table.employees.create', compact('employee'));
     }
-        public function update(Request $request, $id)
+
+    public function update(Request $request, $employee_id)
     {
         // バリデーション (新規作成時と同じ validateTask メソッドを再利用)
         $validator = $this->validateEmployee($request);
@@ -150,13 +151,13 @@ class EmployeeController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // 編集フォームのルートにリダイレクト
-            return redirect(route('admin.table.employees.edit', $id))
+            return redirect(route('admin.table.employees.edit', $employee_id))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
 
         try {
-            $employee = Employee::findOrFail($id);
+            $employee = Employee::findOrFail($employee_id);
 
             $employee->saveEmployee($request);
         } catch (Exception $e) {
