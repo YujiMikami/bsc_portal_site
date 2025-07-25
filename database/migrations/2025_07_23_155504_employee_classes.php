@@ -11,9 +11,9 @@ return new class extends Migration
      */
 public function up(): void
     {
-        Schema::create('employee_posts', function (Blueprint $table) {
-            $table->integer('employee_post_id')->primary();
-            $table->string('employee_post_name');
+        Schema::create('employee_classes', function (Blueprint $table) {
+            $table->integer('employee_class_id')->primary();
+            $table->string('employee_class_name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -21,6 +21,6 @@ public function up(): void
 
 public function down(): void // やり直す時に実行される
     {
-        Schema::dropIfExists('employee_posts'); // もし posts テーブルがあれば削除する
+        Schema::dropIfExists('employee_classes'); // もし posts テーブルがあれば削除する
     }
 };

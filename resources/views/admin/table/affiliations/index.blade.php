@@ -15,7 +15,50 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    <div class="flex justify-start mb-4">
+                        <a href="{{ route('admin.table.affiliations.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            所属登録
+                        </a>
+                    </div>
                     <div class="p-6 text-gray-900">
+                </div>
+                    <div class="flex justify-start mb-4">
+                    </div>
+                    <table class="table-auto w-full border jQ-table">
+                        <thead>
+                            <tr>
+                                @if ($affiliations->isEmpty())
+                                    所属登録がありません。
+                                @else
+                                    <th class="border px-4 py-2">所属ID</th>
+                                    <th class="border px-4 py-2">所属名</th>
+                                    <th class="border px-4 py-2">説明</th>
+                                    <th class="border px-4 py-2">操作</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($affiliations as $val)
+                            <tr>
+                                <td class="border px-4 py-2">{{ $val->affiliation_id  }}</td>
+                                <td class="border px-4 py-2">{{ $val->affiliation_name }}</td>
+                                <td class="border px-4 py-2">{{ $val->affiliation_explanation }}</td>
+                                <td class="border px-4 py-2">
+                                    {{-- 詳細ボタンを追加 --}}
+                                    <a href="{{ route('admin.table.affiliations.show', $val->affiliation_id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                    {{-- 編集ボタンを追加 --}}
+                                    <a href="{{ route('admin.table.affiliations.edit', $val->affiliation_id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                    {{-- 削除ボタンの追加 --}}
+                                    <form action="{{ route('admin.table.affiliations.delete', $val->affiliation_id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

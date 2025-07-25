@@ -3,23 +3,7 @@
         <h2 class="text-xl font-semibold text-gray-800">
             各テーブル
         </h2>
-        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-            <x-nav-link href="{{ route('admin.table.employees.index') }}">
-                社員テーブル
-            </x-nav-link>
-            <x-nav-link href="{{ route('admin.table.departments.index') }}">
-                部署テーブル
-            </x-nav-link>
-            <x-nav-link href="{{ route('admin.table.affiliations.index') }}">
-                所属テーブル
-            </x-nav-link>
-            <x-nav-link href="{{ route('admin.table.employee_posts.index') }}">
-                役職テーブル
-            </x-nav-link>
-            <x-nav-link href="{{ route('admin.table.employee_classes.index') }}">
-                社員区分テーブル
-            </x-nav-link>
-        </div>
+
     </x-slot>
     <!DOCTYPE html>
         <div class="py-6">

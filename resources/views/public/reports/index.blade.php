@@ -3,17 +3,7 @@
         <h2 class="text-xl font-semibold text-gray-800">
             申請・報告
         </h2>
-        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-            <x-nav-link>
-                {{ __('有給申請') }}
-            </x-nav-link>
-            <x-nav-link>
-                {{ __('交通費申請') }}
-            </x-nav-link>
-            <x-nav-link href="{{ route('public.reports.safety.index') }}">
-                安否報告
-            </x-nav-link>
-        </div>
+
     </x-slot>
     <!DOCTYPE html>
         <div class="py-6">
