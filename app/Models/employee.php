@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class employee extends Authenticatable
+class Employee extends Authenticatable
 {
-    
+    protected $primaryKey = 'employee_id'; // 主キーのカラム名
+    public $incrementing = false; // 自動採番OFFにする（重要！）
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

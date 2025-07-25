@@ -12,9 +12,11 @@ return new class extends Migration
 public function up(): void
     {
         Schema::create('affiliations', function (Blueprint $table) {
-            $table->integer('affiliation_id')->unique();
+            $table->integer('affiliation_id')->primary();
             $table->string('affiliation_name');
             $table->text('affiliation_explanation')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

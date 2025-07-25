@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800">
-            役職テーブル
+            部署テーブル
         </h2>
     
     </x-slot>
@@ -16,8 +16,8 @@
                         </div>
                     @endif
                     <div class="flex justify-start mb-4">
-                        <a href="{{ route('admin.table.employee-posts.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            役職登録
+                        <a href="{{ route('admin.table.departments.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            部署登録
                         </a>
                     </div>
                     <div class="p-6 text-gray-900">
@@ -27,27 +27,29 @@
                     <table class="table-auto w-full border jQ-table">
                         <thead>
                             <tr>
-                                @if ($employeePosts->isEmpty())
-                                    役職登録がありません。
+                                @if ($departments->isEmpty())
+                                    部署登録がありません。
                                 @else
-                                    <th class="border px-4 py-2">役職ID</th>
-                                    <th class="border px-4 py-2">役職名</th>
+                                    <th class="border px-4 py-2">部署ID</th>
+                                    <th class="border px-4 py-2">部署名</th>
+                                    <th class="border px-4 py-2">説明</th>
                                     <th class="border px-4 py-2">操作</th>
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($employeePosts as $val)
+                        @foreach ($departments as $val)
                             <tr>
-                                <td class="border px-4 py-2">{{ $val->employee_post_id  }}</td>
-                                <td class="border px-4 py-2">{{ $val->employee_post_name }}</td>
+                                <td class="border px-4 py-2">{{ $val->department_id  }}</td>
+                                <td class="border px-4 py-2">{{ $val->department_name }}</td>
+                                <td class="border px-4 py-2">{{ $val->department_explanation }}</td>
                                 <td class="border px-4 py-2">
                                     {{-- 詳細ボタンを追加 --}}
-                                    <a href="{{ route('admin.table.employee-posts.show', $val->employee_post_id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                    <a href="{{ route('admin.table.departments.show', $val->department_id) }}" class="text-blue-600 hover:underline">詳細</a>
                                     {{-- 編集ボタンを追加 --}}
-                                    <a href="{{ route('admin.table.employee-posts.edit', $val->employee_post_id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                    <a href="{{ route('admin.table.departments.edit', $val->department_id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
                                     {{-- 削除ボタンの追加 --}}
-                                    <form action="{{ route('admin.table.employee-posts.delete', $val->employee_post_id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                    <form action="{{ route('admin.table.departments.delete', $val->department_id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>

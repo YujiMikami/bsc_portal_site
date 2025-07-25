@@ -11,6 +11,9 @@ return [
     'Profile' => 'プロフィール',
     'Log Out' => 'ログアウト',
     'id' => 'ID',
-    'employee_id' => '社員番号',
-    'employee_name' => '社員名',
+    'Current Password' => '現在のパスワードを入力してください',
+    'New Password' => '新しいパスワードを入力してください',
+    'Confirm Password' => '確認の為、再度入力してください',
+    'Save' => '保存',
+    'Saved.' => '保存しました',
 ];

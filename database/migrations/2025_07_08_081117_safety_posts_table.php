@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('safeties', function (Blueprint $table) {
-        $table->id();
-        $table->integer('safety_employee_id');
+        $table->integer('safety_employee_id')->primary();
         $table->string('safety_employee_name');
-        //$table->string('department');
-        //$table->string('on_site_name');
         $table->string('safety_status');
         $table->text('injury_status');
         $table->string('can_work');

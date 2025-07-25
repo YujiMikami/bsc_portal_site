@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('ダッシュボード') }}
+            ダッシュボード
         </h2>
     </x-slot>
 
@@ -18,6 +18,9 @@
                     　社員名簿のCSV出力<br>
                     　各テーブルの骨組み作成<br>
                     　レイアウトの変更<br>
+                    　各テーブル登録・更新・詳細・削除機能を追加<br>
+                    　パスワード変更<br>
+
                     <br>
                     実装予定：<br>
                     　シフト表<br>

@@ -59,7 +59,7 @@
                         <thead>
                             <tr>
                                 @foreach ($employee->first()->getAttributes() as $column => $value)
-                                    <th class="border px-4 py-2">{{ __('auth.' . $column) }}</th>
+                                    <th class="border px-4 py-2">{{ __('employee-columns.' . $column) }}</th>
                                 @endforeach
                                 <th class="border px-4 py-2">操作</th>
                             </tr>
@@ -67,20 +67,25 @@
                         <tbody>
                         @foreach ($employee as $val)
                             <tr>
-                                <td class="border px-4 py-2">{{ $val->id  }}</td>
                                 @if (isset($val->employee_id))
                                     <td class="border px-4 py-2">{{ $val->employee_id  }}</td>
                                 @endif
                                 @if (isset($val->employee_name))
                                     <td class="border px-4 py-2">{{ $val->employee_name }}</td>
                                 @endif
+                                @if (isset($val->department_id))
+                                    <td class="border px-4 py-2">{{ $val->department_id }}</td>
+                                @endif
+                                @if (isset($val->affiliation_id))
+                                    <td class="border px-4 py-2">{{ $val->affiliation_id }}</td>
+                                @endif
                                 <td class="border px-4 py-2">
                                     {{-- 詳細ボタンを追加 --}}
-                                    <a href="{{ route('admin.table.employees.show', $val->id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                    <a href="{{ route('admin.table.employees.show', $val->employee_id) }}" class="text-blue-600 hover:underline">詳細</a>
                                     {{-- 編集ボタンを追加 --}}
-                                    <a href="{{ route('admin.table.employees.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                    <a href="{{ route('admin.table.employees.edit', $val->employee_id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
                                     {{-- 削除ボタンの追加 --}}
-                                    <form action="{{ route('admin.table.employees.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                    <form action="{{ route('admin.table.employees.delete', $val->employee_id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
