@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Console\Commands;
+namespace app\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Employee;
+use app\Models\Employee;
 use Illuminate\Support\Facades\Hash;
 
 class HashPasswords extends Command
