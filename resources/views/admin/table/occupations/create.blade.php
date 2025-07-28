@@ -5,7 +5,7 @@ use function Psy\debug;
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ isset($employeeClass) ? '社員区分編集（ID: ' . $employeeClass->employee_class_id . '）' : '社員区分登録' }}
+            {{ isset($occupations) ? '職種編集（ID: ' . $occupations->id . '）' : '職種登録' }}
         </h2>
     </x-slot>
 
@@ -14,7 +14,7 @@ use function Psy\debug;
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1 class="text-2xl font-bold mb-6">
-                        社員区分登録
+                        職種登録
                     </h1>
 
                     {{-- バリデーションエラーメッセージの表示 --}}
@@ -29,19 +29,19 @@ use function Psy\debug;
                         </div>
                     @endif
 
-                    <form action="{{ isset($employeeClass) ? route('admin.table.employee-classes.update', $employeeClass->employee_class_id) : route('admin.table.employee-classes.store') }}"  method="POST">
+                    <form action="{{ isset($occupation) ? route('admin.table.occupations.update', $occupation->occupation_id) : route('admin.table.occupations.store') }}"  method="POST">
                         @csrf
-                            @if (isset($employeeClass))
+                            @if (isset($occupation))
                                 @method('PUT')
                             @endif
                         <div class="mb-4">
-                            <label for="employee_class_id" class="block text-gray-700 text-sm font-bold mb-2">区分ID</label>
-                            <input type="text" name="employee_class_id" id="employee_class_id" value="{{ old('employee_class_id', $employeeClass->employee_class_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            <label for="occupation_id" class="block text-gray-700 text-sm font-bold mb-2">職種ID</label>
+                            <input type="text" name="occupation_id" id="occupation_id" value="{{ old('occupation_id', $occupation->occupation_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
                         </div>
                         
                         <div class="mb-4">
-                            <label for="employee_class_name" class="block text-gray-700 text-sm font-bold mb-2">区分名</label>
-                            <input type="text" name="employee_class_name" id="employee_class_name" value="{{ old('employee_class_name', $employeeClass->employee_class_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            <label for="occupation_name" class="block text-gray-700 text-sm font-bold mb-2">職種名</label>
+                            <input type="text" name="occupation_name" id="occupation_name" value="{{ old('occupation_name', $occupation->occupation_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
                         </div>                        
 
                         <div class="flex items-center justify-end">

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Models;
+namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Authenticatable
 {
@@ -67,9 +68,34 @@ class Employee extends Authenticatable
     {
         // ここでは、ユーザーテーブルに 'role' カラムがあり、
         // その値が 'admin' の場合に管理者を意味すると仮定しています。
-        return $this->role === 1;
+        return $this->portal_role === 1;
 
         // もしユーザーIDが1のユーザーを管理者とする場合は、以下のように記述できます。
         // return $this->id === 1;
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+    }
+
+    public function affiliation()
+    {
+        return $this->belongsTo(Affiliation::class, 'affiliation_id', 'affiliation_id');
+    }
+
+    public function employeeClass()
+    {
+        return $this->belongsTo(EmployeeClass::class, 'employee_class_id', 'employee_class_id');
+    }
+
+    public function employeePost()
+    {
+        return $this->belongsTo(EmployeePost::class, 'employee_post_id', 'employee_post_id');
+    }
+    
+    public function Occupation()
+    {
+        return $this->belongsTo(Occupation::class, 'occupation_id', 'occupation_id');
     }
 }

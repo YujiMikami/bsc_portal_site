@@ -40,27 +40,326 @@ use function Psy\debug;
                         </div>
                         
                         <div class="mb-4">
-                            <label for="employee_name" class="block text-gray-700 text-sm font-bold mb-2">社員名</label>
+                            <label for="employee_name" class="block text-gray-700 text-sm font-bold mb-2">社員名（漢字）</label>
                             <input type="text" name="employee_name" id="employee_name" value="{{ old('employee_name', $employee->employee_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
                         </div>                        
                         
+                        <div class="mb-4">
+                            <label for="employee_name_furigana" class="block text-gray-700 text-sm font-bold mb-2">社員名（かな）</label>
+                            <input type="text" name="employee_name_furigana" id="employee_name_furigana" value="{{ old('employee_name_furigana', $employee->employee_name_furigana ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+                        
                         <div class="mb-6">
-                            <label for="department" class="block text-gray-700 text-sm font-bold mb-2">部署：</label>
-                            <select name="department" id="department">
-                                @foreach (config('const.department') as $key => $val)
-                                    <option value="{{ $key }}"{{ old('department', $employee->department ?? '') == $key ? ' selected' : '' }}>{{ $val }}</option>
-                                @endforeach    
+                            <label for="gender" class="block text-gray-700 text-sm font-bold mb-2">性別：</label>
+                            <select name="gender" id="gender">
+                                <option value=""></option>
+                                @foreach (config('const.gender') as $key=>$val)
+                                    <option value="{{ $key }}"{{ old('gender', $employee->gender ?? '') == $key ? ' selected' : ''}}>{{ $val }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="employee_class_id" class="block text-gray-700 text-sm font-bold mb-2">社員区分：</label>
+                            <select name="employee_class_id" id="employee_class_id">
+                                <option value=""></option>
+                                @foreach (config('employee_classes') as $key=>$val)
+                                    <option value="{{ $key }}"
+                                        {{ old('employeeClass_id', $employee->employee_class_id ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $val }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>                       
+                        
+                        <div class="mb-6">
+                            <label for="department_id" class="block text-gray-700 text-sm font-bold mb-2">部署：</label>
+                            <select name="department_id" id="department_id">
+                                <option value=""></option>
+                                @foreach (config('departments') as $key=>$val)
+                                    <option value="{{ $key }}"
+                                        {{ old('department_id', $employee->department_id ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $val }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="affiliation_id" class="block text-gray-700 text-sm font-bold mb-2">所属：</label>
+                            <select name="affiliation_id" id="affiliation_id">
+                                <option value=""></option>
+                                @foreach (config('affiliations') as $key=>$val)
+                                    <option value="{{ $key }}"
+                                        {{ old('affiliation_id', $employee->affiliation_id ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $val }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="mb-6">
-                            <label for="post" class="block text-gray-700 text-sm font-bold mb-2">役職：</label>
-                            <select name="post" id="post">
-                                @foreach (config('const.post') as $key => $val)
-                                    <option value="{{ $key }}"{{ old('post', $employee->post ?? '') == $key ? ' selected' : '' }}>{{ $val }}</option>
-                                @endforeach  
+                            <label for="occupation" class="block text-gray-700 text-sm font-bold mb-2">職種：</label>
+                            <select name="occupation" id="occupation">
+                                <option value=""></option>
+                                @foreach (config('occupations') as $key=>$val)
+                                    <option value="{{ $key }}"
+                                        {{ old('occupation_id', $employee->occupation_id ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $val }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
+
+                        <div class="mb-6">
+                            <label for="birth_date" class="block text-gray-700 text-sm font-bold mb-2">誕生日：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="birth_date" id="birth_date" value="{{ old('birth_date', isset($employee->birth_date) ? \Carbon\Carbon::parse($employee->birth_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="hire_date" class="block text-gray-700 text-sm font-bold mb-2">入社年月日：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="hire_date" id="hire_date" value="{{ old('hire_date', isset($employee->hire_date) ? \Carbon\Carbon::parse($employee->hire_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="post_code" class="block text-gray-700 text-sm font-bold mb-2">郵便番号</label>
+                            <input type="text" name="post_code" id="post_code" value="{{ old('post_code', $employee->post_code ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>   
+
+                        <div class="mb-4">
+                            <label for="prefecture" class="block text-gray-700 text-sm font-bold mb-2">都道府県</label>
+                            <input type="text" name="prefecture" id="prefecture" value="{{ old('prefecture', $employee->prefecture ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-4">
+                            <label for="municipalitie" class="block text-gray-700 text-sm font-bold mb-2">市区郡</label>
+                            <input type="text" name="municipalitie" id="municipalitie" value="{{ old('municipalitie', $employee->municipalitie ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-4">
+                            <label for="address_2" class="block text-gray-700 text-sm font-bold mb-2">住所２</label>
+                            <input type="text" name="address_2" id="address_2" value="{{ old('address_2', $employee->address_2 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-4">
+                            <label for="address_3" class="block text-gray-700 text-sm font-bold mb-2">住所３</label>
+                            <input type="text" name="address_3" id="address_3" value="{{ old('address_3', $employee->address_3 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-4">
+                            <label for="phone_number" class="block text-gray-700 text-sm font-bold mb-2">電話番号</label>
+                            <input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number', $employee->phone_number ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-4">
+                            <label for="mobile_phone_number" class="block text-gray-700 text-sm font-bold mb-2">携帯電話番号</label>
+                            <input type="text" name="mobile_phone_number" id="mobile_phone_number" value="{{ old('mobile_phone_number', $employee->mobile_phone_number ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="final_academic_date" class="block text-gray-700 text-sm font-bold mb-2">最終学歴年月日：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="final_academic_date" id="final_academic_date" value="{{ old('final_academic_date', isset($employee->final_academic_date) ? \Carbon\Carbon::parse($employee->final_academic_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="final_academic" class="block text-gray-700 text-sm font-bold mb-2">最終学歴</label>
+                            <input type="text" name="final_academic" id="final_academic" value="{{ old('final_academic', $employee->final_academic ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_1_date" class="block text-gray-700 text-sm font-bold mb-2">職歴１年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_1_date" id="work_history_1_date" value="{{ old('work_history_1_date', isset($employee->work_history_1_date) ? \Carbon\Carbon::parse($employee->work_history_1_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_1" class="block text-gray-700 text-sm font-bold mb-2">職歴１</label>
+                            <input type="text" name="work_history_1" id="work_history_1" value="{{ old('work_history_1', $employee->work_history_1 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_2_date" class="block text-gray-700 text-sm font-bold mb-2">職歴２年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_2_date" id="work_history_2_date" value="{{ old('work_history_2_date', isset($employee->work_history_2_date) ? \Carbon\Carbon::parse($employee->work_history_2_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_2" class="block text-gray-700 text-sm font-bold mb-2">職歴２</label>
+                            <input type="text" name="work_history_2" id="work_history_2" value="{{ old('work_history_2', $employee->work_history_2 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_3_date" class="block text-gray-700 text-sm font-bold mb-2">職歴３年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_3_date" id="work_history_3_date" value="{{ old('work_history_3_date', isset($employee->work_history_3_date) ? \Carbon\Carbon::parse($employee->work_history_3_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_3" class="block text-gray-700 text-sm font-bold mb-2">職歴３</label>
+                            <input type="text" name="work_history_3" id="work_history_3" value="{{ old('work_history_3', $employee->work_history_3 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_4_date" class="block text-gray-700 text-sm font-bold mb-2">職歴４年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_4_date" id="work_history_4_date" value="{{ old('work_history_4_date', isset($employee->work_history_4_date) ? \Carbon\Carbon::parse($employee->work_history_4_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_4" class="block text-gray-700 text-sm font-bold mb-2">職歴４</label>
+                            <input type="text" name="work_history_4" id="work_history_4" value="{{ old('work_history_4', $employee->work_history_4 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_5_date" class="block text-gray-700 text-sm font-bold mb-2">職歴５年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_5_date" id="work_history_5_date" value="{{ old('work_history_5_date', isset($employee->work_history_5_date) ? \Carbon\Carbon::parse($employee->work_history_5_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_5" class="block text-gray-700 text-sm font-bold mb-2">職歴５</label>
+                            <input type="text" name="work_history_5" id="work_history_5" value="{{ old('work_history_5', $employee->work_history_5 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_6_date" class="block text-gray-700 text-sm font-bold mb-2">職歴６年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_6_date" id="work_history_6_date" value="{{ old('work_history_6_date', isset($employee->work_history_6_date) ? \Carbon\Carbon::parse($employee->work_history_6_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_6" class="block text-gray-700 text-sm font-bold mb-2">職歴６</label>
+                            <input type="text" name="work_history_6" id="work_history_6" value="{{ old('work_history_6', $employee->work_history_6 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_7_date" class="block text-gray-700 text-sm font-bold mb-2">職歴７年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_7_date" id="work_history_7_date" value="{{ old('work_history_7_date', isset($employee->work_history_7_date) ? \Carbon\Carbon::parse($employee->work_history_7_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_7" class="block text-gray-700 text-sm font-bold mb-2">職歴７</label>
+                            <input type="text" name="work_history_7" id="work_history_7" value="{{ old('work_history_7', $employee->work_history_7 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_8_date" class="block text-gray-700 text-sm font-bold mb-2">職歴８年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_8_date" id="work_history_8_date" value="{{ old('work_history_8_date', isset($employee->work_history_8_date) ? \Carbon\Carbon::parse($employee->work_history_8_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_8" class="block text-gray-700 text-sm font-bold mb-2">職歴８</label>
+                            <input type="text" name="work_history_8" id="work_history_8" value="{{ old('work_history_8', $employee->work_history_8 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_9_date" class="block text-gray-700 text-sm font-bold mb-2">職歴９年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_9_date" id="work_history_9_date" value="{{ old('work_history_9_date', isset($employee->work_history_9_date) ? \Carbon\Carbon::parse($employee->work_history_9_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_9" class="block text-gray-700 text-sm font-bold mb-2">職歴９</label>
+                            <input type="text" name="work_history_9" id="work_history_9" value="{{ old('work_history_9', $employee->work_history_9 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-6">
+                            <label for="work_history_10_date" class="block text-gray-700 text-sm font-bold mb-2">職歴１０年月：</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="work_history_10_date" id="work_history_10_date" value="{{ old('work_history_10_date', isset($employee->work_history_10_date) ? \Carbon\Carbon::parse($employee->work_history_10_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="work_history_10" class="block text-gray-700 text-sm font-bold mb-2">職歴１０</label>
+                            <input type="text" name="work_history_10" id="work_history_10" value="{{ old('work_history_10', $employee->work_history_10 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div> 
+
+                        <div class="mb-4">
+                            <label for="license_1" class="block text-gray-700 text-sm font-bold mb-2">資格１</label>
+                            <input type="text" name="license_1" id="license_1" value="{{ old('license_1', $employee->license_1 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="license_2" class="block text-gray-700 text-sm font-bold mb-2">資格２</label>
+                            <input type="text" name="license_2" id="license_2" value="{{ old('license_2', $employee->license_2 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="license_3" class="block text-gray-700 text-sm font-bold mb-2">資格３</label>
+                            <input type="text" name="license_3" id="license_3" value="{{ old('license_3', $employee->license_3 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="license_4" class="block text-gray-700 text-sm font-bold mb-2">資格４</label>
+                            <input type="text" name="license_4" id="license_4" value="{{ old('license_4', $employee->license_4 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="license_5" class="block text-gray-700 text-sm font-bold mb-2">資格５</label>
+                            <input type="text" name="license_5" id="license_5" value="{{ old('license_5', $employee->license_5 ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="social_insurance_Applicable_date" class="block text-gray-700 text-sm font-bold mb-2">社会保険適用年月日</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="social_insurance_Applicable_date" id="social_insurance_Applicable_date" value="{{ old('social_insurance_Applicable_date', isset($employee->social_insurance_Applicable_date) ? \Carbon\Carbon::parse($employee->social_insurance_Applicable_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="health_insurance" class="block text-gray-700 text-sm font-bold mb-2">	健康保険</label>
+                            <input type="text" name="health_insurance" id="health_insurance" value="{{ old('health_insurance', $employee->health_insurance ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="basic_pension_number" class="block text-gray-700 text-sm font-bold mb-2">基礎年金番号</label>
+                            <input type="text" name="basic_pension_number" id="basic_pension_number" value="{{ old('basic_pension_number', $employee->basic_pension_number ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="welfare_pension_number" class="block text-gray-700 text-sm font-bold mb-2">厚生年金番号</label>
+                            <input type="text" name="welfare_pension_number" id="welfare_pension_number" value="{{ old('welfare_pension_number', $employee->welfare_pension_number ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="health_insurance_basic_reward_monthly_fee" class="block text-gray-700 text-sm font-bold mb-2">健康保険標準報酬月額	</label>
+                            <input type="text" name="health_insurance_basic_reward_monthly_fee" id="health_insurance_basic_reward_monthly_fee" value="{{ old('health_insurance_basic_reward_monthly_fee', $employee->health_insurance_basic_reward_monthly_fee ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="health_insurance_grade" class="block text-gray-700 text-sm font-bold mb-2">健康保険等級	</label>
+                            <input type="text" name="health_insurance_grade" id="health_insurance_grade" value="{{ old('health_insurance_grade', $employee->health_insurance_grade ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="pension_basic_reward_monthly_fee" class="block text-gray-700 text-sm font-bold mb-2">年金標準報酬月額	</label>
+                            <input type="text" name="pension_basic_reward_monthly_fee" id="pension_basic_reward_monthly_fee" value="{{ old('pension_basic_reward_monthly_fee', $employee->pension_basic_reward_monthly_fee ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="pension_grade" class="block text-gray-700 text-sm font-bold mb-2">年金等級	</label>
+                            <input type="text" name="pension_grade" id="pension_grade" value="{{ old('pension_grade', $employee->pension_grade ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="employment_applicable_date" class="block text-gray-700 text-sm font-bold mb-2">雇用適用年月日</label>
+                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
+                            <input type="datetime-local" name="employment_applicable_date" id="employment_applicable_date" value="{{ old('employment_applicable_date', isset($employee->employment_applicable_date) ? \Carbon\Carbon::parse($employee->employment_applicable_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="applicable_insurance" class="block text-gray-700 text-sm font-bold mb-2">雇用保険番号	</label>
+                            <input type="text" name="applicable_insurance" id="applicable_insurance" value="{{ old('applicable_insurance', $employee->applicable_insurance ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        </div>
+
+
+
+
+                        
 
                         <div class="mb-6">
                             <label for="portal_role" class="block text-gray-700 text-sm font-bold mb-2">ポータル権限：</label>
@@ -71,22 +370,7 @@ use function Psy\debug;
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="address" class="block text-gray-700 text-sm font-bold mb-2">住所</label>
-                            <input type="text" name="address" id="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div> 
-
-                        <div class="mb-6">
-                            <label for="hire_date" class="block text-gray-700 text-sm font-bold mb-2">雇用日：</label>
-                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
-                            <input type="datetime-local" name="hire_date" id="hire_date" value="{{ old('hire_date', isset($task->hire_date) ? \Carbon\Carbon::parse($task->hire_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
-
-                        <div class="mb-6">
-                            <label for="retirement_date" class="block text-gray-700 text-sm font-bold mb-2">退職日：</label>
-                            {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
-                            <input type="datetime-local" name="retirement_date" id="retirement_date" value="{{ old('retirement_date', isset($task->retirement_date) ? \Carbon\Carbon::parse($task->retirement_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
+                        
 
                         
                         <div class="flex items-center justify-end">

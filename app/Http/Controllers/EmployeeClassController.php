@@ -53,7 +53,7 @@ class EmployeeClassController extends Controller
 
         try {
             $employeeClass = EmployeeClass::findOrFail($employeeClassId);
-            $employeeClass->saveDepartment($request);
+            $employeeClass->saveEmployeeClass($request);
         } catch (Exception $e) {
             Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
         }
