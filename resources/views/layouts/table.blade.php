@@ -21,6 +21,9 @@
                     <x-nav-link href="{{ route('admin.table.employee-classes.index') }}" :active="request()->routeIs('admin.table.employee-classes.*')">
                         社員区分テーブル
                     </x-nav-link>
+                    <x-nav-link href="{{ route('admin.table.occupations.index') }}" :active="request()->routeIs('admin.table.Occupations.*')">
+                        職種テーブル
+                    </x-nav-link>
                 </div>
             </div>
         </div>

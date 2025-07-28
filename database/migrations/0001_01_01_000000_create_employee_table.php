@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('employee_class_id')->comment('社員区分');
             $table->integer('department_id')->comment('部署ID')->nullable();
             $table->integer('affiliation_id')->comment('所属ID')->nullable();
-            $table->string('occupation')->comment('職種')->nullable();
+            $table->integer('occupation_id')->comment('職種')->nullable();
             $table->date('birth_date')->comment('生年月日')->nullable();
             $table->date('hire_date')->comment('入社年月日');
             $table->string('post_code')->comment('郵便番号')->nullable();
@@ -71,7 +71,7 @@ return new class extends Migration
             $table->string('retirement_reason')->comment('退職理由')->nullable();
             $table->string('note')->comment('備考')->nullable();
             $table->string('password', 255);
-            $table->integer('role');
+            $table->integer('portal_role');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -9,12 +9,59 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
-                    @foreach ($employee->getAttributes() as $key=>$val)
-                        @if ($key === 'password' || $key === 'remember_token')
-                            @continue
-                        @endif
-                        <p class="mb-2">{{ __('employee-columns.' . $key) }}:{{ $val }}</p>
-                    @endforeach
+                    <table class="table-auto w-full border jQ-table">
+                        @foreach ($employee->getAttributes() as $key=>$val)
+                            @if ($key === 'password' || $key === 'remember_token')
+                                @continue
+                            @endif
+                            @if ($key === 'portal_role')
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ config('const.portal_role.' . $val) }}</td>
+                                </tr>
+                                @continue
+                            @endif
+                            @if ($key === 'gender')
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ config('const.gender.' . $val) }}</td>
+                                </tr>
+                                @continue
+                            @endif
+                            @if ($key === 'department_id')
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ $employee->department->department_name }}</td>
+                                </tr>
+                                @continue
+                            @endif
+                            @if ($key === 'affiliation_id')
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ $employee->affiliation->affiliation_name }}</td>
+                                </tr>
+                                @continue
+                            @endif
+                            @if ($key === 'employee_class_id')
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ $employee->employeeClass->employee_class_name }}</td>
+                                </tr>
+                                @continue
+                            @endif
+                            @if ($key === 'occupation_id')
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ $employee->occupation->occupation_name }}</td>
+                                </tr>
+                                @continue
+                            @endif
+                                <tr>
+                                    <td class="border px-4 py-2">{{ __('employee-columns.' . $key) }}</td>
+                                    <td class="border px-4 py-2">{{ $val }}</td>
+                                </tr>
+                        @endforeach
+                    </table>
                 </div>
             </div>
         </div>

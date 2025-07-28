@@ -1,12 +1,14 @@
 <?php
 
-namespace app\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeePost extends Model
 {
+    use SoftDeletes;
     protected $primaryKey = 'employee_post_id'; // 主キーのカラム名
     public $incrementing = false; // 自動採番OFFにする（重要！）
 

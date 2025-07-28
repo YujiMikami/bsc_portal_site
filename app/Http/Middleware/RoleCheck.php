@@ -22,7 +22,7 @@ class RoleCheck
         }
 
         // 例: roleが'admin'かどうか
-        if (Auth::user()->role !== 1) {
+        if (Auth::user()->portal_role !== 1) {
             abort(403, 'このページにアクセスできません');
         }
 
