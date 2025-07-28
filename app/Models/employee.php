@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Department;
+use App\Models\Affiliation;
+use App\Models\EmployeeClass;
+use App\Models\EmployeePost;
+use App\Models\Occupation;
 
 class Employee extends Authenticatable
 {
