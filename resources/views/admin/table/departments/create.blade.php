@@ -29,9 +29,9 @@ use function Psy\debug;
                         </div>
                     @endif
 
-                    <form action="{{ isset($departments) ? route('admin.table.departments.update', $departments->departments_id) : route('admin.table.departments.store') }}"  method="POST">
+                    <form action="{{ isset($department) ? route('admin.table.departments.update', $department->department_id) : route('admin.table.departments.store') }}"  method="POST">
                         @csrf
-                            @if (isset($departments))
+                            @if (isset($department))
                                 @method('PUT')
                             @endif
                         <div class="mb-4">

@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\employee;
+use App\Models\Employee;
+use App\Models\Affiliation;
+use App\Models\Department;
+use App\Models\EmployeeClass;
+use App\Models\EmployeePost;
+use App\Models\Occupation;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +43,7 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $employee = $this->getEmployeeQuery($request)->get();
+        $employee = Employee::with(['department', 'affiliation'])->get();
         return view('admin.table.employees.index', compact('employee'));
         
         // データをViewに渡す場合は
@@ -59,7 +64,13 @@ class EmployeeController extends Controller
     public function show($employee_id)
     {
         try {
-            $employee = Employee::findOrFail($employee_id);
+            $employee = Employee::with([
+                'department',
+                'affiliation',
+                'occupation',
+                'employeeClass',
+                'employeePost',
+            ])->findOrFail($employee_id);
         } catch (Exception $e) {
             Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
         }
@@ -136,10 +147,6 @@ class EmployeeController extends Controller
     public function edit($employee_id)
     {
         $employee = Employee::findOrFail($employee_id);
-        // 補足: $post という変数名は $_POST と似ているため混同する可能性があります。
-        // これを避けるには、例えば全件なら $postList、1件なら $postData のように、より具体的な変数名を使用すると良いでしょう。
-
-        // 新規作成時と同じビュー ('posts.create') を再利用し、記事データを渡す
         return view('admin.table.employees.create', compact('employee'));
     }
 

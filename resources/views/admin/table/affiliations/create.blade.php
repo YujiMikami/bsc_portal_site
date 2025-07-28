@@ -31,7 +31,7 @@ use function Psy\debug;
 
                     <form action="{{ isset($affiliation) ? route('admin.table.affiliations.update', $affiliation->affiliation_id) : route('admin.table.affiliations.store') }}"  method="POST">
                         @csrf
-                            @if (isset($department))
+                            @if (isset($affiliation))
                                 @method('PUT')
                             @endif
                         <div class="mb-4">
