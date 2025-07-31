@@ -10,6 +10,7 @@ use App\Http\Controllers\AffiliationController;
 use App\Http\Controllers\EmployeePostController;
 use App\Http\Controllers\EmployeeClassController;
 use App\Http\Controllers\OccupationController;
+use App\Http\Controllers\DocumentsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,8 +25,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    
+    //index
     Route::get('/public/reports', [ReportsController::class, 'index'])->name('public.reports.index');
+    Route::get('/public/documents', [DocumentsController::class, 'index'])->name('public.documents.index');
+
     Route::get('/public/reports/safety', [SafetyController::class, 'index'])->name('public.reports.safety.index');
     Route::get('/public/reports/safety/create', [SafetyController::class, 'create'])->name('public.reports.safety.create');
     Route::post('/public/reports/safety/store', [SafetyController::class, 'store'])->name('public.reports.safety.store');
@@ -90,9 +94,27 @@ Route::middleware('auth')->group(function () {
             Route::delete('/admin/table/employee_posts/{employee_post_id}/delete', [EmployeePostController::class, 'destroy'])->name('admin.table.employee-posts.delete');
             Route::delete('/admin/table/employee_classes/{employee_class_id}/delete', [EmployeeClassController::class, 'destroy'])->name('admin.table.employee-classes.delete');
             
-            //csv            
-            Route::get('/admin/table/employees/configcsv', [EmployeeController::class, 'configcsv'])->name('admin.table.employees.configcsv');
-            Route::get('/admin/table/employees/downloadcsv', [EmployeeController::class, 'downloadcsv'])->name('admin.table.employees.downloadcsv');
+            //csvexport
+            Route::get('/admin/table/employees/exportcsv', [EmployeeController::class, 'exportcsv'])->name('admin.table.employees.exportcsv');
+
+            //csvimport
+            Route::get('/admin/table/employees/importcsv', [EmployeeController::class, 'importcsv'])->name('admin.table.employees.importcsv');
+            Route::get('/admin/table/departments/importcsv', [DepartmentController::class, 'importcsv'])->name('admin.table.departments.importcsv');
+            Route::get('/admin/table/occupations/importcsv', [OccupationController::class, 'importcsv'])->name('admin.table.occupations.importcsv');
+            Route::get('/admin/table/affiliations/importcsv', [AffiliationController::class, 'importcsv'])->name('admin.table.affiliations.importcsv');
+            Route::get('/admin/table/employee_posts/importcsv', [EmployeePostController::class, 'importcsv'])->name('admin.table.employee-posts.importcsv');
+            Route::get('/admin/table/employee_classes/importcsv', [EmployeeClassController::class, 'importcsv'])->name('admin.table.employee-classes.importcsv');
+
+            //csvdownload
+            Route::post('/admin/table/employees/downloadcsv', [EmployeeController::class, 'downloadcsv'])->name('admin.table.employees.downloadcsv');
+
+            //csvupload
+            Route::post('/admin/table/employees/uploadcsv', [EmployeeController::class, 'uploadcsv'])->name('admin.table.employees.uploadcsv');
+            Route::post('/admin/table/departments/uploadcsv', [DepartmentController::class, 'uploadcsv'])->name('admin.table.departments.uploadcsv');
+            Route::post('/admin/table/occupations/uploadcsv', [OccupationController::class, 'uploadcsv'])->name('admin.table.occupations.uploadcsv');
+            Route::post('/admin/table/affiliations/uploadcsv', [AffiliationController::class, 'uploadcsv'])->name('admin.table.affiliations.uploadcsv');
+            Route::post('/admin/table/employee_posts/uploadcsv', [EmployeePostController::class, 'uploadcsv'])->name('admin.table.employee-posts.uploadcsv');
+            Route::post('/admin/table/employee_classes/uploadcsv', [EmployeeClassController::class, 'uploadcsv'])->name('admin.table.employee-classes.uploadcsv');
         });
     });
 require __DIR__.'/auth.php';

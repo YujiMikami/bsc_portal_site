@@ -7,6 +7,8 @@ use App\Models\Department;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DepartmentController extends Controller
 {
@@ -120,5 +122,59 @@ class DepartmentController extends Controller
         ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
+    }
+
+    public function importcsv()
+    {
+        return view('admin.table.departments.importcsv');
+    }
+
+    public function uploadcsv(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('csv_file');
+        $handle = fopen($file, 'r');
+
+        if (!$handle) {
+            return back()->with('error', 'ファイルを開けませんでした');
+        }
+
+        // ヘッダー行を読み飛ばす（必要に応じて）
+        $header = fgetcsv($handle);
+
+        DB::beginTransaction();
+        try {
+            while (($line = fgets($handle)) !== false) {
+                // --- ① 文字コード自動判定 ---
+                $encoding = mb_detect_encoding($line, ['SJIS-win', 'UTF-8', 'EUC-JP', 'ASCII'], true) ?: 'SJIS-win';
+
+                // --- ② UTF-8に変換 ---
+                $utf8Line = mb_convert_encoding($line, 'UTF-8', $encoding);
+
+                // --- ③ CSVとして配列に ---
+                $data = str_getcsv($utf8Line);
+
+                if (count($data) < 3) {
+                    throw new \Exception("CSV列数が不足しています");
+                }
+
+                Department::updateOrCreate([
+                    'department_id' => $data[0],
+                ], [
+                    'department_name' => $data[1],
+                    'department_explanation' => $data[2],
+                ]);
+
+            }
+            fclose($handle);
+            DB::commit();
+            return back()->with('success', 'インポートが完了しました');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'エラー: ' . $e->getMessage());
+        }
     }
 }

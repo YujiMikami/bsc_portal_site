@@ -12,7 +12,13 @@ class Affiliation extends Model
     use SoftDeletes;
     protected $primaryKey = 'affiliation_id'; // 主キーのカラム名
     public $incrementing = false; // 自動採番OFFにする（重要！）
-
+    
+    protected $fillable = [
+        'affiliation_id',
+        'affiliation_name',
+        'affiliation_explanation',
+    ];
+    
     public function saveAffiliation(Request $request)
     {
         $this->affiliation_id = $request->input('affiliation_id');

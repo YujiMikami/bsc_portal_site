@@ -17,6 +17,9 @@
                     <x-nav-link :href="route('public.reports.index')" :active="request()->routeIs('public.reports.*')">
                         申請・報告
                     </x-nav-link>
+                    <x-nav-link :href="route('public.documents.index')" :active="request()->routeIs('public.documents.*')">
+                        各種資料
+                    </x-nav-link>
                     @can('access-admin-panel')
                         <x-nav-link :href="route('admin.table.index')" :active="request()->routeIs('admin.table.*')" style="color: red;">
                             各テーブル

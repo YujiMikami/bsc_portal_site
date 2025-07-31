@@ -45,7 +45,7 @@
         </div>
             {{--JQuery用ファイルの読み込み--}}
         <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
+        <link rel="stylesheet" href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.3.2/datatables.min.css">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="{{ asset('datatables/datatables.min.js') }}"></script>
         {{--selectに検索機能を追加--}}

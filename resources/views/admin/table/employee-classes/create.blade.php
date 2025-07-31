@@ -34,15 +34,17 @@ use function Psy\debug;
                             @if (isset($employeeClass))
                                 @method('PUT')
                             @endif
-                        <div class="mb-4">
-                            <label for="employee_class_id" class="block text-gray-700 text-sm font-bold mb-2">区分ID</label>
-                            <input type="text" name="employee_class_id" id="employee_class_id" value="{{ old('employee_class_id', $employeeClass->employee_class_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        <div class="mb-4 flex">
+                                <div class="mb-4 mr-3">
+                                <label for="employee_class_id" class="block text-gray-700 text-sm font-bold mb-2">区分ID</label>
+                                <input type="text" name="employee_class_id" id="employee_class_id" size="5" value="{{ old('employee_class_id', $employeeClass->employee_class_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>
+                            
+                            <div class="mb-4 mr-3">
+                                <label for="employee_class_name" class="block text-gray-700 text-sm font-bold mb-2">区分名</label>
+                                <input type="text" name="employee_class_name" id="employee_class_name" value="{{ old('employee_class_name', $employeeClass->employee_class_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>                        
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="employee_class_name" class="block text-gray-700 text-sm font-bold mb-2">区分名</label>
-                            <input type="text" name="employee_class_name" id="employee_class_name" value="{{ old('employee_class_name', $employeeClass->employee_class_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div>                        
 
                         <div class="flex items-center justify-end">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
