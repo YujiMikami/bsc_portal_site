@@ -34,15 +34,17 @@ use function Psy\debug;
                             @if (isset($occupation))
                                 @method('PUT')
                             @endif
-                        <div class="mb-4">
-                            <label for="occupation_id" class="block text-gray-700 text-sm font-bold mb-2">職種ID</label>
-                            <input type="text" name="occupation_id" id="occupation_id" value="{{ old('occupation_id', $occupation->occupation_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        <div class="mb-4 flex">
+                            <div class="mb-4 mr-3">
+                                <label for="occupation_id" class="block text-gray-700 text-sm font-bold mb-2">職種ID</label>
+                                <input type="text" name="occupation_id" id="occupation_id" size="5" value="{{ old('occupation_id', $occupation->occupation_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>
+                            
+                            <div class="mb-4 mr-3">
+                                <label for="occupation_name" class="block text-gray-700 text-sm font-bold mb-2">職種名</label>
+                                <input type="text" name="occupation_name" id="occupation_name" value="{{ old('occupation_name', $occupation->occupation_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>                        
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="occupation_name" class="block text-gray-700 text-sm font-bold mb-2">職種名</label>
-                            <input type="text" name="occupation_name" id="occupation_name" value="{{ old('occupation_name', $occupation->occupation_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div>                        
 
                         <div class="flex items-center justify-end">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

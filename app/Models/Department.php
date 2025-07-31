@@ -12,6 +12,13 @@ class Department extends Model
     protected $primaryKey = 'department_id'; // 主キーのカラム名
     public $incrementing = false; // 自動採番OFFにする（重要！）
 
+    protected $fillable = [
+        'department_id',
+        'department_name',
+        'department_explanation',
+    ];
+
+
     public function saveDepartment(Request $request)
     {
         $this->department_id = $request->input('department_id');

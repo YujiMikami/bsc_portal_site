@@ -34,16 +34,18 @@ use function Psy\debug;
                             @if (isset($affiliation))
                                 @method('PUT')
                             @endif
-                        <div class="mb-4">
-                            <label for="affiliation_id" class="block text-gray-700 text-sm font-bold mb-2">所属ID</label>
-                            <input type="text" name="affiliation_id" id="affiliation_id" value="{{ old('affiliation_id', $affiliation->affiliation_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+
+                        <div class="mb-4 flex">
+                            <div class="mb-4 mr-3">
+                                <label for="affiliation_id" class="block text-gray-700 text-sm font-bold mb-2">所属ID</label>
+                                <input type="text" name="affiliation_id" id="affiliation_id" size="5" value="{{ old('affiliation_id', $affiliation->affiliation_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>
+                        
+                            <div class="mb-4 mr-3">
+                                <label for="affiliation_name" class="block text-gray-700 text-sm font-bold mb-2">所属名</label>
+                                <input type="text" name="affiliation_name" id="affiliation_name" value="{{ old('affiliation_name', $affiliation->affiliation_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>                        
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="affiliation_name" class="block text-gray-700 text-sm font-bold mb-2">所属名</label>
-                            <input type="text" name="affiliation_name" id="affiliation_name" value="{{ old('affiliation_name', $affiliation->affiliation_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div>                        
-                        
                         <div class="mb-4">
                             <label for="affiliation_explanation" class="block text-gray-700 text-sm font-bold mb-2">説明</label>
                             <input type="text" name="affiliation_explanation" id="affiliation_explanation" value="{{ old('affiliation_explanation', $affiliation->affiliation_explanation ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">

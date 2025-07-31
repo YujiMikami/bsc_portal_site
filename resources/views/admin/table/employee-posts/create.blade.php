@@ -34,16 +34,18 @@ use function Psy\debug;
                             @if (isset($employeePost))
                                 @method('PUT')
                             @endif
-                        <div class="mb-4">
-                            <label for="employee_post_id" class="block text-gray-700 text-sm font-bold mb-2">役職ID</label>
-                            <input type="text" name="employee_post_id" id="employee_post_id" value="{{ old('employee_post_id', $employeePost->employee_post_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        <div class="mb-4 flex">
+                            <div class="mb-4 mr-3">
+                                <label for="employee_post_id" class="block text-gray-700 text-sm font-bold mb-2">役職ID</label>
+                                <input type="text" name="employee_post_id" id="employee_post_id" size="5" value="{{ old('employee_post_id', $employeePost->employee_post_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>
+                            
+                            <div class="mb-4 mr-3">
+                                <label for="employee_post_name" class="block text-gray-700 text-sm font-bold mb-2">役職名</label>
+                                <input type="text" name="employee_post_name" id="employee_post_name" value="{{ old('employee_post_name', $employeePost->employee_post_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>                        
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="employee_post_name" class="block text-gray-700 text-sm font-bold mb-2">役職名</label>
-                            <input type="text" name="employee_post_name" id="employee_post_name" value="{{ old('employee_post_name', $employeePost->employee_post_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div>                        
-                        
+
                         <div class="flex items-center justify-end">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 登録

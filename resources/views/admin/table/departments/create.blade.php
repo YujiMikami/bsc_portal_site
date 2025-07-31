@@ -34,16 +34,18 @@ use function Psy\debug;
                             @if (isset($department))
                                 @method('PUT')
                             @endif
-                        <div class="mb-4">
-                            <label for="department_id" class="block text-gray-700 text-sm font-bold mb-2">部署ID</label>
-                            <input type="text" name="department_id" id="department_id" value="{{ old('department_id', $department->department_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                        <div class="mb-4 flex">
+                            <div class="mb-4 mr-3">
+                                <label for="department_id" class="block text-gray-700 text-sm font-bold mb-2">部署ID</label>
+                                <input type="text" name="department_id" id="department_id" size="5" value="{{ old('department_id', $department->department_id ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>
+                        
+                            <div class="mb-4 mr-3">
+                                <label for="department_name" class="block text-gray-700 text-sm font-bold mb-2">部署名</label>
+                                <input type="text" name="department_name" id="department_name" value="{{ old('department_name', $department->department_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            </div>                        
                         </div>
-                        
-                        <div class="mb-4">
-                            <label for="department_name" class="block text-gray-700 text-sm font-bold mb-2">部署名</label>
-                            <input type="text" name="department_name" id="department_name" value="{{ old('department_name', $department->department_name ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
-                        </div>                        
-                        
+
                         <div class="mb-4">
                             <label for="department_explanation" class="block text-gray-700 text-sm font-bold mb-2">説明</label>
                             <input type="text" name="department_explanation" id="department_explanation" value="{{ old('department_explanation', $department->department_explanation ?? '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">

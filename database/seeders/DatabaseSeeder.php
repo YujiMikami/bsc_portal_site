@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 		{
 		// 他のSeederもここで呼び出します
 		
-		    $this->call(UserSeeder::class); // UserSeeder を呼び出す記述を追加
+		    $this->call(EmployeesTableSeeder::class);
 		
 		    // \App\Models\User::factory(10)->create(); // ダミーユーザーをファクトリで作る場合の例
 		    // $this->call(OtherSeeder::class);

@@ -15,16 +15,24 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    @if (session('success'))
+                        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded relative" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <div class="flex justify-start mb-4">
-                        <a href="{{ route('admin.table.affiliations.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('admin.table.affiliations.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded focus:outline-none focus:shadow-outline">
                             所属登録
+                        </a>
+                        <a href="{{ route('admin.table.affiliations.importcsv') }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mx-2 rounded focus:outline-none focus:shadow-outline">
+                            CSVインポート
                         </a>
                     </div>
                     <div class="p-6 text-gray-900">
                 </div>
                     <div class="flex justify-start mb-4">
                     </div>
-                    <table class="table-auto w-full border jQ-table">
+                    <table class="table-auto border jQ-table">
                         <thead>
                             <tr>
                                 @if ($affiliations->isEmpty())
@@ -44,16 +52,18 @@
                                 <td class="border px-4 py-2">{{ $val->affiliation_name }}</td>
                                 <td class="border px-4 py-2">{{ $val->affiliation_explanation }}</td>
                                 <td class="border px-4 py-2">
-                                    {{-- 詳細ボタンを追加 --}}
-                                    <a href="{{ route('admin.table.affiliations.show', $val->affiliation_id) }}" class="text-blue-600 hover:underline">詳細</a>
-                                    {{-- 編集ボタンを追加 --}}
-                                    <a href="{{ route('admin.table.affiliations.edit', $val->affiliation_id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
-                                    {{-- 削除ボタンの追加 --}}
-                                    <form action="{{ route('admin.table.affiliations.delete', $val->affiliation_id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
-                                    </form>
+                                    <div class="flex items-center space-x-4">
+                                        {{-- 詳細ボタンを追加 --}}
+                                        <a href="{{ route('admin.table.affiliations.show', $val->affiliation_id) }}" class="text-blue-600 hover:underline">詳細</a>
+                                        {{-- 編集ボタンを追加 --}}
+                                        <a href="{{ route('admin.table.affiliations.edit', $val->affiliation_id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                        {{-- 削除ボタンの追加 --}}
+                                        <form action="{{ route('admin.table.affiliations.delete', $val->affiliation_id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

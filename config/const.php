@@ -10,7 +10,6 @@ config('const.task.status.1')
 return [
     //権限
     'portal_role' => [
-        0 => '',
         1 => 'システム管理者',
         2 => '管理者',
         99 => '一般ユーザ',
