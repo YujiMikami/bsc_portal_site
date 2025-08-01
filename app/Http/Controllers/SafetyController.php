@@ -15,7 +15,7 @@ class SafetyController extends Controller
      */
     public function index()
     {
-        if (auth::user()->role == 1) {
+        if (Auth::user()->role == 1) {
             $safety = Safety::all();
         } else {
             $safety = Safety::where('safety_employee_id', auth::user()->employee_id)->get();
@@ -61,21 +61,21 @@ class SafetyController extends Controller
     {
         $rules = [
             'department' => 'required',
-            'on_site_name' => 'required',
+            'affiliation' => 'required',
             'safety_status' => 'required',
             'can_work' => 'required',
         ];
 
         $messages = [
             'department.required' => ':attributeは必須項目です。',
-            'on_site_name.required' => ':attributeは必須項目です。',
+            'affiliation.required' => ':attributeは必須項目です。',
             'safety_status.required' => ':attributeは必須項目です。',
             'can_work.required' => ':attributeは必須項目です。',
         ];
         
         $attributes = [
             'department' => '部署',
-            'on_site_name' => '現場名',
+            'affiliation' => '所属',
             'safety_status' => 'ケガの有無',
             'can_work' => '出社可否',
         ];

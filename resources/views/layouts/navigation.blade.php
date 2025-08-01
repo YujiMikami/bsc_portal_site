@@ -24,6 +24,9 @@
                         <x-nav-link :href="route('admin.table.index')" :active="request()->routeIs('admin.table.*')" style="color: red;">
                             各テーブル
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.system.index')" :active="request()->routeIs('admin.system.*')" style="color: red;">
+                            ポータル管理
+                        </x-nav-link>
                     @endcan
                 </div>
             </div>
@@ -76,17 +79,20 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    ダッシュボード
+            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                ダッシュボード
+            </x-nav-link>
+            <x-nav-link :href="route('public.reports.index')" :active="request()->routeIs('public.reports.*')">
+                申請・報告
+            </x-nav-link>
+            @can('access-admin-panel')
+                <x-nav-link :href="route('admin.table.index')" :active="request()->routeIs('admin.teble.*')" style="color: red;">
+                    各テーブル
                 </x-nav-link>
-                <x-nav-link :href="route('public.reports.index')" :active="request()->routeIs('public.reports.*')">
-                    申請・報告
+                <x-nav-link :href="route('admin.system.index')" :active="request()->routeIs('admin.system.*')" style="color: red;">
+                    ポータル管理
                 </x-nav-link>
-                @can('access-admin-panel')
-                    <x-nav-link :href="route('admin.table.index')" :active="request()->routeIs('admin.teble.*')" style="color: red;">
-                        各テーブル
-                    </x-nav-link>
-                @endcan
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

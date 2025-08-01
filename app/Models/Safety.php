@@ -16,6 +16,8 @@ class Safety extends Model
         // $request オブジェクトから直接データを取得し、モデルのプロパティに割り当てる
         $this->safety_employee_id = Auth::user()->employee_id;
         $this->safety_employee_name = Auth::user()->employee_name;
+        $this->department = $request->input('department');
+        $this->affiliation = $request->input('affiliation');
         $this->safety_status = $request->input('safety_status');
         $this->injury_status = $request->input('injury_status');
         $this->can_work = $request->input('can_work');
