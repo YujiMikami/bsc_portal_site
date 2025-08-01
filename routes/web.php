@@ -11,6 +11,9 @@ use App\Http\Controllers\EmployeePostController;
 use App\Http\Controllers\EmployeeClassController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\LogController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -37,7 +40,8 @@ Route::middleware('auth')->group(function () {
 
         Route::middleware('admin')->group(function () {
             Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table.index');
-            
+            Route::get('/admin/system', [SystemController::class, 'index'])->name('admin.system.index');
+
             //index
             Route::get('/admin/table/employees', [EmployeeController::class, 'index'])->name('admin.table.employees.index');
             Route::get('/admin/table/departments', [DepartmentController::class, 'index'])->name('admin.table.departments.index');
@@ -45,6 +49,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/admin/table/affiliations', [AffiliationController::class, 'index'])->name('admin.table.affiliations.index');
             Route::get('/admin/table/employee_posts', [EmployeePostController::class, 'index'])->name('admin.table.employee-posts.index');
             Route::get('/admin/table/employee_classes', [EmployeeClassController::class, 'index'])->name('admin.table.employee-classes.index');
+            Route::get('/admin/table/employee_classes', [EmployeeClassController::class, 'index'])->name('admin.table.employee-classes.index');
+            Route::get('/admin/system/log', [LogController::class, 'index'])->name('admin.system.log.index');
             
             //create
             Route::get('/admin/table/employees/create', [EmployeeController::class, 'create'])->name('admin.table.employees.create');
