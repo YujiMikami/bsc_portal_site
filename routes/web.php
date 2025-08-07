@@ -11,6 +11,10 @@ use App\Http\Controllers\EmployeePostController;
 use App\Http\Controllers\EmployeeClassController;
 use App\Http\Controllers\OccupationController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\PaidRequestController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,19 +29,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    //index
+ 
     Route::get('/public/reports', [ReportsController::class, 'index'])->name('public.reports.index');
     Route::get('/public/documents', [DocumentsController::class, 'index'])->name('public.documents.index');
 
+    //index   
+    Route::get('/public/reports/paid-requests', [PaidRequestController::class, 'index'])->name('public.reports.paid-requests.index');
     Route::get('/public/reports/safety', [SafetyController::class, 'index'])->name('public.reports.safety.index');
+
+    //create
     Route::get('/public/reports/safety/create', [SafetyController::class, 'create'])->name('public.reports.safety.create');
+    Route::get('/public/reports/paid-rquests/create', [PaidRequestController::class, 'create'])->name('public.reports.paid-requests.create');
+
+    //store
     Route::post('/public/reports/safety/store', [SafetyController::class, 'store'])->name('public.reports.safety.store');
+    Route::post('/public/reports/paid-requests/store', [PaidRequestController::class, 'store'])->name('public.reports.paid-requests.store');
+
+    //destroy
     Route::delete('/public/reports/safety/{id}/delete', [SafetyController::class, 'destroy'])->name('public.reports.safety.delete');
+    Route::delete('/public/reports/paid-rquests/{id}/delete', [PaidRequestController::class, 'destroy'])->name('public.reports.paid-requests.delete');
 
         Route::middleware('admin')->group(function () {
             Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table.index');
-            
+            Route::get('/admin/system', [SystemController::class, 'index'])->name('admin.system.index');
+
             //index
             Route::get('/admin/table/employees', [EmployeeController::class, 'index'])->name('admin.table.employees.index');
             Route::get('/admin/table/departments', [DepartmentController::class, 'index'])->name('admin.table.departments.index');
@@ -45,6 +60,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/admin/table/affiliations', [AffiliationController::class, 'index'])->name('admin.table.affiliations.index');
             Route::get('/admin/table/employee_posts', [EmployeePostController::class, 'index'])->name('admin.table.employee-posts.index');
             Route::get('/admin/table/employee_classes', [EmployeeClassController::class, 'index'])->name('admin.table.employee-classes.index');
+            Route::get('/admin/table/employee_classes', [EmployeeClassController::class, 'index'])->name('admin.table.employee-classes.index');
+            Route::get('/admin/system/log', [LogController::class, 'index'])->name('admin.system.log.index');
             
             //create
             Route::get('/admin/table/employees/create', [EmployeeController::class, 'create'])->name('admin.table.employees.create');

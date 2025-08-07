@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
+use App\Models\TableHistory;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
+use Symfony\Component\Uid\NilUlid;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -52,9 +55,9 @@ class EmployeeController extends Controller
                 'employeePost',
             ])->findOrFail($employee_id);
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
-
 
         // ビューにタスクデータを渡して表示
         return view('admin.table.employees.show', compact('employee'));
@@ -62,17 +65,27 @@ class EmployeeController extends Controller
     public function destroy($employee_id)
     {
         try {
-            // 削除対象のタスクを取得。見つからなければ404エラー
             $employee = Employee::findOrFail($employee_id);
 
-            // 論理削除を実行
-            $employee->delete(); // SoftDeletesトレイトを使用していれば、deleted_atカラムが更新される
+            $employee->delete();
+
+            // TableHistoryに更新履歴を保存
+            TableHistory::create([
+                'table_name' => '社員',
+                'target_id' => $employee_id,
+                'target_name' => $employee->employee_name,
+                'action' => '削除',
+                'responder' => Auth::user()->employee_name,
+                'compatible_date' => now(),
+            ]);  
+
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
-        return redirect(route('admin.table.employees.index'))->with('success', 'タスクが正常に削除されました。');
+        return redirect(route('admin.table.employees.index'))->with('success', '社員情報が正常に削除されました。');
     }
 
     public function store(Request $request)
@@ -87,24 +100,38 @@ class EmployeeController extends Controller
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-        // Taskモデルのカスタムメソッドを使ってデータを保存
+
         $employee = new Employee();
-        // $request オブジェクトを直接 saveTask メソッドに渡す
+
         try {
             $employee->saveEmployee($request); 
 
-        } catch (Exception $e) {
+            TableHistory::create([
+                'table_name' => '社員',
+                'target_id' => $request->employee_id,
+                'target_name' => $request->employee_name,
+                'action' => '新規',
+                'responder' => Auth::user()->employee_name,
+                'compatible_date' => now(),
+            ]);
 
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+        } catch (Exception $e) {
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
         return redirect(route('admin.table.employees.index'))->with('success', '社員登録が正常に処理されました。');
+
     }
 
-    private function validateEmployee(Request $request)
+    private function validateEmployee(Request $request, $employee_id = null)
     {
         $rules = [
-            'employee_id' => 'required',
+            'employee_id' => [
+                'required',
+                'digits:6',
+                Rule::unique('employees', 'employee_id')->ignore($employee_id, 'employee_id'),
+            ],
             'employee_name' => 'required',
             'gender' => 'required',
             'employee_class_id' => 'required',
@@ -114,6 +141,8 @@ class EmployeeController extends Controller
 
         $messages = [
             'employee_id.required' => ':attributeは必須項目です。',
+            'employee_id.unique' => ':attributeはすでに登録されています。',
+            'employee_id.digits' => ':attributeは数字６文字です。',
             'employee_name.required' => ':attributeは必須項目です。',
             'gender.required' => ':attributeは必須項目です。',
             'employee_class_id.required' => ':attributeは必須項目です。',
@@ -142,12 +171,9 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $employee_id)
     {
-        // バリデーション (新規作成時と同じ validateTask メソッドを再利用)
-        $validator = $this->validateEmployee($request);
+        $validator = $this->validateEmployee($request, $employee_id);
 
-        // バリデーションに失敗した場合
         if ($validator->fails()) {
-            // 編集フォームのルートにリダイレクト
             return redirect(route('admin.table.employees.edit', $employee_id))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
@@ -156,9 +182,38 @@ class EmployeeController extends Controller
         try {
             $employee = Employee::findOrFail($employee_id);
 
+            $changes = [];
+            foreach ($request->except(['_token', '_method']) as $column => $newValue) {
+                //yyyy-mmに'-01'をつけてyyyy-mm-ddにする
+                if (preg_match('/^\d{4}-\d{2}$/', $newValue)) {
+                    $newValue = $newValue . '-01';
+                }
+                
+                if ($employee->$column != $newValue) {
+                    $changes[] = [
+                        'table_name' => '社員',
+                        'target_id' => $request->employee_id,
+                        'target_name' => $request->employee_name,
+                        'action' => '更新',
+                        'item_name' => $column,
+                        'before_update' => $employee->$column,
+                        'after_update' => $newValue,
+                        'responder' => Auth::user()->employee_name,
+                        'compatible_date' => now(),
+                    ];
+                }
+            }
+
             $employee->saveEmployee($request);
+
+            if (!empty($changes)) {
+                TableHistory::insert($changes);
+            }
+
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+
         }
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
@@ -355,9 +410,9 @@ class EmployeeController extends Controller
             DB::commit();
             return back()->with('success', 'インポートが完了しました');
         } catch (\Exception $e) {
-        
             DB::rollBack();
-            return back()->with('error', 'エラー: ' . $e->getMessage());
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
     }
 }

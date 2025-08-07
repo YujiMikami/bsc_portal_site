@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Occupation extends Model
 {
-    use SoftDeletes;
     protected $primaryKey = 'occupation_id'; // 主キーのカラム名
     public $incrementing = false; // 自動採番OFFにする（重要！）
 

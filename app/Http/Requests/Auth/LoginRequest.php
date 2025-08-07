@@ -41,10 +41,10 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
-        Log::info('ログイン試行', [
-    'employee_id' => $this->input('employee_id'),
-    'remember' => $this->boolean('remember'),
-]);
+    // Log::info('ログイン試行', [
+    //     'employee_id' => $this->input('employee_id'),
+    //     'remember' => $this->boolean('remember'),
+    // ]);
         
         $this->ensureIsNotRateLimited();
 

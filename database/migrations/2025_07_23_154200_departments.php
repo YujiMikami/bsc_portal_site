@@ -16,7 +16,6 @@ public function up(): void
             $table->string('department_name');
             $table->text('department_explanation')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

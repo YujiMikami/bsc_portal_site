@@ -15,7 +15,6 @@ return new class extends Migration
             $table->integer('occupation_id')->primary();
             $table->string('occupation_name');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

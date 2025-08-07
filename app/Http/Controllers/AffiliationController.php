@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Affiliation;
+use App\Models\TableHistory;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AffiliationController extends Controller
 {
@@ -27,15 +29,16 @@ class AffiliationController extends Controller
         try {
             $affiliation = Affiliation::findOrFail($affiliation_id);
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
-
         return view('admin.table.affiliations.show', compact('affiliation'));
     }
+
     public function edit($affiliation_id)
     {
         $affiliation = Affiliation::findOrFail($affiliation_id);
-
+        
         return view('admin.table.affiliations.create', compact('affiliation'));
     }
 
@@ -52,14 +55,39 @@ class AffiliationController extends Controller
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
 
+        // TableHistoryに更新履歴を保存
         try {
-            $department = Affiliation::findOrFail($affiliation_id);
-            $department->saveAffiliation($request);
+            $affiliation = Affiliation::findOrFail($affiliation_id);
+            $changes = [];
+
+            // 更新した項目の数、レコードを追加
+            foreach ($request->except(['_token', '_method']) as $column => $newValue) {
+                if ($affiliation->$column != $newValue) {
+                    $changes[] = [
+                        'table_name' => '所属',
+                        'target_id' => $request->affiliation_id,
+                        'target_name' => $request->affiliation_name,
+                        'action' => '更新',
+                        'item_name' => $column,
+                        'before_update' => $affiliation->$column,
+                        'after_update' => $newValue,
+                        'responder' => Auth::user()->employee_name,
+                        'compatible_date' => now(),
+                    ];
+                }
+            }
+            
+            $affiliation->saveAffiliation($request);
+
+            if (!empty($changes)) {
+                TableHistory::insert($changes);
+            }
+
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
-        // タスク一覧ページへリダイレクトし、成功メッセージを表示
         return redirect(route('admin.table.affiliations.index'))->with('success', '所属情報が正常に更新されました。');
     }
 
@@ -75,14 +103,25 @@ class AffiliationController extends Controller
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-        // Departmentモデルのカスタムメソッドを使ってデータを保存
+        
         $affiliation = new Affiliation();
-        // $request オブジェクトを直接 saveAffiliation メソッドに渡す
+
         try {
             $affiliation->saveAffiliation($request); 
 
+            // TableHistoryに更新履歴を保存
+            TableHistory::create([
+                'table_name' => '所属',
+                'target_id' => $request->affiliation_id,
+                'target_name' => $request->affiliation_name,
+                'action' => '新規',
+                'responder' => Auth::user()->employee_name,
+                'compatible_date' => now(),
+            ]);
+
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
         return redirect(route('admin.table.affiliations.index'))->with('success', '所属情報が正常に登録されました。');
@@ -91,28 +130,39 @@ class AffiliationController extends Controller
     public function destroy($affiliation_id)
     {
         try {
-            // 削除対象のタスクを取得。見つからなければ404エラー
             $affiliation = Affiliation::findOrFail($affiliation_id);
 
-            // 論理削除を実行
-            $affiliation->delete(); // SoftDeletesトレイトを使用していれば、deleted_atカラムが更新される
+            $affiliation->delete();
+
+            // TableHistoryに更新履歴を保存
+            TableHistory::create([
+                'table_name' => '所属',
+                'target_id' => $affiliation_id,
+                'target_name' => config('affiliations.' . $affiliation_id),
+                'action' => '削除',
+                'responder' => Auth::user()->employee_name,
+                'compatible_date' => now(),
+            ]);            
+
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
-        // タスク一覧ページへリダイレクトし、成功メッセージを表示
         return redirect(route('admin.table.affiliations.index'))->with('success', '所属情報が正常に削除されました。');
     }
 
     private function validateAffiliation(Request $request)
     {
         $rules = [
-            'affiliation_id' => 'required',
+            'affiliation_id' => 'required|digits_between:1,3|unique:affiliations,affiliation_id',
             'affiliation_name' => 'required',
         ];
 
         $messages = [
             'affiliation_id.required' => ':attributeは必須項目です。',
+            'affiliation_id.digits_between' => ':attributeは数字３桁以内です。',
+            'affiliation_id.unique' => ':attributeはすでに登録されています。',
             'affiliation_name.required' => ':attributeは必須項目です。',
         ];
         
@@ -142,19 +192,19 @@ class AffiliationController extends Controller
             return back()->with('error', 'ファイルを開けませんでした');
         }
 
-        // ヘッダー行を読み飛ばす（必要に応じて）
+        // ヘッダー行を読み飛ばす
         $header = fgetcsv($handle);
 
         DB::beginTransaction();
         try {
             while (($line = fgets($handle)) !== false) {
-                // --- ① 文字コード自動判定 ---
+                // --- 文字コード自動判定 ---
                 $encoding = mb_detect_encoding($line, ['SJIS-win', 'UTF-8', 'EUC-JP', 'ASCII'], true) ?: 'SJIS-win';
 
-                // --- ② UTF-8に変換 ---
+                // --- UTF-8に変換 ---
                 $utf8Line = mb_convert_encoding($line, 'UTF-8', $encoding);
 
-                // --- ③ CSVとして配列に ---
+                // --- CSVとして配列に ---
                 $data = str_getcsv($utf8Line);
 
                 if (count($data) < 3) {
@@ -174,7 +224,8 @@ class AffiliationController extends Controller
             return back()->with('success', 'インポートが完了しました');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'エラー: ' . $e->getMessage());
+            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
     }
 }

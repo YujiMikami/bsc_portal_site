@@ -25,6 +25,8 @@
                             <tr>
                                 <th class="border px-4 py-2">社員番号</th>
                                 <th class="border px-4 py-2">投稿者名</th>
+                                <th class="border px-4 py-2">部署</th>
+                                <th class="border px-4 py-2">所属</th>
                                 <th class="border px-4 py-2">安否状況</th>
                                 <th class="border px-4 py-2">傷害度合</th>
                                 <th class="border px-4 py-2">出社可否</th>
@@ -40,6 +42,8 @@
                                 <tr>
                                     <td class="border px-4 py-2">{{ $val->safety_employee_id }}</td>
                                     <td class="border px-4 py-2">{{ $val->safety_employee_name }}</td>
+                                    <td class="border px-4 py-2">{{ $val->department }}</td>
+                                    <td class="border px-4 py-2">{{ $val->affiliation }}</td>
                                     <td class="border px-4 py-2">{{ $val->safety_status }}</td>
                                     <td class="border px-4 py-2">{{ $val->injury_status }}</td>
                                     <td class="border px-4 py-2">{{ $val->can_work }}</td>

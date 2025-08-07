@@ -8,27 +8,24 @@ use Illuminate\Database\Eloquent\SoftDeletes; // SoftDeletesトレイトをイ�
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
-class Safety extends Model
+class PaidRequest extends Model
 {
     use SoftDeletes; // SoftDeletesトレイトを使用するよう追加
-    public function saveSafety(Request $request)
+    public function savePaidRequest(Request $request)
     {
         // $request オブジェクトから直接データを取得し、モデルのプロパティに割り当てる
-        $this->safety_employee_id = Auth::user()->employee_id;
-        $this->safety_employee_name = Auth::user()->employee_name;
-        $this->department = $request->input('department');
+        $this->application_date = $request->input('application_date');
+        $this->employee_id = $request->input('employee_id');
         $this->affiliation = $request->input('affiliation');
-        $this->safety_status = $request->input('safety_status');
-        $this->injury_status = $request->input('injury_status');
-        $this->can_work = $request->input('can_work');
-
-        
+        $this->employee_name = $request->input('employee_name');
+        $this->start_date = $request->input('start_date');
+        $this->end_date = $request->input('end_date');
+        $this->days = $request->input('days');
+        $this->distinction = $request->input('distinction');
+        $this->reason = $request->input('reason');
+        $this->note = $request->input('note');
         
         // 登録処理
         $this->save();
-    }
-    public function employee(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class);
     }
 }
