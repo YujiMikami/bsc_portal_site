@@ -29,7 +29,7 @@ class EmployeePostController extends Controller
         try {
             $employeePost = EmployeePost::findOrFail($employeePostId);
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->show)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -82,7 +82,7 @@ class EmployeePostController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -120,7 +120,7 @@ class EmployeePostController extends Controller
             ]);   
         
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -145,7 +145,7 @@ class EmployeePostController extends Controller
             ]);
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -224,7 +224,7 @@ class EmployeePostController extends Controller
             return back()->with('success', 'インポートが完了しました');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->uploadcsv)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
     }

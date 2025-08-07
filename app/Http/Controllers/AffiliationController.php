@@ -29,7 +29,7 @@ class AffiliationController extends Controller
         try {
             $affiliation = Affiliation::findOrFail($affiliation_id);
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('所属テーブルエラー(AffiliationController->show)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
         return view('admin.table.affiliations.show', compact('affiliation'));
@@ -84,7 +84,7 @@ class AffiliationController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('所属テーブルエラー(AffiliationController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -120,7 +120,7 @@ class AffiliationController extends Controller
             ]);
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('所属テーブルエラー(AffiliationController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -145,7 +145,7 @@ class AffiliationController extends Controller
             ]);            
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('所属テーブルエラー(AffiliationController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -224,7 +224,7 @@ class AffiliationController extends Controller
             return back()->with('success', 'インポートが完了しました');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('所属テーブルエラー(AffiliationController->uploadcsv)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
     }

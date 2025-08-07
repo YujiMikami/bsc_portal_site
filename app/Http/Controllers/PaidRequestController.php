@@ -13,7 +13,7 @@ class PaidRequestController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role == 1) {
+        if (Auth::user()->portal_role == 1) {
             $paidRequests = PaidRequest::all();
         } else {
             $paidRequests = PaidRequest::where('employee_id', auth::user()->employee_id)->get();
@@ -40,21 +40,118 @@ class PaidRequestController extends Controller
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
 
-        // Taskモデルのカスタムメソッドを使ってデータを保存
         $paidRequest = new PaidRequest();
-        // $request オブジェクトを直接 saveTask メソッドに渡す
         try {
             $paidRequest->savePaidRequest($request); 
 
         } catch (Exception $e) {
-            Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->store)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
-        // /admin/tasks にリダイレクトする（既に定義済みのタスク一覧ページなどへ）
-        // 成功メッセージをセッションにフラッシュデータとして保存
-        return redirect(route('public.reports.paid-requests.index'))->with('success', '有給申請が正常に登録されました。');
+        return redirect(route('public.reports.paid-requests.index'))->with('success', '有給申請を正常に登録しました。');
     }
 
+    public function show($id)
+    {
+        try {
+            $paidRequest = PaidRequest::findOrFail($id);
+        if ($paidRequest->employee_id !== Auth::user()->employee_id && Auth::user()->portal_role !== 1) {
+            return redirect(route('public.reports.paid-requests.index'))->with('error', '他の申請は閲覧できません。');
+        }
+
+        } catch (Exception $e) {
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->show)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+
+        return view('public.reports.paid-requests.show', compact('paidRequest'));
+    }
+    public function edit($id)
+    {
+        try {
+            $paidRequest = PaidRequest::findOrFail($id);
+        if ($paidRequest->employee_id !== Auth::user()->employee_id) {
+            return redirect(route('public.reports.paid-requests.index'))->with('error', '他の申請は更新できません。');
+        }
+        } catch (Exception $e) {
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->edit)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+        return view('public.reports.paid-requests.create', compact('paidRequest'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // バリデーション
+        $validator = $this->validatePaidRequest($request);
+
+        // バリデーションに失敗した場合
+        if ($validator->fails()) {
+            // 編集フォームのルートにリダイレクト
+            return redirect(route('public.reports.paid-requests.edit', $id))
+                ->withErrors($validator) // エラーメッセージをセッションに保存
+                ->withInput(); // 直前に入力されたデータをセッションに保存
+        }
+
+        try {
+            $paidRequest = PaidRequest::findOrFail($id);
+            $paidRequest->savePaidRequest($request);
+
+        } catch (Exception $e) {
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->update)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+
+        return redirect(route('public.reports.paid-requests.index'))->with('success', '有給申請を正常に更新しました。');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $paidRequest = PaidRequest::findOrFail($id);
+
+            $paidRequest->delete();
+
+        } catch (Exception $e) {
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->destroy)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+
+        return redirect(route('public.reports.paid-requests.index'))->with('success', '有給申請を削除しました。');
+    }
+
+    public function approval($id)
+    {
+        try {
+            $paidRequest = PaidRequest::findOrFail($id);
+
+            $paidRequest->approver = Auth::user()->employee_name;
+            $paidRequest->save();
+        
+        } catch (Exception $e) {
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->approval)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+
+        return redirect(route('public.reports.paid-requests.index'))->with('success', '有給申請を承認しました。');
+    }
+
+    public function acceptance($id)
+    {
+        try {
+            $paidRequest = PaidRequest::findOrFail($id);
+
+            $paidRequest->recipient = Auth::user()->employee_name;
+            $paidRequest->save();
+        
+        } catch (Exception $e) {
+            Log::channel('error')->alert('有給申請エラー(PaidRequestController->acceptance)', [$e->getMessage()]);
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+
+        return redirect(route('public.reports.paid-requests.index'))->with('success', '有給申請を受理しました。');
+    }
     private function validatePaidRequest(Request $request)
     {
         $rules = [
