@@ -13,6 +13,11 @@ use function Psy\debug;
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div class="mb-6">
+                        <a href="{{ route('admin.table.affiliations.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            戻る
+                        </a>
+                    </div>
                     <h1 class="text-2xl font-bold mb-6">
                         所属登録
                     </h1>

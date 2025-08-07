@@ -6,8 +6,8 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link>
-                        {{ __('有給申請') }}
+                    <x-nav-link href="{{ route('public.reports.paid-requests.index') }}" :active="request()->routeIs('public.reports.paid-requests.*')">
+                        有給申請
                     </x-nav-link>
                     <x-nav-link>
                         {{ __('交通費申請') }}

@@ -9,6 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div class="mb-6">
+                        <a href="{{ route('admin.table.employees.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            戻る
+                        </a>
+                    </div>  
                     <h1>出力したい項目を選択してください。</h1>
                     <!-- 全選択 / 全解除ボタン -->
                     

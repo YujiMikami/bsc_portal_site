@@ -16,7 +16,6 @@ public function up(): void
             $table->string('affiliation_name');
             $table->text('affiliation_explanation')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

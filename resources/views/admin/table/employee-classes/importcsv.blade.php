@@ -14,6 +14,11 @@
                     </div>
                 @endif
                 <div class="p-6 text-gray-900">
+                    <div class="mb-6">
+                        <a href="{{ route('admin.table.employee-classes.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            戻る
+                        </a>
+                    </div>
                     <h1>インポートするファイルを選択してください。</h1>
                     <form action="{{ route('admin.table.employee-classes.uploadcsv') }}" method="POST" enctype="multipart/form-data">
                         @csrf
