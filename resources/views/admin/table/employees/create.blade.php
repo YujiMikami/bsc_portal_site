@@ -31,7 +31,13 @@ use function Psy\debug;
                             @if (isset($employee))
                                 @method('PUT')
                             @endif
+                        <div class="mb-6">
+                            <a href="{{ route('admin.table.employees.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                戻る
+                            </a>
+                        </div>   
                         <label for="employee_id" class="block text-red-700 text-sm font-bold mb-2 ">赤字タイトルは必須項目です</label>
+                        
                         <div class="mb-4">
                             <label for="employee_id" class="block text-red-700 text-sm font-bold mb-2 ">社員番号</label>
                             <input type="text" name="employee_id" id="employee_id" size="6" value="{{ old('employee_id', $employee->employee_id ?? '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -333,7 +339,7 @@ use function Psy\debug;
                         <div class="mb-4">
                             <label for="social_insurance_Applicable_date" class="block text-gray-700 text-sm font-bold mb-2">社会保険適用年月日</label>
                             {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
-                            <input type="date" name="social_insurance_Applicable_date" id="social_insurance_Applicable_date" value="{{ old('social_insurance_Applicable_date', isset($employee->social_insurance_Applicable_date) ? \Carbon\Carbon::parse($employee->social_insurance_Applicable_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <input type="date" name="social_insurance_Applicable_date" id="social_insurance_Applicable_date" value="{{ old('social_insurance_Applicable_date', isset($employee->social_insurance_Applicable_date) ? \Carbon\Carbon::parse($employee->social_insurance_Applicable_date)->format('Y-m-d') : '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
 
                         <div class="mb-4 flex">
@@ -379,12 +385,12 @@ use function Psy\debug;
                             <div class="mb-4 mr-3">
                                 <label for="employment_applicable_date" class="block text-gray-700 text-sm font-bold mb-2">雇用適用年月日</label>
                                 {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
-                                <input type="date" name="employment_applicable_date" id="employment_applicable_date" value="{{ old('employment_applicable_date', isset($employee->employment_applicable_date) ? \Carbon\Carbon::parse($employee->employment_applicable_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <input type="date" name="employment_applicable_date" id="employment_applicable_date" value="{{ old('employment_applicable_date', isset($employee->employment_applicable_date) ? \Carbon\Carbon::parse($employee->employment_applicable_date)->format('Y-m-d') : '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             </div>
 
                             <div class="mb-4 mr-3">
-                                <label for="applicable_insurance" class="block text-gray-700 text-sm font-bold mb-2">雇用保険番号	</label>
-                                <input type="text" name="applicable_insurance" id="applicable_insurance" value="{{ old('applicable_insurance', $employee->applicable_insurance ?? '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <label for="applicable_insurance_number" class="block text-gray-700 text-sm font-bold mb-2">雇用保険番号	</label>
+                                <input type="text" name="applicable_insurance_number" id="applicable_insurance_number" value="{{ old('applicable_insurance_number', $employee->applicable_insurance_number ?? '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             </div>
                         </div>
 
@@ -393,7 +399,7 @@ use function Psy\debug;
                                 <div class="mb-4 mr-3">
                                     <label for="retirement_date" class="block text-gray-700 text-sm font-bold mb-2">退職年月日（日付を入れると表示されなくなります）</label>
                                     {{-- DateTimeオブジェクトをdatetime-local形式にフォーマット --}}
-                                    <input type="date" name="retirement_date" id="retirement_date" value="{{ old('retirement_date', isset($employee->retirement_date) ? \Carbon\Carbon::parse($employee->retirement_date)->format('Y-m-d\TH:i') : '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                    <input type="date" name="retirement_date" id="retirement_date" value="{{ old('retirement_date', isset($employee->retirement_date) ? \Carbon\Carbon::parse($employee->retirement_date)->format('Y-m-d') : '') }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                 </div>
                             @endif
 

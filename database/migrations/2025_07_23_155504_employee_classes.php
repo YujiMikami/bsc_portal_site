@@ -15,7 +15,6 @@ public function up(): void
             $table->integer('employee_class_id')->primary();
             $table->string('employee_class_name');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

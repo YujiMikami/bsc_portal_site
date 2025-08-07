@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Affiliation extends Model
 {
-    use SoftDeletes;
     protected $primaryKey = 'affiliation_id'; // 主キーのカラム名
     public $incrementing = false; // 自動採番OFFにする（重要！）
     

@@ -6,6 +6,9 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('admin.table.index') }}" :active="request()->routeIs('admin.table.index')">
+                        変更履歴
+                    </x-nav-link>
                     <x-nav-link href="{{ route('admin.table.employees.index') }}" :active="request()->routeIs('admin.table.employees.*')">
                         社員テーブル
                     </x-nav-link>

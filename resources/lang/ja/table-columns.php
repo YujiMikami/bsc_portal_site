@@ -64,4 +64,17 @@ return [
     'created_at' => '登録日時',
     'updated_at' => '更新日時',
     'updated_by' => '更新者',
+    
+    'department_id' => '部署ID',
+    'department_name' => '部署名',
+    'department_explanation' => '部署説明',
+    'affiliation_id' => '所属ID',
+    'affiliation_name' => '所属名',
+    'affiliation_explanation' => '所属説明',
+    'employee_post_id' => '役職ID',
+    'employee_post_name' => '役職名',
+    'employee_class_id' => '社員区分ID',
+    'employee_class_name' => '社員区分名',
+    'occupation_id' => '職種ID',
+    'occupation_name' => '職種名',
 ];

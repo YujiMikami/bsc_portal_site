@@ -13,6 +13,11 @@ use function Psy\debug;
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div class="mb-6">
+                        <a href="{{ route('public.reports.safety.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            戻る
+                        </a>
+                    </div>    
                     <h1 class="text-2xl font-bold mb-6">
                         安否登録
                     </h1>
@@ -92,9 +97,6 @@ use function Psy\debug;
                         </div>
                         
                         <div class="flex items-center justify-end">
-                            <a href="{{ route('public.reports.safety.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                戻る
-                            </a>
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 登録
                             </button>
