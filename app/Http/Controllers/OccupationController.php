@@ -29,7 +29,7 @@ class OccupationController extends Controller
         try {
             $occupation = Occupation::findOrFail($occupation_id);
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('職種テーブルエラー(OccupationController->show)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -82,7 +82,7 @@ class OccupationController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('職種テーブルエラー(OccupationController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -120,7 +120,7 @@ class OccupationController extends Controller
             ]);     
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('職種テーブルエラー(OccupationController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -144,7 +144,7 @@ class OccupationController extends Controller
             ]);
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('職種テーブルエラー(OccupationController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -223,7 +223,7 @@ class OccupationController extends Controller
             return back()->with('success', 'インポートが完了しました');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('職種テーブルエラー(OccupationController->uploadcsv)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
     }

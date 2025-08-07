@@ -15,7 +15,7 @@ class SafetyController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->role == 1) {
+        if (Auth::user()->portal_role == 1) {
             $safety = Safety::all();
         } else {
             $safety = Safety::where('safety_employee_id', auth::user()->employee_id)->get();

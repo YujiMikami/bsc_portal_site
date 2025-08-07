@@ -30,7 +30,7 @@ class DepartmentController extends Controller
         try {
             $department = Department::findOrFail($department_id);
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('部署テーブルエラー(DepartmentController->show)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -83,7 +83,7 @@ class DepartmentController extends Controller
             }
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('部署テーブルエラー(DepartmentController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -117,7 +117,7 @@ class DepartmentController extends Controller
             ]);      
         
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('部署テーブルエラー(DepartmentController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -144,7 +144,7 @@ class DepartmentController extends Controller
 
 
         } catch (Exception $e) {
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('部署テーブルエラー(DepartmentController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
@@ -224,7 +224,7 @@ class DepartmentController extends Controller
             return back()->with('success', 'インポートが完了しました');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
+            Log::channel('error')->alert('部署テーブルエラー(DepartmentController->uploadcsv)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
     }
