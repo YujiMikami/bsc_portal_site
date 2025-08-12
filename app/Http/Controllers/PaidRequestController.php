@@ -14,9 +14,9 @@ class PaidRequestController extends Controller
     public function index()
     {
         if (Auth::user()->portal_role == 1) {
-            $paidRequests = PaidRequest::all();
+            $paidRequests = PaidRequest::orderBy('id', 'desc')->get();
         } else {
-            $paidRequests = PaidRequest::where('employee_id', auth::user()->employee_id)->get();
+            $paidRequests = PaidRequest::where('employee_id', auth::user()->employee_id)->orderBy('history_id', 'desc')->get();
         }
           
         return view('public.reports.paid-requests.index', compact('paidRequests'));

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Employee;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,17 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function show()
+    {
+            $profile = Employee::with([
+                'department',
+                'affiliation',
+                'occupation',
+                'employeeClass',
+                //'employeePost',は社員テーブルにないので除外
+            ])->findOrFail(Auth::User()->employee_id);
+        return view('profile.show', compact('profile'));
     }
 }

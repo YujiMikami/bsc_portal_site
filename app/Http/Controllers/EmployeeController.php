@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
+use App\Models\EmployeeAccount;
 use App\Models\TableHistory;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
@@ -66,9 +67,11 @@ class EmployeeController extends Controller
     {
         try {
             $employee = Employee::findOrFail($employee_id);
+            $employeeAccount = Employee::findOrFail($employee_id);
 
             $employee->delete();
-
+            $employeeAccount->delete();
+            
             // TableHistoryに更新履歴を保存
             TableHistory::create([
                 'table_name' => '社員',
@@ -102,9 +105,11 @@ class EmployeeController extends Controller
         }
 
         $employee = new Employee();
+        $employeeAccount = new EmployeeAccount();
 
         try {
             $employee->saveEmployee($request); 
+            $employeeAccount->saveEmployeeAccount($request); 
 
             TableHistory::create([
                 'table_name' => '社員',
@@ -181,6 +186,7 @@ class EmployeeController extends Controller
 
         try {
             $employee = Employee::findOrFail($employee_id);
+            $employeeAccount = EmployeeAccount::findOrFail($employee_id);
 
             $changes = [];
             foreach ($request->except(['_token', '_method']) as $column => $newValue) {
@@ -205,6 +211,7 @@ class EmployeeController extends Controller
             }
 
             $employee->saveEmployee($request);
+            $employeeAccount->saveEmployeeAccount($request);
 
             if (!empty($changes)) {
                 TableHistory::insert($changes);
@@ -401,9 +408,19 @@ class EmployeeController extends Controller
                     'retirement_date' => normalizeDateOrNull($data[55]),
                     'retirement_reason' => toIntOrNull($data[56]),
                     'note' => toIntOrNull($data[57]),
+                    'updated_by' => Auth::user()->employee_name,
+                ]);
+            EmployeeAccount::updateOrCreate([
+                    'employee_id' => $data[0],
+                ], [
+                    'employee_name' => $data[1],
+                    'employee_name_furigana' => $data[2],
+                    'employee_class_id' => $data[4],
+                    'department_id' => toIntOrNull($data[5]),
+                    'affiliation_id' => toIntOrNull($data[6]),
+                    'occupation_id' => toIntOrNull($data[7]),
                     'password' => Hash::make('bsc' . $data[0]),
                     'portal_role' => 99,
-                    'updated_by' => Auth::user()->employee_name,
                 ]);
             }
             fclose($handle);
