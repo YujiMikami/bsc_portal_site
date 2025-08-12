@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Models\Employee;
+use App\Models\EmployeeAccount;
 use Illuminate\Support\Facades\Gate;
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
         {
-        Gate::define('access-admin-panel', function (Employee $user) {
+        Gate::define('access-admin-panel', function (EmployeeAccount $user) {
             // ここで上記で定義したisAdmin()メソッドを使っています。
             return $user->isAdmin();
         });
