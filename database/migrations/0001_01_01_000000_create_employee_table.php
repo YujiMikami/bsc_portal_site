@@ -71,11 +71,24 @@ return new class extends Migration
             $table->date('retirement_date')->comment('退職日')->nullable(true);
             $table->string('retirement_reason')->comment('退職理由')->nullable(true);
             $table->string('note')->comment('備考')->nullable(true);
+            $table->timestamps();
+            $table->string('updated_by')->comment('更新者');
+        });
+
+        Schema::create('employee_accounts', function (Blueprint $table) {
+            $table->integer('employee_id')->primary()->comment('社員番号');
+            $table->string('employee_name')->comment('社員名（漢字）');
+            $table->string('employee_name_furigana')->comment('社員名（かな）')->nullable(true);
+            $table->integer('employee_class_id')->comment('社員区分');
+            $table->integer('department_id')->comment('部署ID')->nullable(true);
+            $table->integer('affiliation_id')->comment('所属ID')->nullable(true);
+            $table->integer('employee_post_id')->comment('役職')->nullable(true);
+            $table->integer('occupation_id')->comment('職種')->nullable(true);
+            $table->string('email')->comment('メールアドレス')->nullable(true);
             $table->string('password', 255);
             $table->rememberToken();
             $table->integer('portal_role');
             $table->timestamps();
-            $table->string('updated_by')->comment('更新者');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -92,7 +105,12 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-        Artisan::call('db:seed', ['--class' => 'EmployeesTableSeeder']);
+        Artisan::call('db:seed', [
+            '--class' => 'EmployeesTableSeeder',
+        ]);
+        Artisan::call('db:seed', [
+            '--class' => 'EmployeeAccountsSeeder',
+        ]);
 
     }
 
@@ -102,6 +120,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('employees');
+        Schema::dropIfExists('employee_accounts');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

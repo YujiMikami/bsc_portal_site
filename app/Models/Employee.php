@@ -4,9 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,8 +14,9 @@ use App\Models\EmployeeClass;
 use App\Models\EmployeePost;
 use App\Models\Occupation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Authenticatable
+class Employee extends Model
 {
     protected $primaryKey = 'employee_id'; // 主キーのカラム名
     public $incrementing = false; // 自動採番OFFにする（重要！）
@@ -89,19 +88,7 @@ class Employee extends Authenticatable
         'retirement_date',
         'retirement_reason',
         'note',
-        'password',
-        'portal_role',
         'updated_by',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
     ];
 
     /**
@@ -121,9 +108,6 @@ class Employee extends Authenticatable
     {
         $this->fill($request->all());
         
-        if (!$this->exists) {
-            $this->password = bcrypt('bsc' . $this->employee_id);
-        } // パスワードだけ個別処理
         $this->updated_by = Auth::user()->employee_name;
         
         $this->final_academic_date = $request->final_academic_date ? $request->final_academic_date . '-01' : null;
@@ -143,16 +127,6 @@ class Employee extends Authenticatable
         }
 
         $this->save();
-    }
-
-    public function isAdmin(): bool
-    {
-        // ここでは、ユーザーテーブルに 'role' カラムがあり、
-        // その値が 'admin' の場合に管理者を意味すると仮定しています。
-        return $this->portal_role === 1;
-
-        // もしユーザーIDが1のユーザーを管理者とする場合は、以下のように記述できます。
-        // return $this->id === 1;
     }
 
     public function department()
