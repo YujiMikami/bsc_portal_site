@@ -20,6 +20,7 @@ return new class extends Migration
         $table->string('safety_status');
         $table->text('injury_status');
         $table->string('can_work');
+        $table->string('Confirmer');
         $table->timestamps();
         $table->softDeletes();
     });

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Employee;
+use App\Models\EmployeeAccount;
 use App\Models\PaidRequest;
 use Illuminate\Auth\Access\Response;
 class PaidRequestPolicy
@@ -10,7 +10,7 @@ class PaidRequestPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(Employee $employee): bool
+    public function viewAny(EmployeeAccount $employeeAccount): bool
     {
         return false;
     }
@@ -18,16 +18,16 @@ class PaidRequestPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Employee $employee, PaidRequest $paidRequest): bool
+    public function view(EmployeeAccount $employeeAccount, PaidRequest $paidRequest): bool
     {
-        return $employee->employee_id === $paidRequest->employee_id;
+        return $employeeAccount->employee_id === $paidRequest->employee_id && $paidRequest->approver === NULL;
 
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(Employee $employee): bool
+    public function create(EmployeeAccount $employeeAccount): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class PaidRequestPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(Employee $employee, PaidRequest $paidRequest)
+    public function update(EmployeeAccount $employeeAccount, PaidRequest $paidRequest)
     {
         return false;
     }
@@ -43,15 +43,15 @@ class PaidRequestPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(Employee $employee, PaidRequest $paidRequest): bool
+    public function delete(EmployeeAccount $employeeAccount, PaidRequest $paidRequest): bool
     {
-        return $employee->employee_id === $paidRequest->employee_id;
+        return $employeeAccount->employee_id === $paidRequest->employee_id && $paidRequest->approver === NULL;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(Employee $employee, PaidRequest $paidRequest): bool
+    public function restore(EmployeeAccount $employeeAccount, PaidRequest $paidRequest): bool
     {
         return false;
     }
@@ -59,19 +59,19 @@ class PaidRequestPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(Employee $employee, PaidRequest $paidRequest): bool
+    public function forceDelete(EmployeeAccount $employeeAccount, PaidRequest $paidRequest): bool
     {
         return false;
     }
 
-    public function approval(Employee $employee): bool
+    public function approval(EmployeeAccount $employeeAccount): bool
     {
-        return $employee->portal_role === 1;
+        return $employeeAccount->portal_role === 1;
     }
 
-    public function acceptance(Employee $employee): bool
+    public function acceptance(EmployeeAccount $employeeAccount): bool
     {
-        return $employee->department_id	 === 4;
+        return $employeeAccount->department_id	 === 4;
     }
 
 }

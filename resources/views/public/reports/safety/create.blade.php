@@ -39,9 +39,9 @@ use function Psy\debug;
    
                         <div class="mb-6">
                             <label for="department" class="block text-gray-700 text-sm font-bold mb-2">部署：</label>
-                            <select name="department" id="department">
+                            <select name="department" id="department" class="rounded">
                                     @foreach (config('departments') as $key=>$val)
-                                        <option value="{{ $val }}"
+                                        <option value="{{ $key }}"
                                             {{ old('department', Auth::user()->department_id ?? '') == $key ? 'selected' : '' }}>
                                             {{ $val }}
                                         </option>
@@ -51,9 +51,9 @@ use function Psy\debug;
 
                         <div class="mb-6">
                             <label for="affiliation" class="block text-gray-700 text-sm font-bold mb-2">所属</label>
-                            <select name="affiliation" id="affiliation">
+                            <select name="affiliation" id="affiliation" class="rounded">
                                     @foreach (config('affiliations') as $key=>$val)
-                                        <option value="{{ $val }}"
+                                        <option value="{{ $key }}"
                                             {{ old('affiliation', Auth::user()->affiliation_id ?? '') == $key ? 'selected' : '' }}>
                                             {{ $val }}
                                         </option>

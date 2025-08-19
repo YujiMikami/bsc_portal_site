@@ -35,6 +35,7 @@ class EmployeePostController extends Controller
 
         return view('admin.table.employee-posts.show', compact('employeePost'));
     }
+    
     public function edit($employeePostId)
     {
         $employeePost = EmployeePost::findOrFail($employeePostId);

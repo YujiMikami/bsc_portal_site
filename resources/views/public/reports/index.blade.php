@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold text-gray-800">
-            申請・報告
+            申請一覧
         </h2>
 
     </x-slot>

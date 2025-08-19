@@ -76,7 +76,7 @@ return new class extends Migration
         });
 
         Schema::create('employee_accounts', function (Blueprint $table) {
-            $table->integer('employee_id')->primary()->comment('社員番号');
+            $table->unsignedInteger('employee_id')->primary()->comment('社員番号');
             $table->string('employee_name')->comment('社員名（漢字）');
             $table->string('employee_name_furigana')->comment('社員名（かな）')->nullable(true);
             $table->integer('employee_class_id')->comment('社員区分');

@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* スクロールバー非表示 */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.scrollable-x {
+  overflow-x: auto;              /* 横スクロールを有効に */
+  overflow-y: hidden;            /* 縦スクロールは隠す（必要に応じて調整） */
+  -webkit-overflow-scrolling: touch; /* iOS慣性スクロール */
+  touch-action: pan-x;           /* 横方向のパン操作をここだけキャッチし、縦方向はページに任せる */
+}

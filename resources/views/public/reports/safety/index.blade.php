@@ -35,29 +35,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @if ($safety->isEmpty())
-                            <td colspan="6">安否報告はありません。</td>
-                        @else
-                            @foreach ($safety as $val)
-                                <tr>
-                                    <td class="border px-4 py-2">{{ $val->safety_employee_id }}</td>
-                                    <td class="border px-4 py-2">{{ $val->safety_employee_name }}</td>
-                                    <td class="border px-4 py-2">{{ $val->department }}</td>
-                                    <td class="border px-4 py-2">{{ $val->affiliation }}</td>
-                                    <td class="border px-4 py-2">{{ $val->safety_status }}</td>
-                                    <td class="border px-4 py-2">{{ $val->injury_status }}</td>
-                                    <td class="border px-4 py-2">{{ $val->can_work }}</td>
-                                    <td class="border px-4 py-2">{{ $val->created_at }}</td>
-                                    <td>
-                                        <form action="{{ route('public.reports.safety.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer p-0 m-0">削除</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
+                            @if ($safety->isEmpty())
+                                <td colspan="6">安否報告はありません。</td>
+                            @else
+                                @foreach ($safety as $val)
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ $val->safety_employee_id }}</td>
+                                        <td class="border px-4 py-2">{{ $val->safety_employee_name }}</td>
+                                        <td class="border px-4 py-2">{{ config('departments.' . $val->department) }}</td>
+                                        <td class="border px-4 py-2">{{ config('affiliations.' . $val->affiliation) }}</td>
+                                        <td class="border px-4 py-2">{{ $val->safety_status }}</td>
+                                        <td class="border px-4 py-2">{{ $val->injury_status }}</td>
+                                        <td class="border px-4 py-2">{{ $val->can_work }}</td>
+                                        <td class="border px-4 py-2">{{ $val->created_at }}</td>
+                                        <td class="border px-4 py-2">
+                                            <form action="{{ route('public.reports.safety.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:underline bg-transparent cursor-pointer p-0 m-0 mr-4">削除</button>
+                                            </form>
+                                            @can('confirm', $val) {{-- policyを使って制御 --}}
+                                                @if (empty($val->confirmer))
+                                                    <form action="{{ route('public.reports.safety.confirm', $val->id) }}" method="POST" onsubmit="return confirm('確認済みにしますか？');">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="text-green-600 hover:underline bg-transparent cursor-pointer p-0 m-0">確認</button>
+                                                    </form>
+                                                @endif
+                                            @endcan
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

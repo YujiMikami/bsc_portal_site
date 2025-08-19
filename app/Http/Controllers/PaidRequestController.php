@@ -74,6 +74,9 @@ class PaidRequestController extends Controller
         if ($paidRequest->employee_id !== Auth::user()->employee_id) {
             return redirect(route('public.reports.paid-requests.index'))->with('error', '他の申請は更新できません。');
         }
+        if ($paidRequest->approver !== NULL) {
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'すでに承認されています。');
+        }
         } catch (Exception $e) {
             Log::channel('error')->alert('有給申請エラー(PaidRequestController->edit)', [$e->getMessage()]);
             return redirect(route('public.reports.paid-requests.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -110,7 +113,9 @@ class PaidRequestController extends Controller
     {
         try {
             $paidRequest = PaidRequest::findOrFail($id);
-
+        if ($paidRequest->approver !== NULL) {
+            return redirect(route('public.reports.paid-requests.index'))->with('error', 'すでに承認されています。');
+        }
             $paidRequest->delete();
 
         } catch (Exception $e) {

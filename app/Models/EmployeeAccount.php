@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 
 class EmployeeAccount extends Authenticatable
 {
+    use Notifiable;
+    
     protected $table = 'employee_accounts';
     protected $primaryKey = 'employee_id'; // 主キーのカラム名
 
@@ -94,4 +97,13 @@ class EmployeeAccount extends Authenticatable
         return $this->belongsTo(Occupation::class, 'occupation_id', 'occupation_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */    
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class, 'notification_employee_account', 'employee_account_id', 'notification_id', 'employee_id', 'id')
+                    ->withPivot('read_at')
+                    ->withTimestamps();
+    }
 }
