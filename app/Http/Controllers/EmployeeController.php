@@ -196,17 +196,32 @@ class EmployeeController extends Controller
                 }
                 
                 if ($employee->$column != $newValue) {
-                    $changes[] = [
-                        'table_name' => '社員',
-                        'target_id' => $request->employee_id,
-                        'target_name' => $request->employee_name,
-                        'action' => '更新',
-                        'item_name' => $column,
-                        'before_update' => $employee->$column,
-                        'after_update' => $newValue,
-                        'responder' => Auth::user()->employee_name,
-                        'compatible_date' => now(),
-                    ];
+                    if ($column == 'portal_role') {
+                        $changes[] = [
+                            'table_name' => '社員アカウント',
+                            'target_id' => $request->employee_id,
+                            'target_name' => $request->employee_name,
+                            'action' => '更新',
+                            'item_name' => $column,
+                            'before_update' => $employeeAccount->$column,
+                            'after_update' => $newValue,
+                            'responder' => Auth::user()->employee_name,
+                            'compatible_date' => now(),
+                        ];
+
+                    } else {
+                        $changes[] = [
+                            'table_name' => '社員',
+                            'target_id' => $request->employee_id,
+                            'target_name' => $request->employee_name,
+                            'action' => '更新',
+                            'item_name' => $column,
+                            'before_update' => $employee->$column,
+                            'after_update' => $newValue,
+                            'responder' => Auth::user()->employee_name,
+                            'compatible_date' => now(),
+                        ];
+                    }
                 }
             }
 

@@ -90,6 +90,7 @@
             console.log('カラム数:', columnCount);
             $(document).ready(function() {
                 var tableOptions = {
+                    "order": [],
                     //テーブル情報の表示
                     "info": true,
                     //インデックスを指定して設定する

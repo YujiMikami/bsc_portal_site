@@ -86,7 +86,7 @@ class SafetyController extends Controller
     {
         try {
             // 削除対象のタスクを取得。見つからなければ404エラー
-            $safety = safety::findOrFail($id);
+            $safety = Safety::findOrFail($id);
 
             // 論理削除を実行
             $safety->delete(); // SoftDeletesトレイトを使用していれば、deleted_atカラムが更新される
@@ -96,5 +96,21 @@ class SafetyController extends Controller
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
         return redirect(route('public.reports.safety.index'))->with('success', 'タスクが正常に削除されました。');
+    }
+    
+    public function confirm($id)
+    {
+        try {
+            $safety = Safety::findOrFail($id);
+
+            $safety->confirmer = Auth::user()->employee_name;
+            $safety->save();
+        
+        } catch (Exception $e) {
+            Log::channel('error')->alert('安否報告エラー(SafetyController->confirm)', [$e->getMessage()]);
+            return redirect(route('public.reports.safety.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
+        }
+
+        return redirect(route('public.reports.safety.index'))->with('success', '安否報告を確認しました。');
     }
 }

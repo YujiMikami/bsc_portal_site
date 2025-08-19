@@ -50,7 +50,8 @@ use function Psy\debug;
                         <div class="mb-4 flex">
                             <div class="mb-4 mr-3">
                                 <label for="affiliation" class="block text-gray-700 text-sm font-bold mb-2 ">所属</label>
-                                <input type="text" name="affiliation" id="affiliation" value="{{ config('affiliations.' .Auth::user()->affiliation_id) }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" readonly>
+                                <input type="hidden" name="affiliation" value="{{ Auth::user()->affiliation_id }}">
+                                <input type="text" value="{{ config('affiliations.' . Auth::user()->affiliation_id) }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled>
                             </div>
                             <div class="mb-4 mr-3">
                                 <label for="employee_name" class="block text-gray-700 text-sm font-bold mb-2 ">社員名</label>

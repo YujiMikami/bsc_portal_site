@@ -14,24 +14,30 @@ use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PaidRequestController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+Route::get('/public/dashboard', [DashboardController::class, 'index'], function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
-
+    
 Route::middleware('auth')->group(function () {
+
     //profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //notification
+    Route::get('/public/notification/{id}/show', [NotificationController::class, 'show'])->name('public.notification.show');
  
+    //report
     Route::get('/public/reports', [ReportsController::class, 'index'])->name('public.reports.index');
 
         //paidrequest
@@ -50,10 +56,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/public/reports/safety/create', [SafetyController::class, 'create'])->name('public.reports.safety.create');
         Route::post('/public/reports/safety/store', [SafetyController::class, 'store'])->name('public.reports.safety.store');
         Route::delete('/public/reports/safety/{id}/delete', [SafetyController::class, 'destroy'])->name('public.reports.safety.delete');
+        Route::put('/public/reports/safety/{id}/confirm', [SafetyController::class, 'confirm'])->name('public.reports.safety.confirm');
 
     Route::get('/public/documents', [DocumentsController::class, 'index'])->name('public.documents.index');
 
     Route::middleware('admin')->group(function () {
+        
+        //notification
+        Route::get('/admin/notification', [NotificationController::class, 'index'])->name('admin.notification.index');
+        Route::get('/admin/notification/create', [NotificationController::class, 'create'])->name('admin.notification.create');
+        Route::get('/admin/notification/{id}/show', [NotificationController::class, 'show'])->name('admin.notification.show');
+        Route::get('/admin/notification/{id}/edit', [NotificationController::class, 'edit'])->name('admin.notification.edit');
+        Route::put('/admin/notification/{id}/update', [NotificationController::class, 'update'])->name('admin.notification.update');
+        Route::delete('/admin/notification/{id}/delete', [NotificationController::class, 'destroy'])->name('admin.notification.delete');
+        Route::post('/admin/notification/store', [NotificationController::class, 'store'])->name('admin.notification.store');
+
+        //table
         Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table.index');
 
             //employee
