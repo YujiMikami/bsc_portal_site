@@ -26,6 +26,12 @@
                     <x-nav-link href="{{ route('admin.table.occupations.index') }}" :active="request()->routeIs('admin.table.occupations.*')">
                         職種テーブル
                     </x-nav-link>
+                    <x-nav-link href="{{ route('admin.table.smartphone-loans.index') }}" :active="request()->routeIs('admin.table.smartphone-loans.*')">
+                        スマートフォン貸与テーブル
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('admin.table.pc-loans.index') }}" :active="request()->routeIs('admin.table.pc-loans.*')">
+                        ＰＣ貸与テーブル
+                    </x-nav-link>
                 </div>
             </div>
         </div>

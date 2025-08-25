@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\EmployeeAccount;
+use App\Models\NotificationEmployeeAccount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Exception;
@@ -32,7 +34,6 @@ class NotificationController extends Controller
         $user->notifications()->syncWithoutDetaching([
             $notification->id => ['read_at' => now()],
         ]);
-
         return view('public.dashboard.notifications.show', compact('notification')); // 単数形で渡す
     }
 
@@ -109,6 +110,19 @@ class NotificationController extends Controller
         return redirect(route('admin.notification.index'))->with('success', 'お知らせが正常に削除されました。');
     }
 
+    public function unread($id) {
+    
+        $notification = Notification::findOrFail($id);
+
+        // 既読社員ID
+        $readIds = $notification->readEmployees()->pluck('employee_accounts.employee_id');
+        // 未読社員一覧
+        $unreadEmployees = EmployeeAccount::whereNotIn('employee_id', $readIds)
+            ->where('is_retired', NULL)
+            ->get();
+        return view('admin.notifications.unread', compact('unreadEmployees'));
+    }
+
     private function validateNotification(Request $request)
     {
         $rules = [
@@ -129,4 +143,6 @@ class NotificationController extends Controller
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }
+
+
 }

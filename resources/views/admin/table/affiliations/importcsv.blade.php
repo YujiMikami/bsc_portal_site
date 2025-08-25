@@ -20,11 +20,11 @@
                         </a>
                     </div>
                     <h1>インポートするファイルを選択してください。</h1>
-                    <form action="{{ route('admin.table.affiliations.uploadcsv') }}" method="POST" enctype="multipart/form-data">
+                    <form onsubmit="disableButton()" action="{{ route('admin.table.affiliations.uploadcsv') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <label for="csv_file">CSVファイルを選択</label>
                         <input type="file" name="csv_file" required>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">インポート</button>
+                        <button id="submit-btn" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">インポート</button>
                     </form>
                 </div>
             </div>

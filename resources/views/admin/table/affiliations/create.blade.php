@@ -34,7 +34,7 @@ use function Psy\debug;
                         </div>
                     @endif
 
-                    <form action="{{ isset($affiliation) ? route('admin.table.affiliations.update', $affiliation->affiliation_id) : route('admin.table.affiliations.store') }}"  method="POST">
+                    <form onsubmit="disableButton()" action="{{ isset($affiliation) ? route('admin.table.affiliations.update', $affiliation->affiliation_id) : route('admin.table.affiliations.store') }}"  method="POST">
                         @csrf
                             @if (isset($affiliation))
                                 @method('PUT')
@@ -57,7 +57,7 @@ use function Psy\debug;
                         </div>                       
 
                         <div class="flex items-center justify-end">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button id="submit-btn" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 登録
                             </button>
                         </div>

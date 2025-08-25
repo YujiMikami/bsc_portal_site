@@ -34,7 +34,7 @@ use function Psy\debug;
                         </div>
                     @endif
 
-                    <form action="{{ isset($employeeClass) ? route('admin.table.employee-classes.update', $employeeClass->employee_class_id) : route('admin.table.employee-classes.store') }}"  method="POST">
+                    <form onsubmit="disableButton()" action="{{ isset($employeeClass) ? route('admin.table.employee-classes.update', $employeeClass->employee_class_id) : route('admin.table.employee-classes.store') }}"  method="POST">
                         @csrf
                             @if (isset($employeeClass))
                                 @method('PUT')
@@ -52,7 +52,7 @@ use function Psy\debug;
                         </div>
 
                         <div class="flex items-center justify-end">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button id="submit-btn" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 登録
                             </button>
                         </div>
