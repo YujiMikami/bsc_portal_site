@@ -195,8 +195,8 @@ class EmployeeController extends Controller
                     $newValue = $newValue . '-01';
                 }
                 
-                if ($employee->$column != $newValue) {
-                    if ($column == 'portal_role') {
+                if ($column == 'portal_role') {
+                    if ($employeeAccount->$column != $newValue) {
                         $changes[] = [
                             'table_name' => '社員アカウント',
                             'target_id' => $request->employee_id,
@@ -208,20 +208,19 @@ class EmployeeController extends Controller
                             'responder' => Auth::user()->employee_name,
                             'compatible_date' => now(),
                         ];
-
-                    } else {
-                        $changes[] = [
-                            'table_name' => '社員',
-                            'target_id' => $request->employee_id,
-                            'target_name' => $request->employee_name,
-                            'action' => '更新',
-                            'item_name' => $column,
-                            'before_update' => $employee->$column,
-                            'after_update' => $newValue,
-                            'responder' => Auth::user()->employee_name,
-                            'compatible_date' => now(),
-                        ];
                     }
+                } elseif ($employee->$column != $newValue) {
+                    $changes[] = [
+                        'table_name' => '社員',
+                        'target_id' => $request->employee_id,
+                        'target_name' => $request->employee_name,
+                        'action' => '更新',
+                        'item_name' => $column,
+                        'before_update' => $employee->$column,
+                        'after_update' => $newValue,
+                        'responder' => Auth::user()->employee_name,
+                        'compatible_date' => now(),
+                    ];
                 }
             }
 

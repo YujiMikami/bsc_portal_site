@@ -16,6 +16,8 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\PaidRequestController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SmartphoneLoanController;
+use App\Http\Controllers\PcLoanController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +25,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/public/dashboard', [DashboardController::class, 'index'], function () {
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/public/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
     
 Route::middleware('auth')->group(function () {
 
@@ -67,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/notification/create', [NotificationController::class, 'create'])->name('admin.notification.create');
         Route::get('/admin/notification/{id}/show', [NotificationController::class, 'show'])->name('admin.notification.show');
         Route::get('/admin/notification/{id}/edit', [NotificationController::class, 'edit'])->name('admin.notification.edit');
+        Route::get('/admin/notification/{id}/unread', [NotificationController::class, 'unread'])->name('admin.notification.unread');
         Route::put('/admin/notification/{id}/update', [NotificationController::class, 'update'])->name('admin.notification.update');
         Route::delete('/admin/notification/{id}/delete', [NotificationController::class, 'destroy'])->name('admin.notification.delete');
         Route::post('/admin/notification/store', [NotificationController::class, 'store'])->name('admin.notification.store');
@@ -142,11 +145,29 @@ Route::middleware('auth')->group(function () {
             Route::get('/admin/table/employee_classes/importcsv', [EmployeeClassController::class, 'importcsv'])->name('admin.table.employee-classes.importcsv');
             Route::post('/admin/table/employee_classes/uploadcsv', [EmployeeClassController::class, 'uploadcsv'])->name('admin.table.employee-classes.uploadcsv');
 
+            //smartphone_loan
+            Route::get('/admin/table/smartphone_loans', [SmartphoneLoanController::class, 'index'])->name('admin.table.smartphone-loans.index');
+            Route::get('/admin/table/smartphone_loans/create', [SmartphoneLoanController::class, 'create'])->name('admin.table.smartphone-loans.create');
+            Route::get('/admin/table/smartphone_loans/{id}/show', [SmartphoneLoanController::class, 'show'])->name('admin.table.smartphone-loans.show');
+            Route::get('/admin/table/smartphone_loans/{id}/edit', [SmartphoneLoanController::class, 'edit'])->name('admin.table.smartphone-loans.edit');
+            Route::put('/admin/table/smartphone_loans/{id}/update', [SmartphoneLoanController::class, 'update'])->name('admin.table.smartphone-loans.update');
+            Route::post('/admin/table/smartphone_loans/store', [SmartphoneLoanController::class, 'store'])->name('admin.table.smartphone-loans.store');
+            Route::delete('/admin/table/smartphone_loans/{id}/delete', [SmartphoneLoanController::class, 'destroy'])->name('admin.table.smartphone-loans.delete');
+
+            //pc_loan
+            Route::get('/admin/table/pc_loans', [PcLoanController::class, 'index'])->name('admin.table.pc-loans.index');
+            Route::get('/admin/table/pc_loans/create', [PcLoanController::class, 'create'])->name('admin.table.pc-loans.create');
+            Route::get('/admin/table/pc_loans/{id}/show', [PcLoanController::class, 'show'])->name('admin.table.pc-loans.show');
+            Route::get('/admin/table/pc_loans/{id}/edit', [PcLoanController::class, 'edit'])->name('admin.table.pc-loans.edit');
+            Route::put('/admin/table/pc_loans/{id}/update', [PcLoanController::class, 'update'])->name('admin.table.pc-loans.update');
+            Route::post('/admin/table/pc_loans/store', [PcLoanController::class, 'store'])->name('admin.table.pc-loans.store');
+            Route::delete('/admin/table/pc_loans/{id}/delete', [PcLoanController::class, 'destroy'])->name('admin.table.pc-loans.delete');
+
         Route::get('/admin/system', [SystemController::class, 'index'])->name('admin.system.index');
         
             //log
             Route::get('/admin/system/log', [LogController::class, 'index'])->name('admin.system.log.index');
 
     });
-    });
+});
 require __DIR__.'/auth.php';

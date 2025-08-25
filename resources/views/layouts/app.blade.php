@@ -60,6 +60,11 @@
             $(document).ready(function() {
                 $('.p-selectbox2').select2();
             });
+        
+            function disableButton() {
+                const btn = document.getElementById('submit-btn');
+                btn.disabled = true;
+            }
         </script>
         @stack('script')
     </body>

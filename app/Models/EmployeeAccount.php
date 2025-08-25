@@ -14,6 +14,15 @@ class EmployeeAccount extends Authenticatable
     protected $table = 'employee_accounts';
     protected $primaryKey = 'employee_id'; // 主キーのカラム名
 
+    // 退職者はログイン対象外にする
+    public function getAuthPassword()
+    {
+        if ($this->is_retired) {   // 退職フラグ
+            return null;           // 認証を通さない
+        }
+        return $this->password;
+    }
+
     protected $fillable = [
         'employee_id',
         'employee_name',
@@ -26,6 +35,7 @@ class EmployeeAccount extends Authenticatable
         //'email',
         'password',
         'portal_role',
+        'is_retired',
     ];
 
     public function saveEmployeeAccount(Request $request)
@@ -47,6 +57,11 @@ class EmployeeAccount extends Authenticatable
         //$this->email = $request->input('email');
         //$this->password = $request->input('password');
         $this->portal_role = $request->input('portal_role');
+        if ($request->input('retirement_date')) {
+            $this->is_retired = 1;
+        } else {
+            $this->is_retired = NULL;
+        }
 
         $this->save();
     }

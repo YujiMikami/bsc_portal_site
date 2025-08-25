@@ -9,7 +9,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <table class="table-auto w-full border jQ-table">
+                    <div class="mb-6 text-gray-900">
+                        <a href="{{ route('admin.table.employees.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            戻る
+                        </a>
+                    </div>
+                    <table class="table-auto w-full border">
                         @foreach ($employee->getAttributes() as $key=>$val)
                             @if ($key === 'password' || $key === 'remember_token')
                                 @continue

@@ -24,10 +24,10 @@
                         </a>
                     @endcan
                 
-                    <h2 class="mt-6">📢 お知らせ</h2>
+                    <h2 class="mt-6 mb-6">📢 お知らせ</h2>
                     <ul>
                         @forelse($notifications as $notice)
-                        <li>
+                        <li class="mt-6 mb-6">
                         <a href="{{ route('public.notification.show', $notice->id) }}">
                                     {{ $notice->title }}
                                 </a>

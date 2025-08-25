@@ -19,7 +19,7 @@
                                         <th class="border px-4 py-2">テーブル名</th>
                                         <th class="border px-4 py-2">ID</th>
                                         <th class="border px-4 py-2">名前</th>
-                                        <th class="border px-4 py-2">行動</th>
+                                        <th class="border px-4 py-2">処理</th>
                                         <th class="border px-4 py-2">項目名</th>
                                         <th class="border px-4 py-2">変更前</th>
                                         <th class="border px-4 py-2">変更後</th>

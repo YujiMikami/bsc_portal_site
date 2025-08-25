@@ -9,6 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <div class="mb-6 text-gray-900">
+                        <a href="{{ route('admin.table.occupations.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            戻る
+                        </a>
+                    </div>
                     <p class="mb-2">職種ID:{{ $occupation->occupation_id }}</p>
                     <p class="mb-2">職種名:{{ $occupation->occupation_name }}</p>
                 </div>

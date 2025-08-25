@@ -46,10 +46,14 @@
                                 <td class="border px-4 py-2">{{ $val->end_at }}</td>
                                 <td class="border px-4 py-2">
                                     <div class="flex items-center space-x-4">
+                                        {{-- 詳細ボタンを追加 --}}
+                                        <a href="{{ route('admin.notification.show', $val->id) }}" class="ml-2 text-blue-600 hover:underline">詳細</a>
                                         @if ($val->start_at > now())
                                         {{-- 編集ボタンを追加 --}}
-                                            <a href="{{ route('admin.notification.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
+                                        <a href="{{ route('admin.notification.edit', $val->id) }}" class="ml-2 text-green-600 hover:underline">編集</a>
                                         @endif
+                                        {{-- 未読者一覧ボタンを追加 --}}
+                                        <a href="{{ route('admin.notification.unread', $val->id) }}" class="ml-2 text-orange-600 hover:underline">未読者一覧</a>
                                         {{-- 削除ボタンの追加 --}}
                                         <form action="{{ route('admin.notification.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                             @csrf

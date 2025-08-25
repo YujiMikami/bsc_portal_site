@@ -35,4 +35,9 @@ class Notification extends Model
                     ->withPivot('read_at')
                     ->withTimestamps();
     }
+
+    public function readEmployees()
+    {
+        return $this->belongsToMany(EmployeeAccount::class, 'notification_employee_account', 'notification_id', 'employee_account_id', 'id', 'employee_id');
+    }
 }
