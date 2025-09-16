@@ -18,6 +18,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SmartphoneLoanController;
 use App\Http\Controllers\PcLoanController;
+use App\Http\Controllers\TransportationExpensesController;
+use App\Http\Middleware\NoCache;
 
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +54,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/public/reports/paid-rquests/{id}/delete', [PaidRequestController::class, 'destroy'])->name('public.reports.paid-requests.delete');
         Route::put('/public/reports/paid-requests/{id}/approval', [PaidRequestController::class, 'approval'])->name('public.reports.paid-requests.approval');
         Route::put('/public/reports/paid-requests/{id}/acceptance', [PaidRequestController::class, 'acceptance'])->name('public.reports.paid-requests.acceptance');
-    
+
+        //transportationexpenses
+        Route::get('/public/reports/transportation-expenses', [TransportationExpensesController::class, 'index'])->name('public.reports.transportation-expenses.index');
+        Route::get('/public/reports/transportation-expenses/create', [TransportationExpensesController::class, 'create'])->name('public.reports.transportation-expenses.create');
+        Route::post('/public/reports/transportation-expenses/store', [TransportationExpensesController::class, 'store'])->name('public.reports.transportation-expenses.store');
+        Route::put('/public/reports/transportation-expenses/{id}/{date}/update', [TransportationExpensesController::class, 'update'])->name('public.reports.transportation-expenses.update');
+        Route::get('/public/reports/transportation-expenses/{id}/{date}/show', [TransportationExpensesController::class, 'show'])->name('public.reports.transportation-expenses.show');
+        Route::get('/public/reports/transportation-expenses/{id}/{date}/edit', [TransportationExpensesController::class, 'edit'])->name('public.reports.transportation-expenses.edit');
+        Route::delete('/public/reports/transportation-expenses/{id}/{date}/delete', [TransportationExpensesController::class, 'destroy'])->name('public.reports.transportation-expenses.delete');
+        Route::put('/public/reports/transportation-expenses/{id}/{date}/approval', [TransportationExpensesController::class, 'approval'])->name('public.reports.transportation-expenses.approval');
+        Route::put('/public/reports/transportation-expenses/{id}/{date}/acceptance', [TransportationExpensesController::class, 'acceptance'])->name('public.reports.transportation-expenses.acceptance');
+
         //safety
         Route::get('/public/reports/safety', [SafetyController::class, 'index'])->name('public.reports.safety.index');
         Route::get('/public/reports/safety/create', [SafetyController::class, 'create'])->name('public.reports.safety.create');

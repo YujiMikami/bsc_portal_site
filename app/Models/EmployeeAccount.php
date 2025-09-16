@@ -112,6 +112,12 @@ class EmployeeAccount extends Authenticatable
         return $this->belongsTo(Occupation::class, 'occupation_id', 'occupation_id');
     }
 
+    public function TransportationExpense()
+    {
+        return $this->hasMany(TransportationExpense::class, 'employee_id');
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */    

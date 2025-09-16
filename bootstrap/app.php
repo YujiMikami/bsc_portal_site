@@ -13,9 +13,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->appendToGroup('admin', [
-            RoleCheck::class,
-        ]);
+        $middleware->appendToGroup(
+            'admin', [
+                RoleCheck::class,
+            ],
+        );
+        $middleware->appendToGroup(
+            'web', [
+            \App\Http\Middleware\NoCache::class,
+        ]
+
+        );
+        $middleware->alias([
+            'no-cache' => \App\Http\Middleware\NoCache::class,
+        ]);    
     })
     
     ->withExceptions(function (Exceptions $exceptions): void {

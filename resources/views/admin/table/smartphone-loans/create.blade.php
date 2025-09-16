@@ -123,9 +123,9 @@ use function Psy\debug;
                                 <div class="mb-4 mr-3">
                                     <label for="guarantee" class="block text-gray-700 text-sm font-bold mb-2">あんしん保証パック：</label>
                                     <select name="guarantee" id="guarantee" class="rounded leading-tight">
-                                        <option value="1" {{ old('guarantee', $smartphoneLoan->guarantee ?? '') == 1 ? 'selected' : '' }}>加入</option>
-                                        <option value="2" {{ old('guarantee', $smartphoneLoan->guarantee ?? '') == 2 ? 'selected' : '' }}>未加入</option>
-                                        <option value="3" {{ old('guarantee', $smartphoneLoan->guarantee ?? '') == 3 ? 'selected' : '' }}>不明</option>
+                                        @foreach (config('const.guarantee') as $key=>$val)
+                                            <option value=$key {{ old('guarantee', $smartphoneLoan->guarantee ?? '') == $key ? 'selected' : '' }}>{{ $val }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

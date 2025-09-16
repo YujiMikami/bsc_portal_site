@@ -17,14 +17,14 @@
                     <p class="mb-2">電話番号:{{ $smartphoneLoan->phone_number }}</p>
                     <p class="mb-2">貸与者社員番号:{{ $smartphoneLoan->employee_id }}</p>
                     <p class="mb-2">貸与者氏名:{{ $smartphoneLoan->employee_name }}</p>
-                    <p class="mb-2">部署１:{{ $smartphoneLoan->department_1 }}</p>
-                    <p class="mb-2">部署２:{{ $smartphoneLoan->department_2 }}</p>
-                    <p class="mb-2">所属:{{ $smartphoneLoan->affiliation }}</p>
+                    <p class="mb-2">部署１:{{ config('departments.' . $smartphoneLoan->department_1) }}</p>
+                    <p class="mb-2">部署２:{{ config('departments.' . $smartphoneLoan->department_2) }}</p>
+                    <p class="mb-2">所属:{{ config('affiliations.' . $smartphoneLoan->affiliation) }}</p>
                     <p class="mb-2">メールアドレス:{{ $smartphoneLoan->email }}</p>
                     <p class="mb-2">貸与開始日:{{ $smartphoneLoan->loan_start_at }}</p>
                     <p class="mb-2">貸与終了日:{{ $smartphoneLoan->loan_end_at }}</p>
                     <p class="mb-2">機種:{{ $smartphoneLoan->model }}</p>
-                    <p class="mb-2">あんしん保証パック:{{ $smartphoneLoan->guarantee }}</p>
+                    <p class="mb-2">あんしん保証パック:{{ config('const.guarantee.' . $smartphoneLoan->guarantee) }}</p>
                     <p class="mb-2">更新者:{{ $smartphoneLoan->update_by }}</p>
                 </div>
             </div>

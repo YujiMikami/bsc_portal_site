@@ -3,8 +3,15 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\TransportationExpense;
+use App\Models\PaidRequest;
 use App\Models\EmployeeAccount;
+use App\Models\Safety;
+use App\Policies\TransportationExpensePolicy;
+use App\Policies\PaidRequestPolicy;
+use App\Policies\SafetyPolicy;
 use Illuminate\Support\Facades\Gate;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -14,6 +21,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         //
     }
+
+    protected $policies = [
+        TransportationExpense::class => TransportationExpensePolicy::class,
+        PaidRequest::class => PaidRequestPolicy::class,
+        Safety::class => SafetyPolicy::class,
+    ];
 
     /**
      * Bootstrap services.

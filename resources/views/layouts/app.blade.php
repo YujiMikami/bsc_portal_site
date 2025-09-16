@@ -60,10 +60,14 @@
             $(document).ready(function() {
                 $('.p-selectbox2').select2();
             });
+        </script>
         
+        {{--submit後に無効化--}}
+        <script>
             function disableButton() {
-                const btn = document.getElementById('submit-btn');
-                btn.disabled = true;
+                document.querySelectorAll('input[type="submit"], button[type="submit"]').forEach(btn => {
+                setTimeout(() => btn.disabled = true, 0);
+                });
             }
         </script>
         @stack('script')
