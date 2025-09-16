@@ -17,9 +17,9 @@ return new class extends Migration
             $table->integer('target_id')->comment('ID');
             $table->string('target_name')->comment('名前');
             $table->string('action')->comment('行動');
-            $table->string('item_name')->comment('項目名')->nullable(true);
-            $table->string('before_update')->comment('更新前')->nullable(true);
-            $table->string('after_update')->comment('更新後')->nullable(true);
+            $table->string('item_name')->comment('項目名')->nullable();
+            $table->string('before_update')->comment('更新前')->nullable();
+            $table->string('after_update')->comment('更新後')->nullable();
             $table->string('responder')->comment('対応者');
             $table->date('compatible_date')->comment('対応日');
             $table->softDeletes();

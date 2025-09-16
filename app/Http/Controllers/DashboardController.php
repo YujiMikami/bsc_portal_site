@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PaidRequest;
 use App\Models\Safety;
 use App\Models\Notification;
+use App\Models\TransportationExpense;
 use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
@@ -16,19 +17,43 @@ class DashboardController extends Controller
     public function index()
     {
         $message = [];
-        if (Auth::user()->portal_role == 1) {
+        if (Auth::user()->employee_post_id == 4 || Auth::user()->portal_role == 1) {
+            // 有給申請カウント
             $countPaidRequest = PaidRequest::where('affiliation', Auth::user()->affiliation_id)
-            ->whereNull('approver')
-            ->count();
+                ->whereNull('approver')
+                ->count();
+            // 安否報告カウント
             $countSafety = Safety::where('affiliation', Auth::user()->affiliation_id)
-            ->whereNull('confirmer')
-            ->count();
+                ->whereNull('confirmer')
+                ->count();
+            // 交通費申請カウント
+            $query = TransportationExpense::select('employee_id', 'applied_date')
+                ->where('submitted', 1);
+
+            if (Auth::user()->portal_role == 1) {
+                $query->whereNull('recipient')
+                    ->whereNotNull('approver');
+            } else {
+                $query->whereNull('approver')
+                    ->whereHas('employeeAccount', function($q) {
+                        $q->where('affiliation_id', Auth::user()->affiliation_id);
+                    });
+            }
+
+            // groupBy 後に get() して Collection に変換
+            $groups = $query->groupBy('employee_id', 'applied_date')->get();
+
+            // グループ数をカウント
+            $countTransportationExpense = $groups->count();
         
             if ($countPaidRequest !== 0) {
                 $message[]='有給申請が' . $countPaidRequest . '件来ています';
             }
             if ($countSafety !== 0) {
                 $message[]='安否報告が' . $countSafety . '件来ています';
+            }
+            if ($countTransportationExpense !== 0) {
+                $message[]='交通費申請が' . $countTransportationExpense . '件来ています';
             }
         }
 

@@ -34,7 +34,7 @@
                     </div>
                     <p class="mb-2">申請日 : {{ $paidRequest->application_date }}</p>
                     <p class="mb-2">社員番号 : {{ $paidRequest->employee_id }}</p>
-                    <p class="mb-2">所属 : {{ $paidRequest->affiliation }}</p>
+                    <p class="mb-2">所属 : {{ config('affiliations.' . $paidRequest->affiliation) }}</p>
                     <p class="mb-2">社員名 : {{ $paidRequest->employee_name }}</p>
                     <p class="mb-2">開始日 : {{ $paidRequest->start_date }}</p>
                     <p class="mb-2">終了日 : {{ $paidRequest->end_date }}</p>
