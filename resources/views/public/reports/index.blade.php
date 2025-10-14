@@ -16,7 +16,7 @@
                         </div>
                     @endif
                     <h1 class="text-2xl">処理中有給申請</h1>
-                    <table class="table-auto w-full border">
+                    <table class="table-auto w-full border mb-10">
                         <thead>
                             <tr>
                                 <th class="border px-4 py-2">申請日</th>

@@ -75,7 +75,7 @@ class TransportationExpensesController extends Controller
             $message = '交通費申請を保存しました。';
 
         }
-            return redirect()->route('public.reports.transportation-expenses.index')->with('success', $message);
+        return redirect()->route('public.reports.transportation-expenses.index')->with('success', $message);
     }
 
     public function show($id, $date)

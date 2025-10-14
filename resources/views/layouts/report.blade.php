@@ -17,6 +17,24 @@
                     <x-nav-link href="{{ route('public.reports.safety.index') }}" :active="request()->routeIs('public.reports.safety.*')">
                         安否報告
                     </x-nav-link>
+                    <x-nav-link>
+                        通勤費申請
+                    </x-nav-link>
+                    <x-nav-link>
+                        備品購入申請
+                    </x-nav-link>
+                    <x-nav-link>
+                        各種変更届
+                    </x-nav-link>
+                    <x-nav-link>
+                        訃報連絡
+                    </x-nav-link>
+                    <x-nav-link>
+                        結婚連絡
+                    </x-nav-link>
+                    <x-nav-link>
+                        出産報告
+                    </x-nav-link>
                 </div>
             </div>
         </div>

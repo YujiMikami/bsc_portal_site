@@ -51,7 +51,7 @@ use function Psy\debug;
                             <div class="mb-4 mr-3">
                                 <label for="affiliation" class="block text-gray-700 text-sm font-bold mb-2 ">所属</label>
                                 <input type="hidden" name="affiliation" value="{{ Auth::user()->affiliation_id }}">
-                                <input type="text" value="{{ config('affiliations.' . Auth::user()->affiliation_id) }}" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled>
+                                <input type="text" value="{{ config('affiliations.' . Auth::user()->affiliation_id) }}" class="shadow appearance-none border rounded py-2 px-3 w-60 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled>
                             </div>
                             <div class="mb-4 mr-3">
                                 <label for="employee_name" class="block text-gray-700 text-sm font-bold mb-2 ">社員名</label>
@@ -97,7 +97,7 @@ use function Psy\debug;
                         </div>
 
                         <div class="flex items-center justify-end">
-                            <a href="{{ route('public.reports.paid-requests.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ route('public.reports.paid-requests.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded focus:outline-none focus:shadow-outline">
                                 戻る
                             </a>
                             <button id="submit-btn" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

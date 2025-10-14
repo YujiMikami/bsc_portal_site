@@ -13,12 +13,18 @@ class PaidRequestController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->portal_role == 1) {
-            $paidRequests = PaidRequest::orderBy('id', 'desc')->get();
-        } else {
-            $paidRequests = PaidRequest::where('employee_id', auth::user()->employee_id)->orderBy('id', 'desc')->get();
+        $query = PaidRequest::query();
+        if (Auth::user()->portal_role == 1) {       // 管理者だったら
+            $query->whereNotNull('approver')        // 承認済みで
+                ->whereNull('recipient');           // 未受理のレコード
+        } elseif (Auth::user()->employee_post_id == 4) {                    // 上司だったら
+            $query->where('affiliation', Auth::user()->affiliation_id)      // 所属が同じで
+                ->whereNull('approver');                                    // 未承認のレコード
+        } else {                                                            // 申請者だったら
+            $query->where('employee_id', Auth::user()->employee_id);        // 自分の申請のレコード
         }
-          
+        $paidRequests = $query->orderBy('id', 'desc')
+            ->get();
         return view('public.reports.paid-requests.index', compact('paidRequests'));
     }
 
@@ -56,7 +62,9 @@ class PaidRequestController extends Controller
     {
         try {
             $paidRequest = PaidRequest::findOrFail($id);
-        if ($paidRequest->employee_id !== Auth::user()->employee_id && Auth::user()->portal_role !== 1) {
+        if ($paidRequest->employee_id !== Auth::user()->employee_id 
+            && Auth::user()->portal_role !== 1
+            && Auth::user()->employee_post_id !== 4) {
             return redirect(route('public.reports.paid-requests.index'))->with('error', '他の申請は閲覧できません。');
         }
 
@@ -67,6 +75,7 @@ class PaidRequestController extends Controller
 
         return view('public.reports.paid-requests.show', compact('paidRequest'));
     }
+
     public function edit($id)
     {
         try {

@@ -21,7 +21,7 @@ class PaidRequestPolicy
     public function view(EmployeeAccount $employeeAccount, PaidRequest $paidRequest): bool
     {
         return $employeeAccount->employee_id === $paidRequest->employee_id && $paidRequest->approver === NULL;
-
+// ここ修正
     }
 
     /**
@@ -66,12 +66,12 @@ class PaidRequestPolicy
 
     public function approval(EmployeeAccount $employeeAccount): bool
     {
-        return $employeeAccount->portal_role === 1;
+        return $employeeAccount->employee_post_id === 4;
     }
 
     public function acceptance(EmployeeAccount $employeeAccount): bool
     {
-        return $employeeAccount->department_id	 === 4;
+        return $employeeAccount->portal_role === 1;
     }
 
 }

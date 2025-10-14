@@ -19,7 +19,6 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SmartphoneLoanController;
 use App\Http\Controllers\PcLoanController;
 use App\Http\Controllers\TransportationExpensesController;
-use App\Http\Middleware\NoCache;
 
 use Illuminate\Support\Facades\Route;
 

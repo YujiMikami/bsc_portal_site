@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\RoleCheck;
+use App\Http\Middleware\NoCache;
 
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -20,12 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
         );
         $middleware->appendToGroup(
             'web', [
-            \App\Http\Middleware\NoCache::class,
-        ]
-
+                NoCache::class,
+            ]
         );
         $middleware->alias([
-            'no-cache' => \App\Http\Middleware\NoCache::class,
         ]);    
     })
     

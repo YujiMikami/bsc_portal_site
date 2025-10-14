@@ -66,7 +66,6 @@ use function Psy\debug;
                                 @endforeach
                             @endforelse
                         </div>
-
                         {{-- 新規行追加 --}}
                         <button type="button" id="add-row" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mb-4">+ 行を追加</button>
                         <div class="flex items-center justify-end">
@@ -139,5 +138,6 @@ use function Psy\debug;
 
             return true;
         }
+
     </script>
 </x-app-layout>

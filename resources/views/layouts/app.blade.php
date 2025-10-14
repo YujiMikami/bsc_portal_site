@@ -70,6 +70,24 @@
                 });
             }
         </script>
+
+        {{--ブラウザバックでフォーム初期化--}}
+        <script>
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+                    document.querySelectorAll('form').forEach(f => f.reset());
+                }
+            });
+        </script>
+
+        {{--入力文字数に応じて width を調整--}}
+        <script>
+            function adjustWidth(el) {
+                el.size = el.value.length || 1; // 1文字以上で調整
+            }
+        </script>
+
         @stack('script')
+
     </body>
 </html>

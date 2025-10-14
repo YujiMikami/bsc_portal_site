@@ -67,7 +67,7 @@ class EmployeeController extends Controller
     {
         try {
             $employee = Employee::findOrFail($employee_id);
-            $employeeAccount = Employee::findOrFail($employee_id);
+            $employeeAccount = EmployeeAccount::findOrFail($employee_id);
 
             $employee->delete();
             $employeeAccount->delete();
