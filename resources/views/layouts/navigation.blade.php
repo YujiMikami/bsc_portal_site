@@ -28,6 +28,9 @@
                             ポータル管理
                         </x-nav-link>
                     @endcan
+                    <x-nav-link href="https://www.b-supp.co.jp" target="_blank">
+                        ホームページ
+                    </x-nav-link>
                 </div>
             </div>
             <!-- Settings Dropdown -->

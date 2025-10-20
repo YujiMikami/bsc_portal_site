@@ -19,6 +19,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SmartphoneLoanController;
 use App\Http\Controllers\PcLoanController;
 use App\Http\Controllers\TransportationExpensesController;
+use App\Http\Controllers\InternalDocumentsController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -72,7 +73,19 @@ Route::middleware('auth')->group(function () {
         Route::delete('/public/reports/safety/{id}/delete', [SafetyController::class, 'destroy'])->name('public.reports.safety.delete');
         Route::put('/public/reports/safety/{id}/confirm', [SafetyController::class, 'confirm'])->name('public.reports.safety.confirm');
 
-    Route::get('/public/documents', [DocumentsController::class, 'index'])->name('public.documents.index');
+        // documents
+        Route::get('/public/documents', [DocumentsController::class, 'index'])->name('public.documents.index');
+        Route::get('/public/documents/create', [DocumentsController::class, 'create'])->name('public.documents.create');
+        Route::post('/public/documents/store', [DocumentsController::class, 'store'])->name('public.documents.store');
+        Route::get('/public/documents/{id}/edit', [DocumentsController::class, 'edit'])->name('public.documents.edit');
+        Route::delete('/public/documents/{document}/delete', [DocumentsController::class, 'destroy'])->name('public.documents.delete');
+        Route::put('/public/documents/{document}/update', [DocumentsController::class, 'update'])->name('public.documents.update');
+        Route::get('/public/documents/{id}/view/', [DocumentsController::class, 'view'])->name('public.documents.view');
+
+
+
+
+
 
     Route::middleware('admin')->group(function () {
         
