@@ -27,10 +27,8 @@ class PcLoan extends Model
         'ms_pass',
     ];
 
-    protected $casts = [
+    protected $casts = [];
 
-    ];
-    
     public function savePcLoan(Request $request)
     {
         $this->pc_number = $request->input('pc_number');

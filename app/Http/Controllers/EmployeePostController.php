@@ -35,7 +35,7 @@ class EmployeePostController extends Controller
 
         return view('admin.table.employee-posts.show', compact('employeePost'));
     }
-    
+
     public function edit($employeePostId)
     {
         $employeePost = EmployeePost::findOrFail($employeePostId);
@@ -81,7 +81,6 @@ class EmployeePostController extends Controller
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -98,7 +97,7 @@ class EmployeePostController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.table.employeePosts.create ルートに変更
-            return redirect(route('admin.table.employee-posts.create')) 
+            return redirect(route('admin.table.employee-posts.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -109,8 +108,8 @@ class EmployeePostController extends Controller
         $employeePost = new EmployeePost();
         // $request オブジェクトを直接 saveEmployeePost メソッドに渡す
         try {
-            $employeePost->saveEmployeePost($request); 
-        
+            $employeePost->saveEmployeePost($request);
+
             TableHistory::create([
                 'table_name' => '役職',
                 'target_id' => $request->employee_post_id,
@@ -118,8 +117,7 @@ class EmployeePostController extends Controller
                 'action' => '新規',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);   
-        
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -132,9 +130,9 @@ class EmployeePostController extends Controller
     {
         try {
             $employeePost = EmployeePost::findOrFail($employeePostId);
-            
+
             $employeePost->delete();
-            
+
             // TableHistoryに更新履歴を保存
             TableHistory::create([
                 'table_name' => '役職',
@@ -144,7 +142,6 @@ class EmployeePostController extends Controller
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
             ]);
-
         } catch (Exception $e) {
             Log::channel('error')->alert('役職テーブルエラー(EmployeeClassController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-posts.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -167,11 +164,11 @@ class EmployeePostController extends Controller
             'employee_post_id.unique' => ':attributeはすでに登録されています。',
             'employee_post_name.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'employee_post_id' => '役職ID',
             'employee_post_name' => '役職名',
-         ];
+        ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }
@@ -218,7 +215,6 @@ class EmployeePostController extends Controller
                 ], [
                     'employee_post_name' => $data[1],
                 ]);
-
             }
             fclose($handle);
             DB::commit();
@@ -230,4 +226,3 @@ class EmployeePostController extends Controller
         }
     }
 }
-

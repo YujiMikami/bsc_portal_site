@@ -4,24 +4,27 @@
             安否報告
         </h2>
     </x-slot>
-    
+
     <!DOCTYPE html>
-        <div class="py-6">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white shadow-sm rounded-lg">
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if (session('success'))
-                        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded relative" role="alert">
+                        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded relative"
+                            role="alert">
                             {{ session('success') }}
                         </div>
                     @endif
                     @if (session('error'))
-                            <div class="mb-4 p-4 bg-red-100 border border-green-400 text-green-700 rounded relative" role="alert">
-                                {{ session('error') }}
-                            </div>
-                        @endif
+                        <div class="mb-4 p-4 bg-red-100 border border-green-400 text-green-700 rounded relative"
+                            role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div class="flex justify-start mb-4">
-                        <a href="{{ route('public.reports.safety.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('public.reports.safety.create') }}"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             安否報告
                         </a>
                     </div>
@@ -47,24 +50,31 @@
                                     <tr>
                                         <td class="border px-4 py-2">{{ $val->safety_employee_id }}</td>
                                         <td class="border px-4 py-2">{{ $val->safety_employee_name }}</td>
-                                        <td class="border px-4 py-2">{{ config('departments.' . $val->department) }}</td>
-                                        <td class="border px-4 py-2">{{ config('affiliations.' . $val->affiliation) }}</td>
+                                        <td class="border px-4 py-2">{{ config('departments.' . $val->department) }}
+                                        </td>
+                                        <td class="border px-4 py-2">{{ config('affiliations.' . $val->affiliation) }}
+                                        </td>
                                         <td class="border px-4 py-2">{{ $val->safety_status }}</td>
                                         <td class="border px-4 py-2">{{ $val->injury_status }}</td>
                                         <td class="border px-4 py-2">{{ $val->can_work }}</td>
                                         <td class="border px-4 py-2">{{ $val->created_at }}</td>
                                         <td class="border px-4 py-2">
-                                            <form action="{{ route('public.reports.safety.delete', $val->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                            <form action="{{ route('public.reports.safety.delete', $val->id) }}"
+                                                method="POST" onsubmit="return confirm('本当に削除しますか？');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:underline bg-transparent cursor-pointer p-0 m-0 mr-4">削除</button>
+                                                <button type="submit"
+                                                    class="text-red-600 hover:underline bg-transparent cursor-pointer p-0 m-0 mr-4">削除</button>
                                             </form>
-                                            @can('confirm', $val) {{-- policyを使って制御 --}}
+                                            @can('confirm', $val)
+                                                {{-- policyを使って制御 --}}
                                                 @if (empty($val->confirmer))
-                                                    <form action="{{ route('public.reports.safety.confirm', $val->id) }}" method="POST" onsubmit="return confirm('確認済みにしますか？');">
+                                                    <form action="{{ route('public.reports.safety.confirm', $val->id) }}"
+                                                        method="POST" onsubmit="return confirm('確認済みにしますか？');">
                                                         @csrf
                                                         @method('PUT')
-                                                        <button type="submit" class="text-green-600 hover:underline bg-transparent cursor-pointer p-0 m-0">確認</button>
+                                                        <button type="submit"
+                                                            class="text-green-600 hover:underline bg-transparent cursor-pointer p-0 m-0">確認</button>
                                                     </form>
                                                 @endif
                                             @endcan

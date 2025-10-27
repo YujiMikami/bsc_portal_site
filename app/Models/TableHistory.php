@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TableHistory extends Model
 {
     public $timestamps = false;
-    
+
     protected $fillable = [
         'table_name',
         'target_id',

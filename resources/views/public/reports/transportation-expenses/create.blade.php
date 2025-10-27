@@ -19,7 +19,8 @@ use function Psy\debug;
 
                     {{-- バリデーションエラーメッセージの表示 --}}
                     @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative" role="alert">
+                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative"
+                            role="alert">
                             <strong class="font-bold">入力内容にエラーがあります！</strong>
                             <ul class="mt-2 list-disc list-inside">
                                 @foreach ($errors->all() as $error)
@@ -28,15 +29,14 @@ use function Psy\debug;
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ isset($transportationExpenses) && $transportationExpenses->isNotEmpty() ? route('public.reports.transportation-expenses.update', ['id' => $transportationExpenses->first()->employee_id, 'date' => $transportationExpenses->first()->applied_date]) : route('public.reports.transportation-expenses.store') }}" method="POST" onsubmit="return handleSubmit(event)">
+                    <form
+                        action="{{ isset($transportationExpenses) && $transportationExpenses->isNotEmpty() ? route('public.reports.transportation-expenses.update', ['id' => $transportationExpenses->first()->employee_id, 'date' => $transportationExpenses->first()->applied_date]) : route('public.reports.transportation-expenses.store') }}"
+                        method="POST" onsubmit="return handleSubmit(event)">
                         @csrf
                         @if (isset($transportationExpenses))
                             @method('PUT')
                         @endif
-                        <div class="mb-4 mr-3">
-                            <label for="applied_date" class="block text-gray-700 text-sm font-bold mb-2">申請予定日：</label>
-                            <input type="date" name="applied_date" id="applied_date" value="{{ old('applied_date', isset($transportationExpenses) ? \Carbon\Carbon::parse($transportationExpenses->first()->applied_date)->format('Y-m-d') : '') }}" class="shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
+
                         <label class="text-gray-700 text-sm font-bold ml-8 mr-10">利用日</label>
                         <label class="text-gray-700 text-sm font-bold ml-20 mr-20">始点</label>
                         <label class="text-gray-700 text-sm font-bold ml-24 mr-20">終点</label>
@@ -45,35 +45,53 @@ use function Psy\debug;
                             @forelse (collect(old('use_date', $transportationExpenses ?? []))->values() as $i => $expense )
                                 <div class="expense-row flex mb-4 items-center">
                                     <span class="row-number mr-2 w-5 ">{{ $i + 1 }}</span>
-                                    <input type="hidden" name="expense_id[]" value="{{ $expense->id ?? '' }}">    
-                                    <input type="date" name="use_date[]" value="{{ old('use_date.' . $i, isset($expense['use_date']) ? $expense['use_date']->format('Y-m-d') : '') }}" class="mr-2 w-40">
-                                    <input type="text" name="route_start[]" value="{{ old('route_start.' . $i, $expense['route_start'] ?? '') }}" class="mr-2">
-                                    <input type="text" name="route_end[]" value="{{ old('route_end.' . $i, $expense['route_end'] ?? '') }}" class="mr-2">
-                                    <input type="text" name="amount[]" value="{{ old('amount.' . $i, $expense['amount'] ?? '') }}" class="mr-2">
-                                    <button type="button" class="remove-row bg-red-500 hover:bg-red-700 text-white px-2 rounded">削除</button>
+                                    <input type="hidden" name="expense_id[]"
+                                        value="{{ old('expense_id.' . $i, $expense->id ?? '') }}">
+                                    <input type="date" name="use_date[]"
+                                        value="{{ old('use_date.' . $i, isset($expense['use_date']) ? $expense['use_date']->format('Y-m-d') : '') }}"
+                                        class="mr-2 w-40">
+                                    <input type="text" name="route_start[]"
+                                        value="{{ old('route_start.' . $i, $expense['route_start'] ?? '') }}"
+                                        class="mr-2">
+                                    <input type="text" name="route_end[]"
+                                        value="{{ old('route_end.' . $i, $expense['route_end'] ?? '') }}"
+                                        class="mr-2">
+                                    <input type="text" name="amount[]"
+                                        value="{{ old('amount.' . $i, $expense['amount'] ?? '') }}" class="mr-2">
+                                    <button type="button"
+                                        class="remove-row bg-red-500 hover:bg-red-700 text-white px-2 rounded">削除</button>
                                 </div>
                             @empty
                                 @foreach (range(0, max(count($expenses ?? []), 1) - 1) as $i)
                                     <div class="expense-row flex mb-4 items-center">
                                         <span class="row-number mr-2 w-5">{{ $i + 1 }}</span>
-                                        <input type="hidden" name="expense_id[]" value="">    
-                                        <input type="date" name="use_date[]" value="{{ old('use_date.' . $i) }}" class="mr-2 w-40">
-                                        <input type="text" name="route_start[]" value="{{ old('route_start.' . $i) }}" class="mr-2">
-                                        <input type="text" name="route_end[]" value="{{ old('route_end.' . $i) }}" class="mr-2">
-                                        <input type="text" name="amount[]" value="{{ old('amount.' . $i) }}" class="mr-2">
-                                        <button type="button" class="remove-row bg-red-500 hover:bg-red-700 text-white px-2 rounded">削除</button>
+                                        <input type="hidden" name="expense_id[]" value="">
+                                        <input type="date" name="use_date[]" value="{{ old('use_date.' . $i) }}"
+                                            class="mr-2 w-40">
+                                        <input type="text" name="route_start[]"
+                                            value="{{ old('route_start.' . $i) }}" class="mr-2">
+                                        <input type="text" name="route_end[]" value="{{ old('route_end.' . $i) }}"
+                                            class="mr-2">
+                                        <input type="text" name="amount[]" value="{{ old('amount.' . $i) }}"
+                                            class="mr-2">
+                                        <button type="button"
+                                            class="remove-row bg-red-500 hover:bg-red-700 text-white px-2 rounded">削除</button>
                                     </div>
                                 @endforeach
                             @endforelse
                         </div>
                         {{-- 新規行追加 --}}
-                        <button type="button" id="add-row" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mb-4">+ 行を追加</button>
+                        <button type="button" id="add-row"
+                            class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mb-4">+ 行を追加</button>
                         <div class="flex items-center justify-end">
-                            <a href="{{ route('public.reports.transportation-expenses.index') }}" class="mr-3 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ route('public.reports.transportation-expenses.index') }}"
+                                class="mr-3 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 戻る
                             </a>
-                            <input type="submit" name="action" value="保存" class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            <input type="submit" name="action" value="申請" class="mr-3 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <input type="submit" name="action" value="保存"
+                                class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <input type="submit" name="action" value="申請"
+                                class="mr-3 bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         </div>
                     </form>
                 </div>
@@ -134,10 +152,9 @@ use function Psy\debug;
             // ★ disabled の代わりに見た目＋操作無効化
             submitter.setAttribute("data-disabled", "true");
             submitter.style.pointerEvents = "none"; // クリックできなくする
-            submitter.style.opacity = "0.5";        // 無効っぽく見せる
+            submitter.style.opacity = "0.5"; // 無効っぽく見せる
 
             return true;
         }
-
     </script>
 </x-app-layout>

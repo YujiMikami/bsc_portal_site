@@ -35,7 +35,7 @@ class SmartphoneLoanController extends Controller
 
         return view('admin.table.smartphone-loans.show', compact('smartphoneLoan'));
     }
-    
+
     public function edit($id)
     {
         $smartphoneLoan = SmartphoneLoan::findOrFail($id);
@@ -81,7 +81,6 @@ class SmartphoneLoanController extends Controller
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('スマートフォン貸与テーブルエラー(SmartphoneLoanController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.smartphone-loans.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -97,7 +96,7 @@ class SmartphoneLoanController extends Controller
 
         // バリデーションに失敗した場合
         if ($validator->fails()) {
-            return redirect(route('admin.table.smartphone-loans.create')) 
+            return redirect(route('admin.table.smartphone-loans.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -106,7 +105,7 @@ class SmartphoneLoanController extends Controller
         $smartphoneLoan = new SmartphoneLoan();
         // $request オブジェクトを直接 saveSmartphoneLoan メソッドに渡す
         try {
-            $smartphoneLoan->saveSmartphoneLoan($request); 
+            $smartphoneLoan->saveSmartphoneLoan($request);
             TableHistory::create([
                 'table_name' => 'スマートフォン貸与',
                 'target_id' => $smartphoneLoan->id,
@@ -114,8 +113,7 @@ class SmartphoneLoanController extends Controller
                 'action' => '新規',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);   
-        
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('スマートフォン貸与テーブルエラー(SmartphoneLoanController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.smartphone-loans.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -128,9 +126,9 @@ class SmartphoneLoanController extends Controller
     {
         try {
             $smartphoneLoan = SmartphoneLoan::findOrFail($id);
-            
+
             $smartphoneLoan->delete();
-            
+
             // TableHistoryに更新履歴を保存
             TableHistory::create([
                 'table_name' => 'スマートフォン貸与',
@@ -140,7 +138,6 @@ class SmartphoneLoanController extends Controller
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
             ]);
-
         } catch (Exception $e) {
             Log::channel('error')->alert('スマートフォン貸与テーブルエラー(SmartphoneLoanController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.smartphone-loans.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -159,12 +156,11 @@ class SmartphoneLoanController extends Controller
         $messages = [
             'phone_number.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'phone_number' => '電話番号',
-         ];
+        ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }
 }
-

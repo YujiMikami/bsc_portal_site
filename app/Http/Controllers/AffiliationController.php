@@ -38,7 +38,7 @@ class AffiliationController extends Controller
     public function edit($affiliation_id)
     {
         $affiliation = Affiliation::findOrFail($affiliation_id);
-        
+
         return view('admin.table.affiliations.create', compact('affiliation'));
     }
 
@@ -76,13 +76,12 @@ class AffiliationController extends Controller
                     ];
                 }
             }
-            
+
             $affiliation->saveAffiliation($request);
 
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('所属テーブルエラー(AffiliationController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -99,15 +98,15 @@ class AffiliationController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.table.affiliations.create ルートに変更
-            return redirect(route('admin.table.affiliations.create')) 
+            return redirect(route('admin.table.affiliations.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-        
+
         $affiliation = new Affiliation();
 
         try {
-            $affiliation->saveAffiliation($request); 
+            $affiliation->saveAffiliation($request);
 
             // TableHistoryに更新履歴を保存
             TableHistory::create([
@@ -118,7 +117,6 @@ class AffiliationController extends Controller
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
             ]);
-
         } catch (Exception $e) {
             Log::channel('error')->alert('所属テーブルエラー(AffiliationController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -142,8 +140,7 @@ class AffiliationController extends Controller
                 'action' => '削除',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);            
-
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('所属テーブルエラー(AffiliationController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.affiliations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -165,7 +162,7 @@ class AffiliationController extends Controller
             'affiliation_id.unique' => ':attributeはすでに登録されています。',
             'affiliation_name.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'affiliation_id' => '所属ID',
             'affiliation_name' => '所属名',
@@ -217,7 +214,6 @@ class AffiliationController extends Controller
                     'affiliation_name' => $data[1],
                     'affiliation_explanation' => $data[2],
                 ]);
-
             }
             fclose($handle);
             DB::commit();

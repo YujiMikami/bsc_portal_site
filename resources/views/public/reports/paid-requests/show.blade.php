@@ -10,24 +10,29 @@
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="mb-6 flex">
-                        <a href="{{ route('public.reports.paid-requests.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 mr-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('public.reports.paid-requests.index') }}"
+                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 mr-4 rounded focus:outline-none focus:shadow-outline">
                             戻る
                         </a>
                         @can('approval', $paidRequest)
                             @if (empty($paidRequest->approver))
-                                <form action="{{ route('public.reports.paid-requests.approval', $paidRequest->id) }}" method="POST" onsubmit="return confirm('有給申請を許可しますか？');">
+                                <form action="{{ route('public.reports.paid-requests.approval', $paidRequest->id) }}"
+                                    method="POST" onsubmit="return confirm('有給申請を許可しますか？');">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">承認</button>
+                                    <button type="submit"
+                                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">承認</button>
                                 </form>
                             @endif
-                                @endcan                                        
+                        @endcan
                         @can('acceptance', $paidRequest)
                             @if (isset($paidRequest->approver) && empty($paidRequest->recipient))
-                                <form action="{{ route('public.reports.paid-requests.acceptance', $paidRequest->id) }}" method="POST" onsubmit="return confirm('有給申請を受理しますか？');">
+                                <form action="{{ route('public.reports.paid-requests.acceptance', $paidRequest->id) }}"
+                                    method="POST" onsubmit="return confirm('有給申請を受理しますか？');">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">受理</button>
+                                    <button type="submit"
+                                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">受理</button>
                                 </form>
                             @endif
                         @endcan
@@ -51,4 +56,3 @@
         </div>
     </div>
 </x-app-layout>
-

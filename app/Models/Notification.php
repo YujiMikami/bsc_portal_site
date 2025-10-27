@@ -13,7 +13,7 @@ class Notification extends Model
         'start_at',
         'end_at',
     ];
-    
+
     protected $casts = [
         'start_at' => 'datetime',
         'end_at' => 'datetime',
@@ -32,8 +32,8 @@ class Notification extends Model
     public function employees()
     {
         return $this->belongsToMany(EmployeeAccount::class, 'notification_employee_account', 'notification_id', 'employee_account_id', 'id', 'employee_id')
-                    ->withPivot('read_at')
-                    ->withTimestamps();
+            ->withPivot('read_at')
+            ->withTimestamps();
     }
 
     public function readEmployees()

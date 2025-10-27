@@ -107,9 +107,9 @@ class Employee extends Model
     public function saveEmployee(Request $request)
     {
         $this->fill($request->all());
-        
+
         $this->updated_by = Auth::user()->employee_name;
-        
+
         $this->final_academic_date = $request->final_academic_date ? $request->final_academic_date . '-01' : null;
         $this->work_history_1_date = $request->work_history_1_date ? $request->work_history_1_date . '-01' : null;
         $this->work_history_2_date = $request->work_history_2_date ? $request->work_history_2_date . '-01' : null;
@@ -148,7 +148,7 @@ class Employee extends Model
     {
         return $this->belongsTo(EmployeePost::class, 'employee_post_id', 'employee_post_id');
     }
-    
+
     public function Occupation()
     {
         return $this->belongsTo(Occupation::class, 'occupation_id', 'occupation_id');

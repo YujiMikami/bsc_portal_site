@@ -27,8 +27,10 @@ use function Psy\debug;
                             <input type="file" name="file" class="form-control" accept=".pdf,.jpg,.jpeg" required>
                         </div>
 
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">アップロード</button>
-                        <a href="{{ route('public.documents.index') }}" class="inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a>
+                        <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">アップロード</button>
+                        <a href="{{ route('public.documents.index') }}"
+                            class="inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">戻る</a>
                     </form>
                 </div>
             </div>

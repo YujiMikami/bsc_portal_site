@@ -61,8 +61,6 @@ class NotificationController extends Controller
             $notification = Notification::findOrFail($id);
 
             $notification->saveNotification($request);
-
-
         } catch (Exception $e) {
             Log::channel('error')->alert('お知らせテーブルエラー(NotificationController->update)', [$e->getMessage()]);
             return redirect(route('admin.notification.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -78,15 +76,14 @@ class NotificationController extends Controller
 
         // バリデーションに失敗した場合
         if ($validator->fails()) {
-            return redirect(route('admin.notification.create')) 
+            return redirect(route('admin.notification.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
 
         $notification = new Notification();
         try {
-            $notification->saveNotification($request); 
-        
+            $notification->saveNotification($request);
         } catch (Exception $e) {
             Log::channel('error')->alert('お知らせテーブルエラー(NotificationController->store)', [$e->getMessage()]);
             return redirect(route('admin.notification.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -99,9 +96,8 @@ class NotificationController extends Controller
     {
         try {
             $notification = Notification::findOrFail($id);
-            
+
             $notification->delete();
-            
         } catch (Exception $e) {
             Log::channel('error')->alert('お知らせテーブルエラー(NotificationController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.notification.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -110,8 +106,9 @@ class NotificationController extends Controller
         return redirect(route('admin.notification.index'))->with('success', 'お知らせが正常に削除されました。');
     }
 
-    public function unread($id) {
-    
+    public function unread($id)
+    {
+
         $notification = Notification::findOrFail($id);
 
         // 既読社員ID
@@ -135,14 +132,12 @@ class NotificationController extends Controller
             'title.required' => ':attributeは必須項目です。',
             'body.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'title' => 'タイトル',
             'body' => '内容',
-         ];
+        ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }
-
-
 }

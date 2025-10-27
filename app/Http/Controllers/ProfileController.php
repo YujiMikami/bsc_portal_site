@@ -61,13 +61,13 @@ class ProfileController extends Controller
 
     public function show()
     {
-            $profile = Employee::with([
-                'department',
-                'affiliation',
-                'occupation',
-                'employeeClass',
-                //'employeePost',は社員テーブルにないので除外
-            ])->findOrFail(Auth::User()->employee_id);
+        $profile = Employee::with([
+            'department',
+            'affiliation',
+            'occupation',
+            'employeeClass',
+            //'employeePost',は社員テーブルにないので除外
+        ])->findOrFail(Auth::User()->employee_id);
         return view('profile.show', compact('profile'));
     }
 }

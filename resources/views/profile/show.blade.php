@@ -17,8 +17,8 @@
                             <tr>
                                 <th class="border px-4 py-2">項目</th>
                                 <th class="border px-4 py-2">登録データ</th>
-                            </tr>    
-                        </thead>    
+                            </tr>
+                        </thead>
                         <tbody>
                             <tr>
                                 <td class="border px-4 py-2">社員番号</td>
@@ -34,16 +34,17 @@
                             </tr>
                             <tr>
                                 <td class="border px-4 py-2">社員区分</td>
-                                <td class="border px-4 py-2">{{ $profile->employeeClass->employee_class_name ?? '未設定' }}</td>
+                                <td class="border px-4 py-2">{{ $profile->employeeClass->employee_class_name ?? '未設定' }}
+                                </td>
                             </tr>
                             <tr>
                                 <td class="border px-4 py-2">部署</td>
                                 <td class="border px-4 py-2">{{ $profile->department->department_name ?? '未設定' }}</td>
-                            </tr>                        
+                            </tr>
                             <tr>
                                 <td class="border px-4 py-2">所属</td>
                                 <td class="border px-4 py-2">{{ $profile->affiliation->affiliation_name ?? '未設定' }}</td>
-                            </tr>                        
+                            </tr>
                             <!-- <tr>役職は社員テーブルにないため除外
                                 <td class="border px-4 py-2">役職</td>
                                 <td class="border px-4 py-2">{{ $profile->employeePost->employee_post_name ?? '未設定' }}</td>
@@ -58,7 +59,8 @@
                             </tr>
                             <tr>
                                 <td class="border px-4 py-2">ポータル権限</td>
-                                <td class="border px-4 py-2">{{ config('const.portal_role.' . Auth::User()->portal_role) }}</td>
+                                <td class="border px-4 py-2">
+                                    {{ config('const.portal_role.' . Auth::User()->portal_role) }}</td>
                             </tr>
 
 
@@ -68,7 +70,7 @@
 
 
                         </tbody>
-                        
+
 
                     </table>
                 </div>
@@ -76,4 +78,3 @@
         </div>
     </div>
 </x-app-layout>
-

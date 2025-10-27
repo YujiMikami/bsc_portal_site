@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PcLoanController extends Controller
 {
-public function index()
+    public function index()
     {
         $pcLoans = PcLoan::all();
         return view('admin.table.pc-loans.index', compact('pcLoans'));
@@ -35,7 +35,7 @@ public function index()
 
         return view('admin.table.pc-loans.show', compact('pcLoan'));
     }
-    
+
     public function edit($id)
     {
         $pcLoan = PcLoan::findOrFail($id);
@@ -81,7 +81,6 @@ public function index()
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('ＰＣ貸与テーブルエラー(PcLoanController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.pc-loans.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -97,7 +96,7 @@ public function index()
 
         // バリデーションに失敗した場合
         if ($validator->fails()) {
-            return redirect(route('admin.table.pc-loans.create')) 
+            return redirect(route('admin.table.pc-loans.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -106,7 +105,7 @@ public function index()
         $pcLoan = new PcLoan();
         // $request オブジェクトを直接 saveSmartphoneLoan メソッドに渡す
         try {
-            $pcLoan->savePcLoan($request); 
+            $pcLoan->savePcLoan($request);
             TableHistory::create([
                 'table_name' => 'ＰＣ貸与',
                 'target_id' => $pcLoan->id,
@@ -114,8 +113,7 @@ public function index()
                 'action' => '新規',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);   
-        
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('ＰＣ貸与テーブルエラー(PcController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.pc-loans.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -128,9 +126,9 @@ public function index()
     {
         try {
             $pcLoan = PcLoan::findOrFail($id);
-            
+
             $pcLoan->delete();
-            
+
             // TableHistoryに更新履歴を保存
             TableHistory::create([
                 'table_name' => 'ＰＣ貸与',
@@ -140,7 +138,6 @@ public function index()
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
             ]);
-
         } catch (Exception $e) {
             Log::channel('error')->alert('ＰＣ貸与テーブルエラー(PcLoanController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.pc-loans.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -161,11 +158,11 @@ public function index()
             'pc_number.required' => ':attributeは必須項目です。',
             'service_tag.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'pc_number' => 'ＰＣナンバー',
             'service_tag' => 'サービスタグ',
-         ];
+        ];
 
         return Validator::make($request->all(), $rules, $messages, $attributes);
     }

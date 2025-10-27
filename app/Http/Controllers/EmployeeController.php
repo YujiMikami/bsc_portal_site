@@ -71,7 +71,7 @@ class EmployeeController extends Controller
 
             $employee->delete();
             $employeeAccount->delete();
-            
+
             // TableHistoryに更新履歴を保存
             TableHistory::create([
                 'table_name' => '社員',
@@ -80,8 +80,7 @@ class EmployeeController extends Controller
                 'action' => '削除',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);  
-
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
             return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -99,7 +98,7 @@ class EmployeeController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.tasks.create ルートに変更
-            return redirect(route('admin.table.employees.create')) 
+            return redirect(route('admin.table.employees.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -108,8 +107,8 @@ class EmployeeController extends Controller
         $employeeAccount = new EmployeeAccount();
 
         try {
-            $employee->saveEmployee($request); 
-            $employeeAccount->saveEmployeeAccount($request); 
+            $employee->saveEmployee($request);
+            $employeeAccount->saveEmployeeAccount($request);
 
             TableHistory::create([
                 'table_name' => '社員',
@@ -119,14 +118,12 @@ class EmployeeController extends Controller
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
             ]);
-
         } catch (Exception $e) {
             Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
             return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
         }
 
         return redirect(route('admin.table.employees.index'))->with('success', '社員登録が正常に処理されました。');
-
     }
 
     private function validateEmployee(Request $request, $employee_id = null)
@@ -155,7 +152,7 @@ class EmployeeController extends Controller
             'portal_role.required' => ':attributeは必須項目です。',
 
         ];
-        
+
         $attributes = [
             'employee_id' => '社員番号',
             'employee_name' => '社員名',
@@ -194,7 +191,7 @@ class EmployeeController extends Controller
                 if (preg_match('/^\d{4}-\d{2}$/', $newValue)) {
                     $newValue = $newValue . '-01';
                 }
-                
+
                 if ($column == 'portal_role') {
                     if ($employeeAccount->$column != $newValue) {
                         $changes[] = [
@@ -230,11 +227,9 @@ class EmployeeController extends Controller
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
             return redirect(route('admin.table.employees.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
-
         }
 
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
@@ -319,12 +314,12 @@ class EmployeeController extends Controller
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ]);
     }
-    
+
     public function exportcsv()
     {
         return view('admin.table.employees.exportcsv');
     }
-    
+
     public function importcsv()
     {
         return view('admin.table.employees.importcsv');
@@ -361,7 +356,7 @@ class EmployeeController extends Controller
                 if (count($data) < 58) {
                     throw new \Exception("CSV列数が不足しています");
                 }
-                
+
                 Employee::updateOrCreate([
                     'employee_id' => $data[0],
                 ], [
@@ -424,7 +419,7 @@ class EmployeeController extends Controller
                     'note' => toIntOrNull($data[57]),
                     'updated_by' => Auth::user()->employee_name,
                 ]);
-            EmployeeAccount::updateOrCreate([
+                EmployeeAccount::updateOrCreate([
                     'employee_id' => $data[0],
                 ], [
                     'employee_name' => $data[1],

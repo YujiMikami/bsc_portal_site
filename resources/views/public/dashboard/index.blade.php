@@ -13,26 +13,28 @@
                         @foreach ($message as $val)
                             <p>{{ $val }}</p>
                         @endforeach
-                    </div>    
+                    </div>
                 </div>
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="card p-6">
                     @can('access-admin-panel')
-                        <a href="{{ route('admin.notification.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('admin.notification.index') }}"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             お知らせ管理
                         </a>
                     @endcan
-                
+
                     <h2 class="mt-6 mb-6">📢 お知らせ</h2>
                     <ul>
                         @forelse($notifications as $notice)
-                        <li class="mt-6 mb-6">
-                        <a href="{{ route('public.notification.show', $notice->id) }}">
+                            <li class="mt-6 mb-6">
+                                <a href="{{ route('public.notification.show', $notice->id) }}">
                                     {{ $notice->title }}
                                 </a>
                                 <span class="text-sm text-gray-500">{{ $notice->start_at->format('Y/m/d') }}</span>
-                                <span class="text-sm {{ optional(optional($notice->employees->first())->pivot)->read_at ? 'text-blue-500' : 'text-red-500' }}">
+                                <span
+                                    class="text-sm {{ optional(optional($notice->employees->first())->pivot)->read_at ? 'text-blue-500' : 'text-red-500' }}">
                                     {{ optional(optional($notice->employees->first())->pivot)->read_at ? '既読' : '未読' }}
                                 </span>
                             </li>
