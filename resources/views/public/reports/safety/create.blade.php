@@ -14,17 +14,19 @@ use function Psy\debug;
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="mb-6">
-                        <a href="{{ route('public.reports.safety.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <a href="{{ route('public.reports.safety.index') }}"
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             戻る
                         </a>
-                    </div>    
+                    </div>
                     <h1 class="text-2xl font-bold mb-6">
                         安否登録
                     </h1>
 
                     {{-- バリデーションエラーメッセージの表示 --}}
                     @if ($errors->any())
-                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative" role="alert">
+                        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative"
+                            role="alert">
                             <strong class="font-bold">入力内容にエラーがあります！</strong>
                             <ul class="mt-2 list-disc list-inside">
                                 @foreach ($errors->all() as $error)
@@ -36,29 +38,29 @@ use function Psy\debug;
 
                     <form onsubmit="disableButton()" action="{{ route('public.reports.safety.store') }}" method="POST">
                         @csrf
-   
+
                         <div class="mb-6">
                             <label for="department" class="block text-gray-700 text-sm font-bold mb-2">部署：</label>
                             <select name="department" id="department" class="rounded">
-                                    @foreach (config('departments') as $key=>$val)
-                                        <option value="{{ $key }}"
-                                            {{ old('department', Auth::user()->department_id ?? '') == $key ? 'selected' : '' }}>
-                                            {{ $val }}
-                                        </option>
-                                    @endforeach
+                                @foreach (config('departments') as $key => $val)
+                                    <option value="{{ $key }}"
+                                        {{ old('department', Auth::user()->department_id ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $val }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="mb-6">
                             <label for="affiliation" class="block text-gray-700 text-sm font-bold mb-2">所属</label>
                             <select name="affiliation" id="affiliation" class="rounded">
-                                    @foreach (config('affiliations') as $key=>$val)
-                                        <option value="{{ $key }}"
-                                            {{ old('affiliation', Auth::user()->affiliation_id ?? '') == $key ? 'selected' : '' }}>
-                                            {{ $val }}
-                                        </option>
-                                    @endforeach
-                            </select>   
+                                @foreach (config('affiliations') as $key => $val)
+                                    <option value="{{ $key }}"
+                                        {{ old('affiliation', Auth::user()->affiliation_id ?? '') == $key ? 'selected' : '' }}>
+                                        {{ $val }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <legend>ケガの有無</legend>
@@ -77,8 +79,11 @@ use function Psy\debug;
                         </div>
 
                         <div class="mb-4">
-                            <label for="injury_status" class="block text-gray-700 text-sm font-bold mb-2">傷害度合：(擦り傷あり・切り傷有り・骨折箇所等)</label>
-                            <input type="text" name="injury_status" id="injury_status" value="{{ old('injury_status', '') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
+                            <label for="injury_status"
+                                class="block text-gray-700 text-sm font-bold mb-2">傷害度合：(擦り傷あり・切り傷有り・骨折箇所等)</label>
+                            <input type="text" name="injury_status" id="injury_status"
+                                value="{{ old('injury_status', '') }}"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline jQ-title">
                         </div>
 
                         <legend>出社可否</legend>
@@ -95,9 +100,10 @@ use function Psy\debug;
                                 出社不可
                             </label>
                         </div>
-                        
+
                         <div class="flex items-center justify-end">
-                            <button id="submit-btn" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button id="submit-btn" type="submit"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 登録
                             </button>
                         </div>

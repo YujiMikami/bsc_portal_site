@@ -23,8 +23,7 @@ class Department extends Model
         $this->department_id = $request->input('department_id');
         $this->department_name = $request->input('department_name');
         $this->department_explanation = $request->input('department_explanation');
-        
+
         $this->save();
     }
-
 }

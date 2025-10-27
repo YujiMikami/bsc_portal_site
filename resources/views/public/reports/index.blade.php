@@ -6,12 +6,13 @@
 
     </x-slot>
     <!DOCTYPE html>
-        <div class="py-6">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white shadow-sm rounded-lg">
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if (session('success'))
-                        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded relative" role="alert">
+                        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded relative"
+                            role="alert">
                             {{ session('success') }}
                         </div>
                     @endif
@@ -57,8 +58,9 @@
                                 <td colspan="3">交通費申請はありません。</td>
                             @else
                                 @foreach ($transportationExpenses as $date => $val)
-                                <tr>
-                                        <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}</td>
+                                    <tr>
+                                        <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}
+                                        </td>
                                         <td class="border px-4 py-2">{{ $val->sum('amount') }}</td>
                                         @if (isset($val->approver))
                                             <td class="border px-4 py-2">受理待機中</td>

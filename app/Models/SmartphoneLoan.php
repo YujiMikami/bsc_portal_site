@@ -23,10 +23,8 @@ class SmartphoneLoan extends Model
         'updated_by',
     ];
 
-    protected $casts = [
+    protected $casts = [];
 
-    ];
-    
     public function saveSmartphoneLoan(Request $request)
     {
         $this->phone_number = $request->input('phone_number');

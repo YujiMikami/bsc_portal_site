@@ -22,5 +22,4 @@ class Occupation extends Model
         $this->occupation_name = $request->input('occupation_name');
         $this->save();
     }
-
 }

@@ -81,7 +81,6 @@ class EmployeeClassController extends Controller
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('社員区分テーブルエラー(EmployeeClassController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-classes.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -99,20 +98,20 @@ class EmployeeClassController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.table.employee-classes.create ルートに変更
-            return redirect(route('admin.table.employee-classes.create')) 
+            return redirect(route('admin.table.employee-classes.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-        
-        
-        
+
+
+
         // Departmentモデルのカスタムメソッドを使ってデータを保存
         $employeeClass = new EmployeeClass();
         // $request オブジェクトを直接 saveDepartment メソッドに渡す
         try {
-           
-            $employeeClass->saveEmployeeClass($request); 
-           
+
+            $employeeClass->saveEmployeeClass($request);
+
             TableHistory::create([
                 'table_name' => '社員区分',
                 'target_id' => $request->employee_class_id,
@@ -120,8 +119,7 @@ class EmployeeClassController extends Controller
                 'action' => '新規',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);    
-       
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('社員区分テーブルエラー(EmployeeClassController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-classes.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -145,8 +143,7 @@ class EmployeeClassController extends Controller
                 'action' => '削除',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);   
-
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('社員区分テーブルエラー(EmployeeClassController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.employee-classes.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -168,7 +165,7 @@ class EmployeeClassController extends Controller
             'employee_class_id.unique' => ':attributeはすでに登録されています。',
             'employee_class_name.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'employee_class_id' => '区分ID',
             'employee_class_name' => '区分名',
@@ -219,7 +216,6 @@ class EmployeeClassController extends Controller
                 ], [
                     'employee_class_name' => $data[1],
                 ]);
-
             }
             fclose($handle);
             DB::commit();

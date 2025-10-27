@@ -22,8 +22,8 @@ class Safety extends Model
         $this->injury_status = $request->input('injury_status');
         $this->can_work = $request->input('can_work');
 
-        
-        
+
+
         // 登録処理
         $this->save();
     }

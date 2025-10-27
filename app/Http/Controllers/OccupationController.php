@@ -80,7 +80,6 @@ class OccupationController extends Controller
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('職種テーブルエラー(OccupationController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -98,17 +97,17 @@ class OccupationController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.table.occupations.create ルートに変更
-            return redirect(route('admin.table.occupations.create')) 
+            return redirect(route('admin.table.occupations.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-        
+
         // Occupationモデルのカスタムメソッドを使ってデータを保存
         $occupation = new Occupation();
         // $request オブジェクトを直接 saveOccupation メソッドに渡す
         try {
 
-            $occupation->saveOccupation($request); 
+            $occupation->saveOccupation($request);
 
             TableHistory::create([
                 'table_name' => '職種',
@@ -117,8 +116,7 @@ class OccupationController extends Controller
                 'action' => '新規',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);     
-
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('職種テーブルエラー(OccupationController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -133,7 +131,7 @@ class OccupationController extends Controller
             $occupation = Occupation::findOrFail($occupation_id);
 
             $occupation->delete();
-    
+
             TableHistory::create([
                 'table_name' => '職種',
                 'target_id' => $occupation_id,
@@ -142,7 +140,6 @@ class OccupationController extends Controller
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
             ]);
-
         } catch (Exception $e) {
             Log::channel('error')->alert('職種テーブルエラー(OccupationController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.occupations.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -165,7 +162,7 @@ class OccupationController extends Controller
             'occupation_id.unique' => ':attributeはすでに登録されています。',
             'occupation_name.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'occupation_id' => '職種ID',
             'occupation_name' => '職種名',
@@ -216,7 +213,6 @@ class OccupationController extends Controller
                 ], [
                     'occupation_name' => $data[1],
                 ]);
-
             }
             fclose($handle);
             DB::commit();

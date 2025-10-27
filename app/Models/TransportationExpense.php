@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request; // Requestクラスをインポート
 use Illuminate\Database\Eloquent\SoftDeletes; // SoftDeletesトレイトをインポート
+use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\Auth;
 
 class TransportationExpense extends Model
@@ -30,7 +32,7 @@ class TransportationExpense extends Model
                 // 新規行は追加
                 $expense = new TransportationExpense();
                 $expense->employee_id = Auth::user()->employee_id;
-                $expense->applied_date = $expenses['applied_date'];
+                $expense->applied_date = !empty($expenses['applied_date']) ? $expenses['applied_date'] : '1000-01-01';
                 $expense->use_date = $date;
                 $expense->route_start = $expenses['route_start'][$i];
                 $expense->route_end = $expenses['route_end'][$i];
@@ -38,6 +40,8 @@ class TransportationExpense extends Model
             }
             if ($expenses['action'] === '申請'){
                 $expense->submitted = 1;
+                $expense->applied_date = now()->format('Y-m-d');
+                
             }
             
             // 登録処理
@@ -47,7 +51,7 @@ class TransportationExpense extends Model
 
         // 送信されなかった既存レコードは削除
         TransportationExpense::where('employee_id', Auth::user()->employee_id)
-            ->where('applied_date', $expenses['applied_date'])
+            ->where('applied_date', !empty($expenses['applied_date']) ? $expenses['applied_date'] : '1000-01-01')
             ->whereNotIn('id', $processedIds)
             ->delete();
     }

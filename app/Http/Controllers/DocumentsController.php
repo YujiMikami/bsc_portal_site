@@ -29,11 +29,11 @@ class DocumentsController extends Controller
             'title' => 'required|string|max:255',
             'file' => 'required|mimes:pdf,jpg,jpeg|max:10240', // 10MB
         ]);
-            $file = $request->file('file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $filename = mb_convert_encoding($filename, 'UTF-8', 'auto');
-            $path = $file->storeAs('documents', $filename, 'public');
-            $ext = strtolower($file->getClientOriginalExtension());
+        $file = $request->file('file');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $filename = mb_convert_encoding($filename, 'UTF-8', 'auto');
+        $path = $file->storeAs('documents', $filename, 'public');
+        $ext = strtolower($file->getClientOriginalExtension());
 
         Documents::create([
             'title' => $request->title,
@@ -108,8 +108,8 @@ class DocumentsController extends Controller
 
         // Content-Disposition は inline のみ（filenameは指定しない）
         return Response::make(file_get_contents($path), 200, [
-        'Content-Type' => $mimeType,
-        'Content-Disposition' => 'inline', // filename を削除
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => 'inline', // filename を削除
         ]);
     }
 }

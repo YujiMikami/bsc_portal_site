@@ -11,16 +11,19 @@
                 <div class="p-6 text-gray-900">
                     <div class="mb-6 flex">
                         @if (Request::is('admin/*'))
-                            <a href="{{ route('admin.notification.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ route('admin.notification.index') }}"
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 戻る
                             </a>
                             @if ($notification->start_at > now())
-                                <a href="{{ route('admin.notification.edit', $notification->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded focus:outline-none focus:shadow-outline">
+                                <a href="{{ route('admin.notification.edit', $notification->id) }}"
+                                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-4 rounded focus:outline-none focus:shadow-outline">
                                     編集
                                 </a>
                             @endif
                         @else
-                            <a href="{{ route('dashboard') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ route('dashboard') }}"
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 戻る
                             </a>
                         @endif
@@ -35,4 +38,3 @@
         </div>
     </div>
 </x-app-layout>
-

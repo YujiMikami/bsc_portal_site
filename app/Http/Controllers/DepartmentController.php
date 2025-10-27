@@ -81,7 +81,6 @@ class DepartmentController extends Controller
             if (!empty($changes)) {
                 TableHistory::insert($changes);
             }
-
         } catch (Exception $e) {
             Log::channel('error')->alert('部署テーブルエラー(DepartmentController->update)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -97,16 +96,16 @@ class DepartmentController extends Controller
 
         // バリデーションに失敗した場合
         if ($validator->fails()) {
-            return redirect(route('admin.table.departments.create')) 
+            return redirect(route('admin.table.departments.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
-        
+
         $department = new Department();
 
         try {
-            $department->saveDepartment($request); 
-        
+            $department->saveDepartment($request);
+
             TableHistory::create([
                 'table_name' => '部署',
                 'target_id' => $request->department_id,
@@ -114,8 +113,7 @@ class DepartmentController extends Controller
                 'action' => '新規',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);      
-        
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('部署テーブルエラー(DepartmentController->store)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -139,10 +137,7 @@ class DepartmentController extends Controller
                 'action' => '削除',
                 'responder' => Auth::user()->employee_name,
                 'compatible_date' => now(),
-            ]);   
-
-
-
+            ]);
         } catch (Exception $e) {
             Log::channel('error')->alert('部署テーブルエラー(DepartmentController->destroy)', [$e->getMessage()]);
             return redirect(route('admin.table.departments.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');
@@ -165,7 +160,7 @@ class DepartmentController extends Controller
             'department_id.unique' => ':attributeはすでに登録されています。',
             'department_name.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'department_id' => '部署ID',
             'department_name' => '部署名',
@@ -217,7 +212,6 @@ class DepartmentController extends Controller
                     'department_name' => $data[1],
                     'department_explanation' => $data[2],
                 ]);
-
             }
             fclose($handle);
             DB::commit();

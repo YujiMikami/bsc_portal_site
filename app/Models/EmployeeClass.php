@@ -22,5 +22,4 @@ class EmployeeClass extends Model
         $this->employee_class_name = $request->input('employee_class_name');
         $this->save();
     }
-
 }

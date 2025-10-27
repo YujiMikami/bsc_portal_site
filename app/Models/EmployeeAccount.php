@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class EmployeeAccount extends Authenticatable
 {
     use Notifiable;
-    
+
     protected $table = 'employee_accounts';
     protected $primaryKey = 'employee_id'; // 主キーのカラム名
 
@@ -41,11 +41,11 @@ class EmployeeAccount extends Authenticatable
     public function saveEmployeeAccount(Request $request)
     {
         $this->fill($request->all());
-        
+
         if (!$this->exists) {
             $this->password = bcrypt('bsc' . $this->employee_id);
         } // パスワードだけ個別処理
-        
+
         $this->employee_id = $request->input('employee_id');
         $this->employee_name = $request->input('employee_name');
         $this->employee_name_furigana = $request->input('employee_name_furigana');
@@ -106,7 +106,7 @@ class EmployeeAccount extends Authenticatable
     {
         return $this->belongsTo(EmployeePost::class, 'employee_post_id', 'employee_post_id');
     }
-    
+
     public function Occupation()
     {
         return $this->belongsTo(Occupation::class, 'occupation_id', 'occupation_id');
@@ -120,11 +120,11 @@ class EmployeeAccount extends Authenticatable
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */    
+     */
     public function notifications()
     {
         return $this->belongsToMany(Notification::class, 'notification_employee_account', 'employee_account_id', 'notification_id', 'employee_id', 'id')
-                    ->withPivot('read_at')
-                    ->withTimestamps();
+            ->withPivot('read_at')
+            ->withTimestamps();
     }
 }

@@ -8,9 +8,10 @@ use Exception;
 use Illuminate\Support\Facades\Log; // Logファサードをインポート
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 class SafetyController extends Controller
 {
-        /**
+    /**
      * ルーティングで指定されたURLへのリクエストがあったときに実行されるメソッド
      */
     public function index()
@@ -20,7 +21,7 @@ class SafetyController extends Controller
         } else {
             $safety = Safety::where('safety_employee_id', auth::user()->employee_id)->get();
         }
-          
+
         return view('public.reports.safety.index', compact('safety'));
     }
 
@@ -28,7 +29,7 @@ class SafetyController extends Controller
     {
         return view('public.reports.safety.create');
     }
-    
+
     public function store(Request $request)
     {
         // バリデーション
@@ -37,7 +38,7 @@ class SafetyController extends Controller
         // バリデーションに失敗した場合
         if ($validator->fails()) {
             // リダイレクト先を admin.tasks.create ルートに変更
-            return redirect(route('public.reports.safety.create')) 
+            return redirect(route('public.reports.safety.create'))
                 ->withErrors($validator) // エラーメッセージをセッションに保存
                 ->withInput(); // 直前に入力されたデータをセッションに保存
         }
@@ -46,8 +47,7 @@ class SafetyController extends Controller
         $safety = new Safety();
         // $request オブジェクトを直接 saveTask メソッドに渡す
         try {
-            $safety->saveSafety($request); 
-
+            $safety->saveSafety($request);
         } catch (Exception $e) {
             Log::channel('alert')->alert('予期せぬエラーが発生しました。', [$e->getMessage()]);
         }
@@ -72,7 +72,7 @@ class SafetyController extends Controller
             'safety_status.required' => ':attributeは必須項目です。',
             'can_work.required' => ':attributeは必須項目です。',
         ];
-        
+
         $attributes = [
             'department' => '部署',
             'affiliation' => '所属',
@@ -97,7 +97,7 @@ class SafetyController extends Controller
         // タスク一覧ページへリダイレクトし、成功メッセージを表示
         return redirect(route('public.reports.safety.index'))->with('success', 'タスクが正常に削除されました。');
     }
-    
+
     public function confirm($id)
     {
         try {
@@ -105,7 +105,6 @@ class SafetyController extends Controller
 
             $safety->confirmer = Auth::user()->employee_name;
             $safety->save();
-        
         } catch (Exception $e) {
             Log::channel('error')->alert('安否報告エラー(SafetyController->confirm)', [$e->getMessage()]);
             return redirect(route('public.reports.safety.index'))->with('error', 'エラーが発生しました。システム管理者に連絡してください。');

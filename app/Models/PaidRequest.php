@@ -24,7 +24,7 @@ class PaidRequest extends Model
         $this->distinction = $request->input('distinction');
         $this->reason = $request->input('reason');
         $this->note = $request->input('note');
-        
+
         // 登録処理
         $this->save();
     }

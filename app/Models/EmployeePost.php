@@ -23,5 +23,4 @@ class EmployeePost extends Model
 
         $this->save();
     }
-
 }
